@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/tile_fonts/length1.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/tile.gd" type="Script" id=2]
+[ext_resource path="res://assets/corner_radius34_white.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://assets/corner_radius37_white.stylebox.tres" type="StyleBox" id=4]
+
+[node name="Tile" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Border" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -58.0
+margin_top = -57.0
+margin_right = 56.0
+margin_bottom = 57.0
+custom_styles/panel = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shadow" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -52.0
+margin_top = -51.0
+margin_right = 50.0
+margin_bottom = 51.0
+custom_styles/panel = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="highlight" type="Panel" parent="."]
+margin_left = -52.0
+margin_top = -51.0
+margin_right = 50.0
+margin_bottom = 37.0
+custom_styles/panel = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Panel" parent="."]
+modulate = Color( 0.862745, 0.298039, 0.298039, 1 )
+margin_left = -52.0
+margin_top = -46.0
+margin_right = 50.0
+margin_bottom = 37.0
+custom_styles/panel = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Value" type="Label" parent="."]
+margin_left = -53.0
+margin_top = -53.0
+margin_right = 53.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1
+clip_text = true
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Animation" type="Tween" parent="."]
+
+[node name="Clear" type="Tween" parent="."]
+[connection signal="tween_completed" from="Clear" to="." method="_on_Clear_tween_completed"]
