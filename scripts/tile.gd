@@ -2,8 +2,7 @@ extends Node2D
 
 var order = Main.order
 var value = 0
-onready var animation = get_node("Animation")
-onready var clear = get_node("Clear")
+onready var tween = get_node("Tween")
 
 func _enter_tree():
 	set_value()
@@ -12,8 +11,8 @@ func _ready():
 	set_order(order)
 	#self.scale = Vector2(Main.scale_x, Main.scale_y)
 #	Grow the tile when entering the board
-	animation.interpolate_property(self, "scale", Vector2(.3, .3), Vector2(Main.scale_x, Main.scale_y), .4, animation.TRANS_CIRC, animation.EASE_OUT)
-	animation.start()
+	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.scale_x, Main.scale_y), .6, tween.TRANS_CIRC, tween.EASE_OUT)
+	tween.start()
 
 func set_order(number):
 	order = number
@@ -121,24 +120,24 @@ func set_color():
 	get_node("Background").modulate = Color(background_color)
 
 func move(new_position):
-	animation.interpolate_property(self, "position", position, new_position, .5, animation.TRANS_ELASTIC, animation.EASE_OUT)
-	animation.start()
+	tween.interpolate_property(self, "position", position, new_position, .5, tween.TRANS_ELASTIC, tween.EASE_OUT)
+	tween.start()
 
 func collect(new_position):
-	animation.interpolate_property(self, "position", position, new_position, .5, animation.TRANS_ELASTIC, animation.EASE_OUT)
-	animation.start()
-	animation.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, animation.TRANS_SINE, animation.EASE_OUT)
-	animation.start()
-	animation.interpolate_property(self, "scale", Vector2(1, 1), Vector2(0.3, 0.3), .5, animation.TRANS_ELASTIC, animation.EASE_OUT)
-	animation.start()
-	yield(get_tree().create_timer(.4), "timeout")
+	tween.interpolate_property(self, "position", position, new_position, .5, tween.TRANS_ELASTIC, tween.EASE_OUT)
+	tween.start()
+	tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, tween.TRANS_SINE, tween.EASE_OUT)
+	tween.start()
+	tween.interpolate_property(self, "scale", Vector2(1, 1), Vector2(0.3, 0.3), .5, tween.TRANS_CIRC, tween.EASE_OUT)
+	tween.start()
+	yield(get_tree().create_timer(.5), "timeout")
 	self.queue_free()
 
 func clear_tile():
 	#Fade out and grow tile when cleared
-	animation.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, animation.TRANS_SINE, animation.EASE_OUT)
-	animation.start()
-	animation.interpolate_property(self, "scale", Vector2(1, 1), Vector2(1.4 * Main.scale_x, 1.4 * Main.scale_y), .4, animation.TRANS_CIRC, animation.EASE_OUT)
-	animation.start()
-	yield(get_tree().create_timer(.4), "timeout")
+	tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, tween.TRANS_SINE, tween.EASE_OUT)
+	tween.start()
+	tween.interpolate_property(self, "scale", Vector2(1, 1), Vector2(1.4 * Main.scale_x, 1.4 * Main.scale_y), 1, tween.TRANS_CIRC, tween.EASE_OUT)
+	tween.start()
+	yield(get_tree().create_timer(.7), "timeout")
 	self.queue_free()

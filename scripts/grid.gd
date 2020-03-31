@@ -61,7 +61,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	ctile2.clear_tile()
 	
 	combine_value += 2 * ctile.value / 100.0
-	Main.increase_total(combine_value)
+	Main.change_total(combine_value, ctile.position)
 	movement = true
 	
 func move_tile(new_column, new_row, column, row, mtile):
@@ -312,9 +312,9 @@ func _on_RecycleButton_pressed():
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
 				if full_grid:
-					Main.increase_total(tile.value * Main.full_grid_multiplier)
+					Main.change_total(tile.value * Main.full_grid_multiplier, tile.position)
 				else:
-					Main.increase_total(tile.value)
+					Main.change_total(tile.value, tile.position)
 				tile.z_index = 999
 				tile.collect(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				tile = null

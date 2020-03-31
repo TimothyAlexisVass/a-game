@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/tile_fonts/length1.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scripts/tile.gd" type="Script" id=2]
 [ext_resource path="res://assets/corner_radius34_white.stylebox" type="StyleBox" id=3]
-[ext_resource path="res://assets/corner_radius37_white.stylebox.tres" type="StyleBox" id=4]
+[ext_resource path="res://assets/corner_radius37_white.stylebox" type="StyleBox" id=4]
 
 [node name="Tile" type="Node2D"]
 script = ExtResource( 2 )
@@ -36,7 +36,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="highlight" type="Panel" parent="."]
+[node name="Highlight" type="Panel" parent="."]
 margin_left = -52.0
 margin_top = -51.0
 margin_right = 50.0
@@ -72,7 +72,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Animation" type="Tween" parent="."]
-
-[node name="Clear" type="Tween" parent="."]
-[connection signal="tween_completed" from="Clear" to="." method="_on_Clear_tween_completed"]
+[node name="Tween" type="Tween" parent="."]

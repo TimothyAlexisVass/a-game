@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scripts/main.gd" type="Script" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://assets/upgrades.png" type="Texture" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
 [ext_resource path="res://scenes/achievement.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/profit_indicator.tscn" type="PackedScene" id=15]
 
 [sub_resource type="GradientTexture" id=1]
 gradient = ExtResource( 2 )
@@ -114,10 +115,6 @@ shadow_offset = Vector2( 5, 5 )
 
 [sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 1, 1, 1, 0 )
-border_width_left = 40
-border_width_top = 40
-border_width_right = 40
-border_width_bottom = 40
 border_color = Color( 0.92549, 0.968627, 0.435294, 1 )
 border_blend = true
 corner_radius_top_left = 50
@@ -126,7 +123,6 @@ corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 corner_detail = 12
 shadow_color = Color( 0.992157, 0.996078, 0.337255, 0.52549 )
-shadow_size = 11
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.984314, 0.952941, 0.839216, 1 )
@@ -420,9 +416,9 @@ script = ExtResource( 7 )
 
 [node name="RecycleButton" type="TextureButton" parent="Grid Backround"]
 margin_left = 450.726
-margin_top = -9.26038
+margin_top = 550.633
 margin_right = 540.726
-margin_bottom = 90.7396
+margin_bottom = 650.633
 texture_normal = ExtResource( 10 )
 __meta__ = {
 "_edit_group_": true,
@@ -444,10 +440,10 @@ __meta__ = {
 }
 
 [node name="UpgradesButton" type="TextureButton" parent="."]
-margin_left = 433.0
-margin_top = 469.0
-margin_right = 1270.0
-margin_bottom = 1127.0
+margin_left = 415.78
+margin_top = 738.776
+margin_right = 1252.78
+margin_bottom = 1396.78
 rect_scale = Vector2( 0.18, 0.15 )
 texture_normal = ExtResource( 12 )
 __meta__ = {
@@ -455,6 +451,7 @@ __meta__ = {
 }
 
 [node name="Upgrades" type="Panel" parent="."]
+visible = false
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 560.0
@@ -516,6 +513,7 @@ __meta__ = {
 }
 
 [node name="Achievements" type="Panel" parent="."]
+visible = false
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 560.0
@@ -573,6 +571,9 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="Node2D" parent="." instance=ExtResource( 15 )]
+position = Vector2( 226.348, 380.24 )
 [connection signal="timeout" from="Info/MoveInfo/MoveTimer" to="." method="_on_MoveTimer_timeout"]
 [connection signal="pressed" from="Info/MoveInfo/AddMovesButton" to="." method="_on_AddMovesButton_pressed"]
 [connection signal="pressed" from="Info/MoveInfo/AddMovesButton/Amount" to="." method="_on_MoveAmount_pressed"]
