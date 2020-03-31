@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scripts/main.gd" type="Script" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
 [ext_resource path="res://assets/upgrades.png" type="Texture" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
+[ext_resource path="res://scenes/achievement.tscn" type="PackedScene" id=14]
 
 [sub_resource type="GradientTexture" id=1]
 gradient = ExtResource( 2 )
@@ -152,23 +153,6 @@ corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
-
-[sub_resource type="StyleBoxFlat" id=14]
-bg_color = Color( 1, 1, 1, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0, 0, 0, 1 )
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
-corner_detail = 12
-shadow_color = Color( 0.494118, 0.494118, 0.501961, 0.807843 )
-
-[sub_resource type="CanvasItemMaterial" id=15]
-light_mode = 2
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
@@ -537,7 +521,6 @@ margin_top = 16.0
 margin_right = 560.0
 margin_bottom = 827.0
 custom_styles/panel = SubResource( 12 )
-script = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -557,7 +540,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="Achievements/ScrollContainer"]
 margin_right = 172.0
-margin_bottom = 201.0
+margin_bottom = 197.0
 custom_constants/margin_right = 32
 custom_constants/margin_top = 32
 custom_constants/margin_left = 32
@@ -570,50 +553,12 @@ __meta__ = {
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 140.0
-margin_bottom = 169.0
+margin_bottom = 165.0
 custom_constants/vseparation = 16
 custom_constants/hseparation = 16
 columns = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Achievements/ScrollContainer/MarginContainer/GridContainer"]
-margin_right = 108.0
-margin_bottom = 137.0
-
-[node name="Panel" type="Panel" parent="Achievements/ScrollContainer/MarginContainer/GridContainer/VBoxContainer"]
-margin_right = 108.0
-margin_bottom = 108.0
-rect_min_size = Vector2( 108, 108 )
-rect_clip_content = true
-custom_styles/panel = SubResource( 14 )
-
-[node name="Label" type="Label" parent="Achievements/ScrollContainer/MarginContainer/GridContainer/VBoxContainer"]
-margin_top = 112.0
-margin_right = 108.0
-margin_bottom = 133.0
-theme = ExtResource( 11 )
-text = "0/9"
-align = 1
-
-[node name="Control" type="Control" parent="Achievements/ScrollContainer/MarginContainer/GridContainer/VBoxContainer"]
-margin_top = 137.0
-margin_right = 108.0
-margin_bottom = 137.0
-
-[node name="Sprite" type="TextureRect" parent="Achievements/ScrollContainer/MarginContainer/GridContainer/VBoxContainer/Control"]
-material = SubResource( 15 )
-use_parent_material = true
-margin_left = 140.482
-margin_top = -126.237
-margin_right = 340.482
-margin_bottom = 73.7627
-texture = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Light2D" type="Light2D" parent="Achievements/ScrollContainer/MarginContainer/GridContainer/VBoxContainer/Control"]
-position = Vector2( 232.248, -29.4558 )
-texture = ExtResource( 6 )
+[node name="VBoxContainer" parent="Achievements/ScrollContainer/MarginContainer/GridContainer" instance=ExtResource( 14 )]
 
 [node name="Border" type="Panel" parent="Achievements"]
 anchor_right = 1.0

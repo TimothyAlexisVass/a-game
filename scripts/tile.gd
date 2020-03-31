@@ -126,7 +126,7 @@ func move(new_position):
 
 func collect(new_position):
 	animation.interpolate_property(self, "position", position, new_position, .5, animation.TRANS_ELASTIC, animation.EASE_OUT)
-	animation.start
+	animation.start()
 	animation.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, animation.TRANS_SINE, animation.EASE_OUT)
 	animation.start()
 	animation.interpolate_property(self, "scale", Vector2(1, 1), Vector2(0.3, 0.3), .5, animation.TRANS_ELASTIC, animation.EASE_OUT)
