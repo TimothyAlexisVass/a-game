@@ -17,6 +17,8 @@ var tile_grid
 
 func _ready():
 	randomize()
+	yield(get_tree().create_timer(1), "timeout")
+	Main.move_enabled = true
 	initialize_grid()
 
 func _input(event):

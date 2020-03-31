@@ -6,12 +6,12 @@ onready var tween = get_node("Tween")
 
 func _enter_tree():
 	set_value()
+	self.scale = Vector2(.1, .1)
 
 func _ready():
 	set_order(order)
-	#self.scale = Vector2(Main.scale_x, Main.scale_y)
 #	Grow the tile when entering the board
-	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.scale_x, Main.scale_y), .6, tween.TRANS_CIRC, tween.EASE_OUT)
+	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.scale_x, Main.scale_y), .6, tween.TRANS_CUBIC, tween.EASE_OUT)
 	tween.start()
 
 func set_order(number):

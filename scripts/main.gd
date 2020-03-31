@@ -1,7 +1,7 @@
 extends Node2D
 
-var width = 4
-var height = 4
+var width = 2
+var height = 2
 var scale_x = 4.0 / width
 var scale_y = 4.0 / height
 var start_x = 576 / (width + 2)
@@ -11,11 +11,11 @@ var offset_y = 4.0 / height * 128
 
 var move_timer
 var moves
-var move_enabled = true
-var starting_tiles = 3
+var move_enabled = false
+var starting_tiles = 1
 var order = 0
-var base = 1
-var total = 0.30
+var base = 0
+var total = 0.0
 var base_income = 0.0
 var income = 0.0
 var add_moves_amount = 1
@@ -24,15 +24,20 @@ var full_grid_multiplier = 1
 enum increment_type {ADD, DOUBLE, MULTIPLY, EXPONENTIAL}
 var increment = increment_type.ADD
 
+onready var upgradesbutton = get_node("/root/main/UpgradesButton")
+onready var achievementsbutton = get_node("/root/main/AchievementsButton")
+onready var moveinfo = get_node("/root/main/Info/MoveInfo")
 var profit_indicator = preload("res://scenes/profit_indicator.tscn")
 var show_profit
 
 func _ready():
+	
 	if Main.width == 2:
 		start_x += 16
 		start_y += 16
-		get_node("/root/main/Info/MoveInfo").visible = false
-		get_node("/root/main/UpgradesButton").visible = false
+		Main.moveinfo.visible = false
+		Main.upgradesbutton.visible = false
+#		Main.achievementsbutton.visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parentheses").visible = false
@@ -78,12 +83,14 @@ func set_total():
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(displaytotal)
 	
 	if Main.total >= 0.3:
-		get_node("/root/main/UpgradesButton").visible = true
+		upgradesbutton.visible = true
 
 func set_income(amount):
 	var displayincome
 	Main.income = Main.base_income + amount
-	if Main.income < 10:	
+	if Main.income < 1:	
+		displayincome = str("%.2f" % (Main.income))
+	elif Main.income < 10:	
 		displayincome = str("%.1f" % (Main.income))
 	else:
 		displayincome = str(int(Main.income))

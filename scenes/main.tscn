@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scripts/main.gd" type="Script" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
@@ -14,7 +14,9 @@
 [ext_resource path="res://assets/upgrades.png" type="Texture" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
 [ext_resource path="res://scenes/achievement.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/profit_indicator.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scripts/achievements.gd" type="Script" id=15]
+[ext_resource path="res://assets/thumbsup.svg" type="Texture" id=16]
+[ext_resource path="res://assets/glow.shader" type="Shader" id=17]
 
 [sub_resource type="GradientTexture" id=1]
 gradient = ExtResource( 2 )
@@ -99,7 +101,7 @@ use_filter = true
 font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.188235, 0.988235, 0.529412, 0.6 )
+bg_color = Color( 0.109804, 0.392157, 0.192157, 0.219608 )
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6
@@ -123,6 +125,11 @@ corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 corner_detail = 12
 shadow_color = Color( 0.992157, 0.996078, 0.337255, 0.52549 )
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = ExtResource( 17 )
+shader_param/radius = 5.0
+shader_param/amount = 1.0
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.984314, 0.952941, 0.839216, 1 )
@@ -415,6 +422,7 @@ position = Vector2( -16, -16 )
 script = ExtResource( 7 )
 
 [node name="RecycleButton" type="TextureButton" parent="Grid Backround"]
+visible = false
 margin_left = 450.726
 margin_top = 550.633
 margin_right = 540.726
@@ -440,22 +448,43 @@ __meta__ = {
 }
 
 [node name="UpgradesButton" type="TextureButton" parent="."]
-margin_left = 415.78
-margin_top = 738.776
-margin_right = 1252.78
-margin_bottom = 1396.78
+margin_left = 324.618
+margin_top = 749.463
+margin_right = 1161.62
+margin_bottom = 1407.47
 rect_scale = Vector2( 0.18, 0.15 )
 texture_normal = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AchievementsButton" type="TextureButton" parent="."]
+material = SubResource( 14 )
+margin_left = 471.906
+margin_top = 739.398
+margin_right = 751.906
+margin_bottom = 1039.4
+rect_scale = Vector2( 0.35, 0.35 )
+texture_normal = ExtResource( 16 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="AchievementsButton"]
+show_behind_parent = true
+texture = ExtResource( 16 )
+centered = false
+__meta__ = {
+"_edit_group_": true
+}
+
 [node name="Upgrades" type="Panel" parent="."]
 visible = false
 margin_left = 16.0
-margin_top = 16.0
+margin_top = 850.0
 margin_right = 560.0
-margin_bottom = 827.0
+margin_bottom = 1661.0
 custom_styles/panel = SubResource( 12 )
 script = ExtResource( 13 )
 __meta__ = {
@@ -512,13 +541,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CloseButton" type="Button" parent="Upgrades"]
+margin_left = 500.0
+margin_top = -6.0
+margin_right = 550.0
+margin_bottom = 44.0
+theme = ExtResource( 11 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Upgrades"]
+
 [node name="Achievements" type="Panel" parent="."]
 visible = false
 margin_left = 16.0
-margin_top = 16.0
+margin_top = 850.0
 margin_right = 560.0
-margin_bottom = 827.0
+margin_bottom = 1661.0
 custom_styles/panel = SubResource( 12 )
+script = ExtResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -572,11 +615,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Node2D" parent="." instance=ExtResource( 15 )]
-position = Vector2( 226.348, 380.24 )
+[node name="CloseButton" type="Button" parent="Achievements"]
+margin_left = 500.0
+margin_top = -6.0
+margin_right = 550.0
+margin_bottom = 44.0
+theme = ExtResource( 11 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Achievements"]
 [connection signal="timeout" from="Info/MoveInfo/MoveTimer" to="." method="_on_MoveTimer_timeout"]
 [connection signal="pressed" from="Info/MoveInfo/AddMovesButton" to="." method="_on_AddMovesButton_pressed"]
 [connection signal="pressed" from="Info/MoveInfo/AddMovesButton/Amount" to="." method="_on_MoveAmount_pressed"]
 [connection signal="timeout" from="Info/CoinsInfo/IncomeTimer" to="." method="_on_IncomeTimer_timeout"]
 [connection signal="pressed" from="Grid Backround/RecycleButton" to="Grid Backround/Tiles" method="_on_RecycleButton_pressed"]
 [connection signal="pressed" from="UpgradesButton" to="Upgrades" method="_on_UpgradesButton_pressed"]
+[connection signal="pressed" from="AchievementsButton" to="Achievements" method="_on_AchievementsButton_pressed"]
+[connection signal="pressed" from="Upgrades/CloseButton" to="Upgrades" method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="Upgrades/CloseButton" to="Achievements" method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="Achievements/CloseButton" to="Achievements" method="_on_CloseButton_pressed"]
