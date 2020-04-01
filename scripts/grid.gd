@@ -318,7 +318,7 @@ func _on_RecycleButton_pressed():
 				else:
 					Main.change_total(tile.value, tile.position)
 				tile.z_index = 999
-				tile.collect(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
+				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				tile = null
 	
 	initialize_grid()

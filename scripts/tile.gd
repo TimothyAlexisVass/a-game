@@ -29,12 +29,12 @@ func set_value():
 		elif Main.increment == Main.increment_type.DOUBLE:
 			value = Main.base * pow(2, order)
 		elif Main.increment == Main.increment_type.MULTIPLY:
-			value = Main.base * pow(Main.base, order)
-		else:
 			value = pow(Main.base, order + 1)
+		else:
+			value = pow(Main.base, order * Main.base)
 	#	Set font size
 		var number_length = 1 + floor(log(value)/log(10))
-		var string = "res://assets/tile_fonts/length" + str(number_length) + ".tres"
+		var string = "res://assets/fonts/length" + str(number_length) + ".tres"
 		var font = load(string)
 	
 		get_node("Value").add_font_override("font", font)
@@ -123,7 +123,7 @@ func move(new_position):
 	tween.interpolate_property(self, "position", position, new_position, .5, tween.TRANS_ELASTIC, tween.EASE_OUT)
 	tween.start()
 
-func collect(new_position):
+func collect_tile(new_position):
 	tween.interpolate_property(self, "position", position, new_position, .5, tween.TRANS_ELASTIC, tween.EASE_OUT)
 	tween.start()
 	tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, tween.TRANS_SINE, tween.EASE_OUT)

@@ -1,0 +1,25 @@
+Add income multiplier and speed increase:
+    | Add var income_multiplier to main.gd
+    | Add income_multiplier logic to func set_income in main.gd
+
+On click/hover Achievement => Show info
+
+Add Achievement:
+    Your first coin! => Sets income multiplier:
+        | Create image
+
+Add Upgrade:
+    Board size => 3 x 3 -> 4 x 4 -> 5 x 5 -> 6 x 6 -> 7 x 7 -> 8x8
+    Tile Increment => Addition -> Primes -> Fibonnaci -> Double -> Multiply
+    Base value => 1, 2, 3, 4, 5, 6, 7, 8, 9
+    Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
+    Income frequency => 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+
+Add Resources:
+    Each tile is a resource
+
+Add Buildings:
+    Use tiles as resources for buildings
+
+Adding Content:
+    At where someone has made the most progress

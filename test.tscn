@@ -1,0 +1,115 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/main_theme.theme" type="Theme" id=1]
+[ext_resource path="res://scripts/achievements.gd" type="Script" id=2]
+[ext_resource path="res://scripts/ScrollContainer.gd" type="Script" id=3]
+[ext_resource path="res://scenes/achievement.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.984314, 0.952941, 0.839216, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color( 0.0862745, 0.0980392, 0.462745, 0.262745 )
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="Achievements2" type="Panel"]
+margin_left = 16.0
+margin_top = 850.0
+margin_right = 560.0
+margin_bottom = 1661.0
+custom_styles/panel = SubResource( 13 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="CheckAchievements" type="Timer" parent="."]
+autostart = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 6.10352e-05
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+scroll_horizontal_enabled = false
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+margin_right = 172.0
+margin_bottom = 197.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 32
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer/MarginContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 140.0
+margin_bottom = 165.0
+custom_constants/vseparation = 16
+custom_constants/hseparation = 16
+columns = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/GridContainer" instance=ExtResource( 4 )]
+margin_right = 108.0
+margin_bottom = 133.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2.0
+margin_top = -2.0
+margin_right = 1.0
+margin_bottom = 1.00006
+mouse_filter = 2
+custom_styles/panel = SubResource( 14 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" type="Button" parent="."]
+margin_left = 500.0
+margin_top = -6.0
+margin_right = 550.0
+margin_bottom = 44.0
+theme = ExtResource( 1 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="timeout" from="CheckAchievements" to="." method="_on_CheckAchievements_timeout"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
