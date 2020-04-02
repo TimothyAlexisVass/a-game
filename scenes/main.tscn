@@ -109,7 +109,7 @@ corner_radius_bottom_left = 100
 
 [sub_resource type="ImageTexture" id=15]
 
-[sub_resource type="ShaderMaterial" id=19]
+[sub_resource type="ShaderMaterial" id=16]
 shader = ExtResource( 17 )
 shader_param/radius = 5.0
 shader_param/amount = 1.0
@@ -397,7 +397,7 @@ __meta__ = {
 }
 
 [node name="Glow" type="Sprite" parent="AchievementsButton"]
-material = SubResource( 19 )
+material = SubResource( 16 )
 texture = ExtResource( 16 )
 centered = false
 __meta__ = {

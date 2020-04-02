@@ -1,11 +1,12 @@
 extends Panel
 
 var achievement_template = preload("res://scenes/achievement.tscn")
-var achievement_objects_list = []
+var achievement_objects_list = {}
 var achievement_object
 
 var progress_events_function = funcref(self, "progress_events")
 var coin_achievements_function = funcref(self, "coin_achievements")
+var energy_achievements_function = funcref(self, "energy_achievements")
 
 var open = [
 	{
@@ -14,6 +15,7 @@ var open = [
 		"function": progress_events_function
 	},
 	{
+		"name": "coins",
 		"level": 0,
 		"title": ["One whole coin!", "One thousand coins.", "One million coins.", "1234567890...", "One hundred eleven billion one hundred eleven million one hundred and eleven", "Trillion!"],
 		"requirement": [1, pow(10,3), pow(10,6), 1234567890, 11111111111, pow(10,12)],
@@ -36,7 +38,7 @@ func _ready():
 			achievement_object.get_child(0).get_child(0).texture_normal = achievement["image"]
 			achievement_object.get_child(1).text = str(achievement.level) + "/" + str(achievement["title"].size())
 			get_node("ScrollContainer/MarginContainer/GridContainer/").add_child(achievement_object)
-			achievement_objects_list.append(achievement_object)
+			achievement_objects_list[achievement.name] = achievement_object
 
 func _on_AchievementsButton_pressed():
 	self.visible = true
@@ -59,6 +61,9 @@ func _on_CheckAchievements_timeout():
 	for achievement in open:
 		if achievement["function"].call_func(achievement):
 			achievement["level"] += 1
+			if achievement.title[0] != null:
+				achievement_object = achievement_objects_list[achievement.name]
+				achievement_object.get_child(1).text = str(achievement.level) + "/" + str(achievement["title"].size())
 		if achievement["level"] == achievement["title"].size():
 			completed.append(achievement)
 			open.erase(achievement)
