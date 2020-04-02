@@ -16,7 +16,7 @@ func _on_UpgradesButton_pressed():
 func _on_CloseButton_pressed():
 	Main.upgrades_button.visible = true
 	Main.achievements_button.visible = true
-	tween.interpolate_property(self, "rect_position", Vector2(16, 16), Vector2(16, -850), .6, tween.TRANS_EXPO, tween.EASE_OUT)
+	tween.interpolate_property(self, "rect_position", Vector2(16, 16), Vector2(16, 850), .6, tween.TRANS_EXPO, tween.EASE_OUT)
 	tween.start()
 	yield(get_tree().create_timer(.6), "timeout")
 	Main.move_enabled = true

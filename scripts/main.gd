@@ -23,6 +23,7 @@ var base = 0
 var total = 0.0
 var base_income = 0.0
 var income = 0.0
+var income_multiplier = 1
 
 var full_grid_multiplier = 1
 enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
@@ -96,7 +97,7 @@ func sget_total():
 
 func set_income(amount):
 	var displayincome
-	Main.income = Main.base_income + amount
+	Main.income = (Main.base_income + amount) * Main.income_multiplier
 	displayincome = Main.income / Main.income_timer
 	
 	if Main.income < 1:	

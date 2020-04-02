@@ -4,11 +4,12 @@ Add income multiplier and speed increase:
 
 On click/hover Achievement => Show info
 
-Add energy
+Add energy => Used for Buildings
+
+In Achievements.gd:
+    Refresh GUI When achievements are completed.
 
 Add Achievement:
-    Your first coin! => income_multiplier += 1
-       Levels => pow(10, n+2*n)
     Filling tiles => full_board_reward = > energy
        Levels => (width>3, height>4, base>1) 10, 50, 100, 175, 250, 500, 1000, 2500, 5000, 10000
 
