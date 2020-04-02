@@ -20,7 +20,7 @@ var starting_tiles = 1
 var order = 0
 var base = 0
 
-var total = 30.0
+var total = 0.0
 var base_income = 0.0
 var income = 0.0
 
@@ -36,7 +36,6 @@ var profit_indicator = preload("res://scenes/profit_indicator.tscn")
 var show_profit
 
 func _ready():
-	
 	if Main.width == 2:
 		start_x += 16
 		start_y += 16
@@ -46,9 +45,12 @@ func _ready():
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parentheses").visible = false
+	
 	Main.full_grid_multiplier = Main.base * 3 + 1
 	Main.moves = 100
 	set_moves()
+	set_total()
+	
 	Main.move_timer = 10
 	Main.income_timer = 10
 	get_node("/root/main/Info/MoveInfo/MoveTimer").set_wait_time(Main.move_timer)
@@ -88,6 +90,9 @@ func set_total():
 	else:
 		displaytotal = str(int(Main.total))
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(displaytotal)
+
+func sget_total():
+	return Main.total
 
 func set_income(amount):
 	var displayincome
@@ -156,7 +161,6 @@ func _on_MoveAmount_pressed():
 		get_node("/root/main/Info/MoveInfo/AddMovesButton/Amount").text = "AUTO"
 	else:
 		get_node("/root/main/Info/MoveInfo/AddMovesButton/Amount").text = "X" + str(Main.add_moves_amount)
-
 
 func _on_MainTimer_timeout():
 	# Refresh everything
