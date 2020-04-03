@@ -1,12 +1,10 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=33 format=2]
 
-[ext_resource path="res://scripts/main.gd" type="Script" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
 [ext_resource path="res://assets/junebug.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/coin.svg" type="Texture" id=4]
 [ext_resource path="res://scripts/tile_backgrounds.gd" type="Script" id=5]
 [ext_resource path="res://scripts/grid.gd" type="Script" id=7]
-[ext_resource path="res://scenes/upgrade_box.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scripts/ScrollContainer.gd" type="Script" id=9]
 [ext_resource path="res://assets/recycle.svg" type="Texture" id=10]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
@@ -111,8 +109,8 @@ corner_radius_bottom_left = 100
 
 [sub_resource type="ShaderMaterial" id=16]
 shader = ExtResource( 17 )
-shader_param/radius = 5.0
-shader_param/amount = 1.0
+shader_param/radius = 0.0
+shader_param/amount = 0.155
 
 [sub_resource type="StyleBoxFlat" id=17]
 bg_color = Color( 0.984314, 0.952941, 0.839216, 1 )
@@ -141,9 +139,24 @@ corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
 [node name="main" type="Node2D"]
-script = ExtResource( 1 )
 
-[node name="MainTimer" type="Timer" parent="."]
+[node name="Tween" type="Tween" parent="."]
+
+[node name="MainTimer" type="Timer" parent="." groups=[
+"Timers",
+]]
+autostart = true
+
+[node name="MoveTimer" type="Timer" parent="." groups=[
+"Timers",
+]]
+wait_time = 4.0
+autostart = true
+
+[node name="IncomeTimer" type="Timer" parent="." groups=[
+"Timers",
+]]
+wait_time = 10.0
 autostart = true
 
 [node name="Gradient" type="Control" parent="."]
@@ -201,7 +214,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AddMovesButton" type="Button" parent="Info/MoveInfo"]
+[node name="AddMovesButton" type="Button" parent="Info/MoveInfo" groups=[
+"User Interface Buttons",
+]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 20 )
@@ -218,7 +233,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Amount" type="Button" parent="Info/MoveInfo/AddMovesButton"]
+[node name="MoveAmountButton" type="Button" parent="Info/MoveInfo/AddMovesButton" groups=[
+"User Interface Buttons",
+]]
 margin_left = 457.902
 margin_top = -4.28809
 margin_right = 547.902
@@ -229,10 +246,6 @@ text = "X1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="MoveTimer" type="Timer" parent="Info/MoveInfo"]
-wait_time = 4.0
-autostart = true
 
 [node name="CoinsInfo" type="Panel" parent="Info"]
 margin_top = 110.0
@@ -315,7 +328,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Parentheses" type="Label" parent="Info/CoinsInfo/Margin/CoinsContainer"]
+[node name="Parenthesis" type="Label" parent="Info/CoinsInfo/Margin/CoinsContainer"]
 margin_left = 396.0
 margin_right = 411.0
 margin_bottom = 35.0
@@ -328,11 +341,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IncomeTimer" type="Timer" parent="Info/CoinsInfo"]
-wait_time = 10.0
-autostart = true
-
-[node name="Grid Backround" type="Panel" parent="."]
+[node name="BoardBackground" type="Panel" parent="."]
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 560.0
@@ -342,15 +351,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tile Backgrounds" type="Node2D" parent="Grid Backround"]
+[node name="TileBackgrounds" type="Node2D" parent="BoardBackground"]
 position = Vector2( -17, -16 )
 script = ExtResource( 5 )
 
-[node name="Tiles" type="Node2D" parent="Grid Backround"]
+[node name="TileBoard" type="Node2D" parent="BoardBackground"]
 position = Vector2( -16, -16 )
 script = ExtResource( 7 )
 
-[node name="RecycleButton" type="TextureButton" parent="Grid Backround"]
+[node name="RecycleButton" type="TextureButton" parent="BoardBackground" groups=[
+"User Interface Buttons",
+]]
 visible = false
 material = SubResource( 13 )
 margin_left = 455.764
@@ -363,7 +374,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="Grid Backround/RecycleButton"]
+[node name="Panel" type="Panel" parent="BoardBackground/RecycleButton"]
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -371,20 +382,23 @@ mouse_filter = 1
 mouse_default_cursor_shape = 2
 custom_styles/panel = SubResource( 14 )
 
-[node name="UpgradesButton" type="TextureButton" parent="."]
+[node name="UpgradesButton" type="TextureButton" parent="." groups=[
+"User Interface Buttons",
+]]
 margin_left = 324.618
 margin_top = 749.463
 margin_right = 1161.62
 margin_bottom = 1407.47
 rect_scale = Vector2( 0.18, 0.15 )
-disabled = true
 texture_normal = ExtResource( 12 )
 texture_disabled = SubResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AchievementsButton" type="TextureButton" parent="."]
+[node name="AchievementsButton" type="TextureButton" parent="." groups=[
+"User Interface Buttons",
+]]
 margin_left = 471.906
 margin_top = 739.398
 margin_right = 751.906
@@ -407,16 +421,16 @@ __meta__ = {
 [node name="Upgrades" type="Panel" parent="."]
 visible = false
 margin_left = 16.0
-margin_top = 850.0
+margin_top = 870.0
 margin_right = 560.0
-margin_bottom = 1661.0
+margin_bottom = 1681.0
 custom_styles/panel = SubResource( 17 )
 script = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="Upgrades"]
+[node name="CheckUpgrades" type="Timer" parent="Upgrades"]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Upgrades"]
 margin_right = 540.0
@@ -431,8 +445,8 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="Upgrades/ScrollContainer"]
-margin_right = 522.0
-margin_bottom = 248.0
+margin_right = 26.0
+margin_bottom = 32.0
 custom_constants/margin_right = 0
 custom_constants/margin_top = 16
 custom_constants/margin_left = 26
@@ -444,16 +458,9 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="Upgrades/ScrollContainer/MarginContainer"]
 margin_left = 26.0
 margin_top = 16.0
-margin_right = 522.0
-margin_bottom = 232.0
+margin_right = 26.0
+margin_bottom = 16.0
 custom_constants/separation = 16
-
-[node name="UpgradeBox" parent="Upgrades/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource( 8 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
-margin_right = 496.0
-mouse_filter = 1
 
 [node name="Border" type="Panel" parent="Upgrades"]
 anchor_right = 1.0
@@ -468,11 +475,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CloseButton" type="Button" parent="Upgrades"]
+[node name="CloseButton" type="Button" parent="Upgrades" groups=[
+"User Interface Buttons",
+]]
 margin_left = 500.0
-margin_top = -6.0
+margin_top = -13.0
 margin_right = 550.0
-margin_bottom = 44.0
+margin_bottom = 37.0
 theme = ExtResource( 11 )
 text = "X"
 __meta__ = {
@@ -481,16 +490,14 @@ __meta__ = {
 
 [node name="Achievements" type="Panel" parent="."]
 margin_left = 16.0
-margin_top = 850.0
+margin_top = 870.0
 margin_right = 560.0
-margin_bottom = 1661.0
+margin_bottom = 1681.0
 custom_styles/panel = SubResource( 17 )
 script = ExtResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Tween" type="Tween" parent="Achievements"]
 
 [node name="CheckAchievements" type="Timer" parent="Achievements"]
 autostart = true
@@ -542,25 +549,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CloseButton" type="Button" parent="Achievements"]
+[node name="CloseButton" type="Button" parent="Achievements" groups=[
+"User Interface Buttons",
+]]
 margin_left = 500.0
-margin_top = -6.0
+margin_top = -13.0
 margin_right = 550.0
-margin_bottom = 44.0
+margin_bottom = 37.0
 theme = ExtResource( 11 )
 text = "X"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="timeout" from="MainTimer" to="." method="_on_MainTimer_timeout"]
 [connection signal="pressed" from="Info/MoveInfo/AddMovesButton" to="." method="_on_AddMovesButton_pressed"]
-[connection signal="pressed" from="Info/MoveInfo/AddMovesButton/Amount" to="." method="_on_MoveAmount_pressed"]
-[connection signal="timeout" from="Info/MoveInfo/MoveTimer" to="." method="_on_MoveTimer_timeout"]
-[connection signal="timeout" from="Info/CoinsInfo/IncomeTimer" to="." method="_on_IncomeTimer_timeout"]
-[connection signal="pressed" from="Grid Backround/RecycleButton" to="Grid Backround/Tiles" method="_on_RecycleButton_pressed"]
-[connection signal="pressed" from="UpgradesButton" to="Upgrades" method="_on_UpgradesButton_pressed"]
-[connection signal="pressed" from="AchievementsButton" to="Achievements" method="_on_AchievementsButton_pressed"]
-[connection signal="pressed" from="Upgrades/CloseButton" to="Upgrades" method="_on_CloseButton_pressed"]
-[connection signal="pressed" from="Upgrades/CloseButton" to="Achievements" method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="Info/MoveInfo/AddMovesButton/MoveAmountButton" to="." method="_on_MoveAmount_pressed"]
+[connection signal="timeout" from="Upgrades/CheckUpgrades" to="Upgrades" method="_on_CheckUpgrades_timeout"]
 [connection signal="timeout" from="Achievements/CheckAchievements" to="Achievements" method="_on_CheckAchievements_timeout"]
-[connection signal="pressed" from="Achievements/CloseButton" to="Achievements" method="_on_CloseButton_pressed"]

@@ -11,7 +11,7 @@ func _enter_tree():
 func _ready():
 	set_order(order)
 #	Grow the tile when entering the board
-	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.scale_x, Main.scale_y), .6, tween.TRANS_CUBIC, tween.EASE_OUT)
+	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.tile_scale, Main.tile_scale), .6, tween.TRANS_CUBIC, tween.EASE_OUT)
 	tween.start()
 
 func set_order(number):
@@ -137,7 +137,7 @@ func clear_tile():
 	#Fade out and grow tile when cleared
 	tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), .4, tween.TRANS_SINE, tween.EASE_OUT)
 	tween.start()
-	tween.interpolate_property(self, "scale", Vector2(1, 1), Vector2(1.4 * Main.scale_x, 1.4 * Main.scale_y), 1, tween.TRANS_CIRC, tween.EASE_OUT)
+	tween.interpolate_property(self, "scale", Vector2(1, 1), Vector2(1.4 * Main.tile_scale, 1.4 * Main.tile_scale), 1, tween.TRANS_CIRC, tween.EASE_OUT)
 	tween.start()
 	yield(get_tree().create_timer(.7), "timeout")
 	self.queue_free()

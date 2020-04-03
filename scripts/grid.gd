@@ -9,29 +9,29 @@ var first_press = true
 var tile
 var tile2
 var combine_value
-var full_grid
+var full_board
 
 # Tile Variables
 var tile_template = preload("res://scenes/tile.tscn")
-var tile_grid
+var all_tiles
 
 func _ready():
 	randomize()
 	yield(get_tree().create_timer(1), "timeout")
 	Main.move_enabled = true
-	initialize_grid()
+	initialize_board()
 
 func _input(event):
 	if Main.move_enabled == true:
 		#Keyboard input
 		if(event.is_action_pressed("ui_up")):
-			update_grid(directions.UP)
+			update_board(directions.UP)
 		if(event.is_action_pressed("ui_down")):
-			update_grid(directions.DOWN)
+			update_board(directions.DOWN)
 		if(event.is_action_pressed("ui_left")):
-			update_grid(directions.LEFT)
+			update_board(directions.LEFT)
 		if(event.is_action_pressed("ui_right")):
-			update_grid(directions.RIGHT)
+			update_board(directions.RIGHT)
 		
 		#Touch input
 		if(event.is_action_pressed("ui_touch")):
@@ -42,14 +42,14 @@ func _input(event):
 	
 			if abs(difference.x) <= abs(difference.y):
 				if difference.y <= -25:
-					update_grid(directions.UP)
+					update_board(directions.UP)
 				elif difference.y >= 25:
-					update_grid(directions.DOWN)
+					update_board(directions.DOWN)
 			elif abs(difference.x) > abs(difference.y):
 				if difference.x <= -25:
-					update_grid(directions.LEFT)
+					update_board(directions.LEFT)
 				elif difference.x >= 25:
-					update_grid(directions.RIGHT)
+					update_board(directions.RIGHT)
 			
 			# Print angle
 			# var angle = rad2deg(atan2(difference.x, difference.y))
@@ -59,7 +59,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	add_tile(ctile.order + 1, column, row)
 	
 	ctile.queue_free()
-	ctile2.move(Main.grid_to_pixel(Vector2(column, row)))
+	ctile2.move(Main.board_to_pixel(Vector2(column, row)))
 	ctile2.clear_tile()
 	
 	combine_value += 2 * ctile.value / 100.0
@@ -67,13 +67,13 @@ func combine_tiles(ctile, ctile2, column, row):
 	movement = true
 	
 func move_tile(new_column, new_row, column, row, mtile):
-	mtile.move(Main.grid_to_pixel(Vector2(new_column, new_row)))
-	tile_grid[new_column][new_row] = mtile
-	tile_grid[column][row] = null
+	mtile.move(Main.board_to_pixel(Vector2(new_column, new_row)))
+	all_tiles[new_column][new_row] = mtile
+	all_tiles[column][row] = null
 	movement = true
 
-func update_grid(direction):
-	if Main.moves > 0 or Main.auto_add_moves and Main.coins >= 10:
+func update_board(direction):
+	if Main.moves_left > 0 or Main.auto_add_moves and Main.coins >= 10:
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()
@@ -90,180 +90,180 @@ func update_grid(direction):
 			if movement:
 				Main.make_move()
 				add_tile_in_empty_position()
-				calculate_grid_income()
+				calculate_board_income()
 				movement = false
-				get_node("../RecycleButton").visible = Main.moves == 0
+				get_node("../RecycleButton").visible = Main.moves_left == 0
 				if !open_position_exists() and !combination_possible():
 					get_node("../RecycleButton").visible = true
-					full_grid = true
+					full_board = true
 
-func calculate_grid_income():
-	Main.grid_income = 0
-	for column in range(Main.width):
-		for row in range(Main.height):
-			if tile_grid[column][row] != null and Main.base > 0:
-				Main.grid_income += tile_grid[column][row].value / 100.0
+func calculate_board_income():
+	Main.board_income = 0
+	for column in range(Main.board_size):
+		for row in range(Main.board_size):
+			if all_tiles[column][row] != null and Main.base > 0:
+				Main.board_income += all_tiles[column][row].value / 100.0
 	Main.set_income()
 
 func combine_up():
-	for column in Main.width:
+	for column in Main.board_size:
 		#First try to combine tiles
 		#Each row from top before the last one
-		for row in range(0, Main. height - 1):
-			tile = tile_grid[column][row]
+		for row in range(0, Main. board_size - 1):
+			tile = all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile below
-				for check_row in range(row + 1, Main.height):
-					tile2 = tile_grid[column][check_row]
+				for check_row in range(row + 1, Main.board_size):
+					tile2 = all_tiles[column][check_row]
 					if tile2 != null:
 						#Combine if they have the same order
 						if tile.order == tile2.order:
-							tile_grid[column][check_row] = null
+							all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_up()
 						break
 
 func combine_down():
-	for column in Main.width:
+	for column in Main.board_size:
 		#First try to combine tiles
 		#Each row from bottom before the last one
-		for row in range(Main.height-1, 0, -1):
-			tile = tile_grid[column][row]
+		for row in range(Main.board_size-1, 0, -1):
+			tile = all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile above
 				for check_row in range(row-1, -1, -1):
-					tile2 = tile_grid[column][check_row]
+					tile2 = all_tiles[column][check_row]
 					if tile2 != null:
 						#Combine if they have the same order
 						if tile.order == tile2.order:
-							tile_grid[column][check_row] = null
+							all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_down()
 						break
 
 func combine_left():
-	for row in Main.height:
+	for row in Main.board_size:
 		#First try to combine tiles
 		#Each column from left before the last one
-		for column in range(Main.width - 1):
-			tile = tile_grid[column][row]
+		for column in range(Main.board_size - 1):
+			tile = all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile to the right
-				for check_column in range(column + 1, Main.width):
-					tile2 = tile_grid[check_column][row]
+				for check_column in range(column + 1, Main.board_size):
+					tile2 = all_tiles[check_column][row]
 					if tile2 != null:
 						#Combine if they have the same order
 						if tile.order == tile2.order:
-							tile_grid[check_column][row] = null
+							all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_left()
 						break
 
 func combine_right():
-	for row in Main.height:
+	for row in Main.board_size:
 		#First try to combine tiles
 		#Each column from right before the last one
-		for column in range(Main.width-1, 0, -1):
-			tile = tile_grid[column][row]
+		for column in range(Main.board_size-1, 0, -1):
+			tile = all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile to the left
 				for check_column in range(column-1, -1, -1):
-					tile2 = tile_grid[check_column][row]
+					tile2 = all_tiles[check_column][row]
 					if tile2 != null:
 						#Combine if they have the same order
 						if tile.order == tile2.order:
-							tile_grid[check_column][row] = null
+							all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_right()
 						break
 func move_left():
-	for row in Main.height:
+	for row in Main.board_size:
 		#Each column from second left to right
-		for column in range(1, Main.width):
-			tile = tile_grid[column][row]
+		for column in range(1, Main.board_size):
+			tile = all_tiles[column][row]
 			if tile != null:
-				if tile_grid[column-1][row] != null:
+				if all_tiles[column-1][row] != null:
 					continue
 				#Check each position to the left of this tile
 				for check_column in range(column-1, -1, -1):
-					if tile_grid[check_column][row] == null and check_column == 0:
+					if all_tiles[check_column][row] == null and check_column == 0:
 						move_tile(check_column, row, column, row, tile)
-					elif tile_grid[check_column][row] != null:
+					elif all_tiles[check_column][row] != null:
 						move_tile(check_column + 1, row, column, row, tile)
 						break
 
 func move_right():
-	for row in Main.height:
+	for row in Main.board_size:
 		#Each column from second right to left
-		for column in range(Main.width - 2, -1, -1):
-			tile = tile_grid[column][row]
+		for column in range(Main.board_size - 2, -1, -1):
+			tile = all_tiles[column][row]
 			if tile != null:
-				if tile_grid[column + 1][row] != null:
+				if all_tiles[column + 1][row] != null:
 					continue
 				#Check each position to the right of this tile
-				for check_column in range(column + 1, Main.width):
-					if tile_grid[check_column][row] == null and check_column == Main.width-1:
+				for check_column in range(column + 1, Main.board_size):
+					if all_tiles[check_column][row] == null and check_column == Main.board_size-1:
 						move_tile(check_column, row, column, row, tile)
-					elif tile_grid[check_column][row] != null:
+					elif all_tiles[check_column][row] != null:
 						move_tile(check_column - 1, row, column, row, tile)
 						break
 
 func move_up():
-	for column in range(Main.width):
+	for column in range(Main.board_size):
 		#Each column from second top to bottom
-		for row in range(1, Main.height):
-			tile = tile_grid[column][row]
+		for row in range(1, Main.board_size):
+			tile = all_tiles[column][row]
 			if tile != null:
-				if tile_grid[column][row-1] != null:
+				if all_tiles[column][row-1] != null:
 					continue
 				#Check each position above this tile
 				for check_row in range(row-1, -1, -1):
-					if tile_grid[column][check_row] == null and check_row == 0:
+					if all_tiles[column][check_row] == null and check_row == 0:
 						move_tile(column, check_row, column, row, tile)
-					elif tile_grid[column][check_row] != null:
+					elif all_tiles[column][check_row] != null:
 						move_tile(column, check_row + 1, column, row, tile)
 						break
 
 func move_down():
-	for column in range(Main.width):
+	for column in range(Main.board_size):
 		#Each column from second bottom to top
-		for row in range(Main.height - 2, -1, -1):
-			tile = tile_grid[column][row]
+		for row in range(Main.board_size - 2, -1, -1):
+			tile = all_tiles[column][row]
 			if tile != null:
-				if tile_grid[column][row + 1] != null:
+				if all_tiles[column][row + 1] != null:
 					continue
 				#Check each position below this tile
-				for check_row in range(row + 1, Main.height):
-					if tile_grid[column][check_row] == null and check_row == Main.height-1:
+				for check_row in range(row + 1, Main.board_size):
+					if all_tiles[column][check_row] == null and check_row == Main.board_size-1:
 						move_tile(column, check_row, column, row, tile)
-					elif tile_grid[column][check_row] != null:
+					elif all_tiles[column][check_row] != null:
 						move_tile(column, check_row - 1, column, row, tile)
 						break
 
 func open_position_exists():
-	for column in Main.width:
-		for tile in tile_grid[column]:
+	for column in Main.board_size:
+		for tile in all_tiles[column]:
 			if tile == null:
 				return true
 	return false
 
 func combination_possible():
 	# Check the four directions to see if the order matches
-	for column in Main.width:
-		for row in Main.height:
-			if tile_grid[column][row] != null:
-				var order = tile_grid[column][row].order
+	for column in Main.board_size:
+		for row in Main.board_size:
+			if all_tiles[column][row] != null:
+				var order = all_tiles[column][row].order
 				if row > 0:
-					if tile_grid[column][row - 1].order == order:
+					if all_tiles[column][row - 1].order == order:
 						return true
-				if row < Main.width - 1:
-					if tile_grid[column][row + 1].order == order:
+				if row < Main.board_size - 1:
+					if all_tiles[column][row + 1].order == order:
 						return true
 				if column > 0:
-					if tile_grid[column - 1][row].order == order:
+					if all_tiles[column - 1][row].order == order:
 						return true
-				if column < Main.width - 1:
-					if tile_grid[column + 1][row].order == order:
+				if column < Main.board_size - 1:
+					if all_tiles[column + 1][row].order == order:
 						return true
 	return false
 
@@ -271,53 +271,53 @@ func add_tile(order, column, row):
 	tile = tile_template.instance()
 	tile.order = order
 	add_child(tile)
-	tile.position = Main.grid_to_pixel(Vector2(column, row))
-	tile_grid[column][row] = tile
+	tile.position = Main.board_to_pixel(Vector2(column, row))
+	all_tiles[column][row] = tile
 
 func add_tile_in_empty_position():
 	# Make a new tile in an open position
 	# Loop until a random open position is found
 	while 1:
-		var column = floor(rand_range(0, Main.width))
-		var row = floor(rand_range(0, Main.height))
-		if(tile_grid[column][row] == null):
+		var column = floor(rand_range(0, Main.board_size))
+		var row = floor(rand_range(0, Main.board_size))
+		if(all_tiles[column][row] == null):
 			if rand_range(0, 1) < 0.9:
 				add_tile(Main.order, column, row)
 			else:
 				add_tile(Main.order + 1, column, row)
 			break
 
-func initialize_grid():
-	full_grid = false
+func initialize_board():
+	full_board = false
 	combine_value = 0.01
 	get_node("../RecycleButton").visible = false
 	
-	tile_grid = []
-	#Make tile_grid into 2D_array
-	for column in Main.width:
-		tile_grid.append([])
-		for row in Main.height:
-			tile_grid[column].append(null)
+	all_tiles = []
+	#Make all_tiles into 2D_array
+	for column in Main.board_size:
+		all_tiles.append([])
+		for row in Main.board_size:
+			all_tiles[column].append(null)
 	
 	for i in Main.starting_tiles:
 		add_tile_in_empty_position()
 		yield(get_tree().create_timer(.3), "timeout")
 	
-	calculate_grid_income()
+	calculate_board_income()
 
-func _on_RecycleButton_pressed():
+func recycle():
 	Main.base_income = Main.total_income
 	
-	for column in tile_grid:
+	for column in all_tiles:
 		for tile in column:
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
-				if full_grid:
-					Main.change_total(tile.value * Main.full_grid_multiplier, tile.position)
+				if full_board:
+					Main.change_total(tile.value * Main.full_board_multiplier, tile.position)
 				else:
 					Main.change_total(tile.value, tile.position)
 				tile.z_index = 999
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				tile = null
 	
-	initialize_grid()
+	initialize_board()
