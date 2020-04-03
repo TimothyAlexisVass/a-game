@@ -1,3 +1,5 @@
+Fix Upgrade Board size to be fully functional
+
 Add income speed increase
 
 On click/hover Achievement => Show info
@@ -6,10 +8,11 @@ Add energy => Used for Buildings
 
 Add Achievement:
     Filling tiles => full_board_reward = > energy
-       Levels => (width>3, height>4, base>1) 10, 50, 100, 175, 250, 500, 1000, 2500, 5000, 10000
+       Levels => (board_size>=4, base>1) 10, 50, 100, 175, 250, 500, 1000, 2500, 5000, 10000
+    1024 (board_size>=4, base=1)
+    1024 (board_size>=4, base=2)
 
 Add Upgrade:
-    Board size => 3 x 3 -> 4 x 4 -> 5 x 5 -> 6 x 6 -> 7 x 7 -> 8x8
     Tile Increment => Addition -> Primes -> Fibonnaci -> Double -> Multiply
     Base value => 1, 2, 3, 4, 5, 6, 7, 8, 9
     Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
