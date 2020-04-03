@@ -18,9 +18,10 @@ var auto_add_moves
 
 var starting_tiles = 1
 var order = 0
-var base = 1
+var base = 2
 
 var coins = 0.0
+var total_coins_ever = 0.0
 var base_income = 0.0
 var grid_income = 0.0
 var total_income = 0.0
@@ -67,6 +68,10 @@ func grid_to_pixel(grid_position):
 
 func change_total(amount, position):
 	Main.coins += amount
+	if amount > 0:
+		Main.total_coins_ever += amount
+	
+	print(Main.total_coins_ever)
 	
 	show_profit = profit_indicator.instance()
 	show_profit.position = position

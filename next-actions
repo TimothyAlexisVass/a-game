@@ -1,13 +1,8 @@
-Add income multiplier and speed increase:
-    | Add var income_multiplier to main.gd
-    | Add income_multiplier logic to func set_income in main.gd
+Add income speed increase
 
 On click/hover Achievement => Show info
 
 Add energy => Used for Buildings
-
-In Achievements.gd:
-    Refresh GUI When achievements are completed.
 
 Add Achievement:
     Filling tiles => full_board_reward = > energy
