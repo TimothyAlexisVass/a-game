@@ -125,8 +125,8 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="Background/MarginContainer/Panel/HBoxContainer"]
-margin_left = 28.0
-margin_right = 58.0
+margin_left = 27.0
+margin_right = 57.0
 margin_bottom = 40.0
 texture = ExtResource( 3 )
 stretch_mode = 4
@@ -134,10 +134,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Background/MarginContainer/Panel/HBoxContainer"]
-margin_left = 66.0
+[node name="PriceLabel" type="Label" parent="Background/MarginContainer/Panel/HBoxContainer"]
+margin_left = 65.0
 margin_top = 9.0
-margin_right = 110.0
+margin_right = 109.0
 margin_bottom = 30.0
 theme = ExtResource( 4 )
 text = "100"
@@ -145,7 +145,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="Background/MarginContainer/Panel"]
+[node name="UpgradeBuyButton" type="Button" parent="Background/MarginContainer/Panel"]
 margin_left = 330.0
 margin_top = 160.0
 margin_right = 480.0

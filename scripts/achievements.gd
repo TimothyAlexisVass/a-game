@@ -52,7 +52,7 @@ func _ready():
 
 func _on_CheckAchievements_timeout():
 	for achievement in open:
-		if achievement["level"] == achievement["title"].size():
+		if achievement.level == achievement["title"].size():
 			completed.append(achievement)
 			open.erase(achievement)
 		achievement["function"].call_func(achievement, check.ACHIEVED)
@@ -64,22 +64,22 @@ func _on_CheckAchievements_timeout():
 func progress_events(achievement, _result):
 	if Main.coins >= 0.3:
 		Main.achievements_button.visible = Main.coins >= 0.3
-		achievement["level"] += 1
+		achievement.level += 1
 	if Main.coins >= 1:
 		Main.upgrades_button.disabled = Main.coins < 1
-		achievement["level"] += 1
+		achievement.level += 1
 
 func coins_achievements(achievement, result):
 	if result == check.PROGRESS:
 		return 100 * Main.coins / achievement.requirement[achievement.level]
 	if Main.coins >= achievement.requirement[achievement.level]:
 		Main.income_multiplier *= achievement.reward[achievement.level]
-		achievement["level"] += 1
+		achievement.level += 1
 
 func total_coins_ever_achievements(achievement, result):
 	if result == check.PROGRESS:
 		return 100 * Main.total_coins_ever / achievement.requirement[achievement.level]
 	if Main.total_coins_ever >= achievement.requirement[achievement.level]:
 		Main.income_multiplier *= achievement.reward[achievement.level]
-		achievement["level"] += 1
+		achievement.level += 1
 

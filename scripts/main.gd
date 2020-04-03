@@ -19,7 +19,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 30.0
+var coins = 300.0
 var total_coins_ever = 30.0
 var base_income = 0.0
 var board_income = 0.0
@@ -39,10 +39,10 @@ var show_profit
 
 func _ready():
 	for button in get_tree().get_nodes_in_group("User Interface Buttons"):
-		button.connect("pressed", Main, "_UI_button_pressed", [button])
+		button.connect("pressed", Main, "_on_UI_button_pressed", [button])
 		button.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	for timer in get_tree().get_nodes_in_group("Timers"):
-		timer.connect("timeout", Main, "_Timer_timeout", [timer])
+		timer.connect("timeout", Main, "_on_Timer_timeout", [timer])
 
 	if Main.board_size == 2:
 		tile_position += 16
@@ -135,7 +135,7 @@ func set_moves():
 	move_timer_bar.modulate = indicator_color
 	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Main.moves_left)
 
-func _UI_button_pressed(button):
+func _on_UI_button_pressed(button):
 	if button.name == "AchievementsButton":
 		Main.achievements_panel.visible = true
 		Main.upgrades_button.visible = false
@@ -174,7 +174,7 @@ func _UI_button_pressed(button):
 	elif button.name == "RecycleButton":
 		get_node("/root/main/BoardBackground/TileBoard").recycle()
 
-func _Timer_timeout(timer):
+func _on_Timer_timeout(timer):
 	if timer.name == "IncomeTimer":
 		if Main.total_income > 0:
 			change_total(Main.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
