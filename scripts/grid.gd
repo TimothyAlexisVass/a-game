@@ -73,7 +73,7 @@ func move_tile(new_column, new_row, column, row, mtile):
 	movement = true
 
 func update_grid(direction):
-	if Main.moves > 0 or Main.auto_add_moves and Main.total >= 10:
+	if Main.moves > 0 or Main.auto_add_moves and Main.coins >= 10:
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()
@@ -90,20 +90,20 @@ func update_grid(direction):
 			if movement:
 				Main.make_move()
 				add_tile_in_empty_position()
-				calculate_income()
+				calculate_grid_income()
 				movement = false
 				get_node("../RecycleButton").visible = Main.moves == 0
 				if !open_position_exists() and !combination_possible():
 					get_node("../RecycleButton").visible = true
 					full_grid = true
 
-func calculate_income():
-	var income = 0
+func calculate_grid_income():
+	Main.grid_income = 0
 	for column in range(Main.width):
 		for row in range(Main.height):
 			if tile_grid[column][row] != null and Main.base > 0:
-				income += tile_grid[column][row].value / 100.0
-	Main.set_income(income)
+				Main.grid_income += tile_grid[column][row].value / 100.0
+	Main.set_income()
 
 func combine_up():
 	for column in Main.width:
@@ -303,11 +303,10 @@ func initialize_grid():
 		add_tile_in_empty_position()
 		yield(get_tree().create_timer(.3), "timeout")
 	
-	Main.set_income(Main.base_income)
-	calculate_income()
+	calculate_grid_income()
 
 func _on_RecycleButton_pressed():
-	Main.base_income = Main.income
+	Main.base_income = Main.total_income
 	
 	for column in tile_grid:
 		for tile in column:

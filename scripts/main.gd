@@ -1,7 +1,7 @@
 extends Node2D
 
-var width = 2
-var height = 2
+var width = 4
+var height = 4
 var scale_x = 4.0 / width
 var scale_y = 4.0 / height
 var start_x = 576 / (width + 2)
@@ -18,11 +18,12 @@ var auto_add_moves
 
 var starting_tiles = 1
 var order = 0
-var base = 0
+var base = 1
 
-var total = 0.0
+var coins = 0.0
 var base_income = 0.0
-var income = 0.0
+var grid_income = 0.0
+var total_income = 0.0
 var income_multiplier = 1
 
 var full_grid_multiplier = 1
@@ -65,7 +66,7 @@ func grid_to_pixel(grid_position):
 					grid_position.y * offset_y + start_y))
 
 func change_total(amount, position):
-	Main.total += amount
+	Main.coins += amount
 	
 	show_profit = profit_indicator.instance()
 	show_profit.position = position
@@ -83,30 +84,27 @@ func change_total(amount, position):
 	set_total()
 
 func set_total():
-	var displaytotal
-	if Main.income < 1:	
-		displaytotal = str("%.2f" % (Main.total))
-	elif Main.income < 10:
-		displaytotal = str("%.1f" % (Main.total))
+	var display_total
+	if Main.total_income < 1:	
+		display_total = str("%.2f" % (Main.coins))
+	elif Main.total_income < 10:
+		display_total = str("%.1f" % (Main.coins))
 	else:
-		displaytotal = str(int(Main.total))
-	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(displaytotal)
+		display_total = str(int(Main.coins))
+	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(display_total)
 
-func sget_total():
-	return Main.total
-
-func set_income(amount):
-	var displayincome
-	Main.income = (Main.base_income + amount) * Main.income_multiplier
-	displayincome = Main.income / Main.income_timer
+func set_income():
+	var display_income
+	Main.total_income = (Main.base_income + Main.grid_income) * Main.income_multiplier
+	display_income = Main.total_income / Main.income_timer
 	
-	if Main.income < 1:	
-		displayincome = str("%.2f" % (displayincome))
-	elif Main.income < 10:	
-		displayincome = str("%.1f" % (displayincome))
+	if Main.total_income < 1:	
+		display_income = str("%.2f" % (display_income))
+	elif Main.total_income < 10:	
+		display_income = str("%.1f" % (display_income))
 	else:
-		displayincome = str(int(displayincome))
-	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + displayincome + "/"
+		display_income = str(int(display_income))
+	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + display_income + "/"
 
 func make_move():
 	if auto_add_moves and Main.moves == 0:
@@ -129,15 +127,15 @@ func set_moves():
 	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Main.moves)
 
 func _on_IncomeTimer_timeout():
-	if Main.income > 0:
-		change_total(Main.income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
+	if Main.total_income > 0:
+		change_total(Main.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
 	
 func _on_MoveTimer_timeout():
 	Main.moves += 1
 	set_moves()
 	
 func _on_AddMovesButton_pressed():
-	if Main.total > 10 * Main.add_moves_amount:
+	if Main.coins > 10 * Main.add_moves_amount:
 		Main.moves += 1 * Main.add_moves_amount
 		change_total(-10 * Main.add_moves_amount, \
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))

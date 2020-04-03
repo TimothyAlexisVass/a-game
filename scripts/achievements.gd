@@ -8,6 +8,8 @@ var progress_events_function = funcref(self, "progress_events")
 var coin_achievements_function = funcref(self, "coin_achievements")
 var energy_achievements_function = funcref(self, "energy_achievements")
 
+enum check{ACHIEVED, PROGRESS}
+
 var open = [
 	{
 		"level": 0,
@@ -59,27 +61,31 @@ func _on_CloseButton_pressed():
 
 func _on_CheckAchievements_timeout():
 	for achievement in open:
-		if achievement["function"].call_func(achievement):
+		if achievement["function"].call_func(achievement, check.ACHIEVED):
 			achievement["level"] += 1
-			if achievement.title[0] != null:
-				achievement_object = achievement_objects_list[achievement.name]
-				achievement_object.get_child(1).text = str(achievement.level) + "/" + str(achievement["title"].size())
 		if achievement["level"] == achievement["title"].size():
 			completed.append(achievement)
 			open.erase(achievement)
+		if achievement.title[0] != null:
+			achievement_object = achievement_objects_list[achievement.name]
+			achievement_object.get_child(1).text = str(achievement.level) + "/" + str(achievement["title"].size())
+			achievement_object.get_child(0).value = achievement["function"].call_func(achievement, check.PROGRESS)
 
-func progress_events(achievement):
+func progress_events(achievement, _result):
 	match achievement.level:
 		0:
-			Main.achievements_button.visible = Main.total >= 0.3
-			return Main.total >= 0.3
+			Main.achievements_button.visible = Main.coins >= 0.3
+			return Main.coins >= 0.3
 		1:
-			Main.upgrades_button.disabled = Main.total < 1
-			return Main.total >= 1
+			Main.upgrades_button.disabled = Main.coins < 1
+			return Main.coins >= 1
 
-func coin_achievements(achievement):
-	if Main.total >= achievement.requirement[achievement.level]:
-		Main.income_multiplier *= achievement.reward[achievement.level]
-		return true
-	else:
-		return false
+func coin_achievements(achievement, result):
+	if result == check.ACHIEVED:
+		if Main.coins >= achievement.requirement[achievement.level]:
+			Main.income_multiplier *= achievement.reward[achievement.level]
+			return true
+		else:
+			return false
+	elif result == check.PROGRESS:
+		return 100 * Main.coins / achievement.requirement[achievement.level]
