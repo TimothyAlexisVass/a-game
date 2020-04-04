@@ -1,10 +1,12 @@
 Fix Upgrade Board size to be fully functional
 
-Add income speed increase
-
 On click/hover Achievement => Show info
 
 Add energy => Used for Buildings
+
+Add Saving
+
+Add chance to gain premium resource on combine
 
 Add Achievement:
     Filling tiles => full_board_reward = > energy
@@ -20,6 +22,8 @@ Add Upgrade:
 
 Add Buildings:
     Tiles as resources for buildings
+
+Add close button to board
 
 Adding Content:
     At where someone has made the most progress

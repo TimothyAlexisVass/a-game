@@ -1,7 +1,7 @@
 extends Node2D
 
 enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
-var increment = increment_type.ADD
+var increment = increment_type.DOUBLE
 
 var board_size = 2
 var tile_scale = 4.0 / board_size
@@ -19,8 +19,8 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 300.0
-var total_coins_ever = 30.0
+var coins = 3000.0
+var total_coins_ever = 3000.0
 var base_income = 0.0
 var board_income = 0.0
 var total_income = 0.0
@@ -75,8 +75,6 @@ func change_total(amount, position):
 	if amount > 0:
 		Main.total_coins_ever += amount
 	
-	print(Main.total_coins_ever)
-	
 	show_profit = profit_indicator.instance()
 	show_profit.position = position
 	if amount < 1 and amount > -1:	
@@ -84,7 +82,6 @@ func change_total(amount, position):
 	elif amount < 10 and amount > -10:
 		amount = str("%.1f" % (amount))
 	else:
-		print(amount)
 		amount = str(int(amount))
 	
 	show_profit.value = amount
@@ -161,9 +158,9 @@ func _on_UI_button_pressed(button):
 	elif button.name == "MoveAmountButton":
 		Main.auto_add_moves = !Main.auto_add_moves
 		if Main.auto_add_moves == true:
-			get_node("/root/main/Info/MoveInfo/AddMovesButton/Amount").text = "AUTO"
+			get_node("/root/main/Info/MoveInfo/AddMovesButton/MoveAmountButton").text = "AUTO"
 		else:
-			get_node("/root/main/Info/MoveInfo/AddMovesButton/Amount").text = "X" + str(Main.add_moves_amount)
+			get_node("/root/main/Info/MoveInfo/AddMovesButton/MoveAmountButton").text = "X" + str(Main.add_moves_amount)
 	elif button.name == "AddMovesButton":
 		if Main.coins > 10 * Main.add_moves_amount:
 			Main.moves_left += 1 * Main.add_moves_amount

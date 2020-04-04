@@ -26,29 +26,36 @@ func _ready():
 		upgrade_object = upgrade_template.instance()
 		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/ImageBackground/UpgradeImage").texture = upgrade["image"]
 		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])
-		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").connect("pressed", self, "_on_UpgradeBuyButton_pressed", [upgrade_object])
+		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/RichTextLabel").text = str(upgrade.description[upgrade.level])
+		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").connect("pressed", self, "_on_UpgradeBuyButton_pressed", [upgrade])
 		get_node("ScrollContainer/MarginContainer/VBoxContainer").add_child(upgrade_object)
 		upgrade_objects_list[upgrade.name] = upgrade_object
 
 func _on_CheckUpgrades_timeout():
-	for upgrade_object in upgrade_objects_list:
-		if Main.coins >= upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").deactivate = false
+	for upgrade in open:
+		upgrade_object = upgrade_objects_list[upgrade.name]
+		if Main.coins >= upgrade.requirement[upgrade.level]:
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").deactivate = true
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
 
 func _on_UpgradeBuyButton_pressed(upgrade):
-	if Main.coins >= upgrade_objects_list[upgrade.name].get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text:
-		upgraded(upgrade)
+	upgrade_object = upgrade_objects_list[upgrade.name]
+	if Main.coins >= upgrade.requirement[upgrade.level]:
+		perform_upgrade(upgrade)
 	else:
-		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").deactivate = true
+		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
 
-func upgraded(upgrade):
+func perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
+		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Main.board_size += 1
 		upgrade.level += 1
-		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = upgrade.requirement[upgrade.level]
-		if Main.coins >= upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").deactivate = false
+		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])
+		get_node("/root/main/BoardBackground/TileBoard").recycle()
+		
+		if Main.coins >= upgrade.requirement[upgrade.level]:
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").deactivate = true
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
+		print(Main.board_size)

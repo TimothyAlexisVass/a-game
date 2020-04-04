@@ -431,6 +431,7 @@ __meta__ = {
 }
 
 [node name="CheckUpgrades" type="Timer" parent="Upgrades"]
+autostart = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Upgrades"]
 margin_right = 540.0
