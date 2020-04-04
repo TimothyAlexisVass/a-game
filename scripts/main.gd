@@ -1,7 +1,7 @@
 extends Node2D
 
 enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
-var increment = increment_type.DOUBLE
+var increment = increment_type.ADD
 
 var board_size = 2
 var tile_scale
@@ -12,6 +12,9 @@ var starting_tiles = 1
 var order = 0
 var base = 0
 
+# Tile Variables
+var tile_template = preload("res://scenes/tile.tscn")
+var all_tiles = []
 var tile_background = preload("res://scenes/tile_background.tscn")
 var all_tile_backgrounds = null
 
@@ -22,8 +25,8 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 3000.0
-var total_coins_ever = 3000.0
+var coins = 30000.0
+var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
 var total_income = 0.0
@@ -31,6 +34,7 @@ var income_multiplier = 1
 var full_board_multiplier = 1
 
 onready var tween = get_node("/root/main/Tween")
+onready var tile_board = get_node("/root/main/BoardBackground/TileBoard")
 onready var upgrades_panel = get_node("/root/main/Upgrades")
 onready var upgrades_button = get_node("/root/main/UpgradesButton")
 onready var achievements_panel = get_node("/root/main/Achievements")
@@ -90,10 +94,20 @@ func generate_tile_backgrounds():
 				tile_bg.position = Main.board_to_pixel(Vector2(column, row))
 				Main.all_tile_backgrounds.append(tile_bg)
 
-func clear_tile_backgrounds():
+func resize_tile_board():
 	for tile_background in Main.all_tile_backgrounds:
 		tile_background.queue_free()
 	Main.all_tile_backgrounds = null
+	Main.set_board_variables()
+	Main.generate_tile_backgrounds()
+	
+	Main.all_tiles.append([])
+	for column in Main.board_size:
+		for row in Main.board_size:
+			if column == Main.board_size - 1 or row == Main.board_size - 1:
+				Main.all_tiles[column].append(null)
+			if Main.all_tiles[column][row] != null:
+				tile_board.add_tile(Main.all_tiles[column][row].order, column, row)
 
 func board_to_pixel(board_position):
 	return (Vector2(board_position.x * Main.tile_offset + Main.tile_position,
@@ -198,7 +212,7 @@ func _on_UI_button_pressed(button):
 		set_moves()
 		set_total()
 	elif button.name == "RecycleButton":
-		get_node("/root/main/BoardBackground/TileBoard").recycle()
+		tile_board.recycle()
 
 func _on_Timer_timeout(timer):
 	if timer.name == "IncomeTimer":

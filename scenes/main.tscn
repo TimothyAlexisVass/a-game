@@ -1,5 +1,6 @@
 [gd_scene load_steps=32 format=2]
 
+[ext_resource path="res://assets/upgrades.svg" type="Texture" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
 [ext_resource path="res://assets/junebug.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/coin.svg" type="Texture" id=4]
@@ -7,10 +8,9 @@
 [ext_resource path="res://scripts/ScrollContainer.gd" type="Script" id=9]
 [ext_resource path="res://assets/recycle.svg" type="Texture" id=10]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
-[ext_resource path="res://assets/upgrades.png" type="Texture" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
 [ext_resource path="res://scripts/achievements.gd" type="Script" id=15]
-[ext_resource path="res://assets/thumbsup.svg" type="Texture" id=16]
+[ext_resource path="res://assets/achievements.svg" type="Texture" id=16]
 [ext_resource path="res://assets/glow.shader" type="Shader" id=17]
 [ext_resource path="res://assets/534px_progress_bar.svg" type="Texture" id=18]
 
@@ -383,12 +383,12 @@ custom_styles/panel = SubResource( 14 )
 [node name="UpgradesButton" type="TextureButton" parent="." groups=[
 "User Interface Buttons",
 ]]
-margin_left = 324.618
-margin_top = 749.463
-margin_right = 1161.62
-margin_bottom = 1407.47
-rect_scale = Vector2( 0.18, 0.15 )
-texture_normal = ExtResource( 12 )
+margin_left = 356.331
+margin_top = 758.977
+margin_right = 756.331
+margin_bottom = 1058.98
+rect_scale = Vector2( 0.3, 0.28 )
+texture_normal = ExtResource( 1 )
 texture_disabled = SubResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false

@@ -52,9 +52,8 @@ func perform_upgrade(upgrade):
 		Main.board_size += 1
 		upgrade.level += 1
 		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
-		Main.clear_tile_backgrounds()
-		get_node("/root/main/BoardBackground/TileBoard").recycle()
-		
+		Main.resize_tile_board()
+
 		if Main.coins >= upgrade.requirement[upgrade.level]:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:

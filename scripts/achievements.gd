@@ -82,4 +82,3 @@ func total_coins_ever_achievements(achievement, result):
 	if Main.total_coins_ever >= achievement.requirement[achievement.level]:
 		Main.income_multiplier *= achievement.reward[achievement.level]
 		achievement.level += 1
-

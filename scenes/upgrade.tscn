@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/komika.slim.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/upgrade_box.stylebox" type="StyleBox" id=2]
+[ext_resource path="res://assets/upgrade.tres" type="StyleBox" id=2]
 [ext_resource path="res://assets/coin30px.svg" type="Texture" id=3]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=4]
 
@@ -24,7 +24,7 @@ corner_radius_bottom_left = 36
 size = 20
 font_data = ExtResource( 1 )
 
-[node name="UpgradeBox" type="MarginContainer"]
+[node name="Upgrade" type="MarginContainer"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -288.0
