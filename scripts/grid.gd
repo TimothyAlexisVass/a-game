@@ -13,12 +13,10 @@ var full_board
 
 # Tile Variables
 var tile_template = preload("res://scenes/tile.tscn")
-var all_tiles
+var all_tiles = []
 
 func _ready():
 	randomize()
-	yield(get_tree().create_timer(1), "timeout")
-	Main.move_enabled = true
 	initialize_board()
 
 func _input(event):
@@ -288,6 +286,13 @@ func add_tile_in_empty_position():
 			break
 
 func initialize_board():
+	Main.set_board_variables()
+	Main.generate_tile_backgrounds()
+	
+	#Wait 1 second before adding tiles
+	yield(get_tree().create_timer(1), "timeout")
+	
+	Main.move_enabled = true
 	full_board = false
 	combine_value = 0.01
 	get_node("../RecycleButton").visible = false

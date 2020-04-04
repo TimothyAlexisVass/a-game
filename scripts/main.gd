@@ -4,13 +4,16 @@ enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
 var increment = increment_type.DOUBLE
 
 var board_size = 2
-var tile_scale = 4.0 / board_size
-var tile_position = 576 / (board_size + 2)
-var tile_offset = 4.0 / board_size * 128
-
+var tile_scale
+var tile_position
+var tile_offset
+	
 var starting_tiles = 1
 var order = 0
 var base = 0
+
+var tile_background = preload("res://scenes/tile_background.tscn")
+var all_tile_backgrounds = null
 
 var income_timer
 var move_timer
@@ -43,9 +46,10 @@ func _ready():
 		button.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	for timer in get_tree().get_nodes_in_group("Timers"):
 		timer.connect("timeout", Main, "_on_Timer_timeout", [timer])
-
+	
+	set_board_variables()
+	
 	if Main.board_size == 2:
-		tile_position += 16
 		Main.moveinfo.visible = false
 		Main.achievements_button.visible = false
 		Main.upgrades_button.disabled = true
@@ -66,9 +70,34 @@ func _ready():
 func _process(_delta):
 	move_timer_bar.value = 100 * (Main.move_timer - get_node("/root/main/MoveTimer").time_left) / Main.move_timer
 
+func set_board_variables():
+	Main.tile_scale = 4.0 / Main.board_size
+	Main.tile_position = 576 / (Main.board_size + 2)
+	Main.tile_offset = 4.0 / Main.board_size * 128
+	if Main.board_size == 2:
+		Main.tile_position += 16
+
+func generate_tile_backgrounds():
+	#Generate the tile backgrounds
+	if Main.all_tile_backgrounds == null:
+		Main.all_tile_backgrounds = []
+		for column in Main.board_size:
+			for row in Main.board_size:
+				var tile_bg = tile_background.instance()
+				tile_bg.get_node("Panel").rect_scale = Vector2(Main.tile_scale, Main.tile_scale)
+				tile_bg.get_node("Panel").rect_position = Vector2(-Main.tile_offset/2, -Main.tile_offset/2)
+				get_node("/root/main/BoardBackground/TileBackgrounds").add_child(tile_bg)
+				tile_bg.position = Main.board_to_pixel(Vector2(column, row))
+				Main.all_tile_backgrounds.append(tile_bg)
+
+func clear_tile_backgrounds():
+	for tile_background in Main.all_tile_backgrounds:
+		tile_background.queue_free()
+	Main.all_tile_backgrounds = null
+
 func board_to_pixel(board_position):
-	return (Vector2(board_position.x * tile_offset + tile_position,
-					board_position.y * tile_offset + tile_position))
+	return (Vector2(board_position.x * Main.tile_offset + Main.tile_position,
+					board_position.y * Main.tile_offset + Main.tile_position))
 
 func change_total(amount, position):
 	Main.coins += amount

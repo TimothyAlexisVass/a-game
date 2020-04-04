@@ -51,7 +51,8 @@ func perform_upgrade(upgrade):
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Main.board_size += 1
 		upgrade.level += 1
-		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])
+		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
+		Main.clear_tile_backgrounds()
 		get_node("/root/main/BoardBackground/TileBoard").recycle()
 		
 		if Main.coins >= upgrade.requirement[upgrade.level]:
