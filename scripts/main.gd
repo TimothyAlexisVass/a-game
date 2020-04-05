@@ -156,9 +156,7 @@ func set_income():
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + display_income + "/"
 
 func add_move_cost():
-	if Main.coins > 1000:
-		return 100
-	elif Main.coins < 1:
+	if Main.coins < 1:
 		return 0.1
 	else:
 		return Main.coins * 0.1
