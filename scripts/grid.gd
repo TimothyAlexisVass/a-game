@@ -50,13 +50,17 @@ func _input(event):
 			# print("swipe angle: " + str(angle))
 
 func combine_tiles(ctile, ctile2, column, row):
-	add_tile(ctile.order + 1, column, row)
-	
+	# When tiles are combined,
+	# the previous ones are cleared.
 	ctile.queue_free()
 	ctile2.move(Main.board_to_pixel(Vector2(column, row)))
 	ctile2.clear_tile()
 	
-	combine_value += 2 * ctile.value / 100.0
+	# and a new tile is created and added to Main.all_tiles[column][row]
+	add_tile(ctile.order + 1, column, row)
+	
+	# coins are gained according to the value of the new tile
+	combine_value = Main.all_tiles[column][row].value / 100.0
 	Main.change_total(combine_value, ctile.position)
 	movement = true
 	
@@ -243,7 +247,7 @@ func open_position_exists():
 	return false
 
 func combination_possible():
-	# Check the four directions to see if the order matches
+	# Check the four directions if there is a tile with the same order
 	for column in Main.board_size:
 		for row in Main.board_size:
 			if Main.all_tiles[column][row] != null:
@@ -263,12 +267,17 @@ func combination_possible():
 	return false
 
 func add_tile(order, column, row):
+	# If there is already a tile in this position, clear it.
+	# This happens when Main.board_size is upgraded
 	if Main.all_tiles[column][row] != null:
 		Main.all_tiles[column][row].queue_free()
+	# Instance a new tile, set it's position, order,
 	tile = Main.tile_template.instance()
-	tile.order = order
-	add_child(tile)
 	tile.position = Main.board_to_pixel(Vector2(column, row))
+	tile.order = order
+	# add it to the board
+	add_child(tile)
+	# and add it to the array
 	Main.all_tiles[column][row] = tile
 
 func add_tile_in_empty_position():
@@ -278,6 +287,7 @@ func add_tile_in_empty_position():
 		var column = floor(rand_range(0, Main.board_size))
 		var row = floor(rand_range(0, Main.board_size))
 		if(Main.all_tiles[column][row] == null):
+			# There is a 10% chance that the tile has a higher order
 			if rand_range(0, 1) < 0.9:
 				add_tile(Main.order, column, row)
 			else:
@@ -293,7 +303,7 @@ func initialize_board():
 	
 	Main.move_enabled = true
 	full_board = false
-	combine_value = 0.01
+	
 	get_node("../RecycleButton").visible = false
 	
 	Main.all_tiles = []

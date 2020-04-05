@@ -25,7 +25,7 @@ var open = [
 		"reward": [1, 2, 1.5, 1 + 1/3, 1.25, 1.2],
 		"function": coins_achievements_function,
 		"image": load("res://assets/achievement_images/coin.svg"),
-		"description": ["Enables upgrades and income.", "Income +100%.", "Income  +50%", "Income +33%", "Income +25%", "Income +20%"]
+		"description": ["Enables upgrades and income.", "Doubles income.", "Income  +50%", "Income +33%", "Income +25%", "Income +20%"]
 	},
 	{
 		"name": "total_coins_ever",

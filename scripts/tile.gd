@@ -6,22 +6,19 @@ onready var tween = get_node("Tween")
 
 func _enter_tree():
 	set_value()
+	# Scale is set to .1 because it will grow to 1
+	# in _ready() when added to the board.
 	self.scale = Vector2(.1, .1)
 
 func _ready():
-	set_order(order)
-#	Grow the tile when entering the board
+	# Grow the tile when added to the board
 	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.tile_scale, Main.tile_scale), .6, tween.TRANS_CUBIC, tween.EASE_OUT)
 	tween.start()
 
-func set_order(number):
-	order = number
-	set_value()
-	set_color()
-
 func set_value():
+	set_color()
 	if Main.base == 0:
-		value = .01
+		value = 1
 		get_node("Value").text = ""
 	else:
 		if Main.increment == Main.increment_type.ADD:
@@ -32,7 +29,7 @@ func set_value():
 			value = pow(Main.base, order + 1)
 		else:
 			value = pow(Main.base, order * Main.base)
-	#	Set font size
+		# Set font size
 		var number_length = 1 + floor(log(value)/log(10))
 		var string = "res://assets/fonts/length" + str(number_length) + ".tres"
 		var font = load(string)
