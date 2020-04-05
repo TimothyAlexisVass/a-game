@@ -12,7 +12,7 @@ var open = [
 	{
 		"name": "board_size",
 		"level": 0,
-		"requirement": [200, 15000, 2000000, 3000000000],
+		"requirement": [10, 15000, 2000000, 3000000000],
 		"reward": [3, 4, 5, 6],
 		"image": load("res://assets/upgrade_images/tile.svg"),
 		"description": ["Increase board size (3x3)", "Increase board size (4x4)", "Increase board size (5x5)", "Increase board size (6x6)"]
@@ -26,7 +26,7 @@ func _ready():
 		upgrade_object = upgrade_template.instance()
 		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/ImageBackground/UpgradeImage").texture = upgrade["image"]
 		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])
-		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/RichTextLabel").text = str(upgrade.description[upgrade.level])
+		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").connect("pressed", self, "_on_UpgradeBuyButton_pressed", [upgrade])
 		get_node("ScrollContainer/MarginContainer/VBoxContainer").add_child(upgrade_object)
 		upgrade_objects_list[upgrade.name] = upgrade_object
@@ -58,4 +58,3 @@ func perform_upgrade(upgrade):
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
-		print(Main.board_size)

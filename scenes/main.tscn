@@ -560,7 +560,5 @@ text = "X"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Info/MoveInfo/AddMovesButton" to="." method="_on_AddMovesButton_pressed"]
-[connection signal="pressed" from="Info/MoveInfo/AddMovesButton/MoveAmountButton" to="." method="_on_MoveAmount_pressed"]
 [connection signal="timeout" from="Upgrades/CheckUpgrades" to="Upgrades" method="_on_CheckUpgrades_timeout"]
 [connection signal="timeout" from="Achievements/CheckAchievements" to="Achievements" method="_on_CheckAchievements_timeout"]

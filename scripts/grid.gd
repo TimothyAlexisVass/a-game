@@ -71,7 +71,7 @@ func move_tile(new_column, new_row, column, row, mtile):
 	movement = true
 
 func update_board(direction):
-	if Main.moves_left > 0 or Main.auto_add_moves and Main.coins >= 10:
+	if Main.moves_left > 0 or Main.auto_add_moves and Main.coins >= Main.add_move_cost():
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()
@@ -323,18 +323,19 @@ func recycle():
 	Main.base_income = Main.total_income
 	Main.move_enabled = false
 	
-	for column in Main.all_tiles:
-		for tile in column:
+	for column in Main.board_size:
+		for row in Main.board_size:
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
-				if Main.base == 0:
-					Main.change_total(0.01 * Main.full_board_multiplier, tile.position)
+				if Main.tile_base == 0:
+					Main.change_total(tile.value / 100.0, tile.position)
 				elif full_board:
 					Main.change_total(tile.value * Main.full_board_multiplier, tile.position)
 				else:
 					Main.change_total(tile.value, tile.position)
 				tile.z_index = 999
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
-				tile = null
+				Main.all_tiles[column][row] = null
 	
 	initialize_board()

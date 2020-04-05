@@ -10,7 +10,7 @@ var tile_offset
 	
 var starting_tiles = 1
 var order = 0
-var base = 0
+var tile_base = 0
 
 # Tile Variables
 var tile_template = preload("res://scenes/tile.tscn")
@@ -25,7 +25,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 0.99
+var coins = 1.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -41,6 +41,7 @@ onready var achievements_panel = get_node("/root/main/Achievements")
 onready var achievements_button = get_node("/root/main/AchievementsButton")
 onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
 onready var move_info = get_node("/root/main/Info/MoveInfo")
+
 var profit_indicator = preload("res://scenes/profit_indicator.tscn")
 var show_profit
 
@@ -61,8 +62,7 @@ func _ready():
 		Main.achievements_button.visible = false
 		Main.upgrades_button.disabled = true
 	
-	Main.full_board_multiplier = Main.base * 3 + 1
-	Main.moves_left = 100
+	Main.moves_left = 10
 	set_moves()
 	set_total()
 	
@@ -77,7 +77,7 @@ func _process(_delta):
 func set_board_variables():
 	Main.tile_scale = 4.0 / Main.board_size
 	Main.tile_position = 576 / (Main.board_size + 2)
-	Main.tile_offset = 4.0 / Main.board_size * 128
+	Main.tile_offset = Main.tile_scale * 128
 	if Main.board_size == 2:
 		Main.tile_position += 16
 
@@ -155,9 +155,17 @@ func set_income():
 		display_income = str(int(display_income))
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + display_income + "/"
 
+func add_move_cost():
+	if Main.coins > 1000:
+		return 100
+	elif Main.coins < 1:
+		return 0.1
+	else:
+		return Main.coins * 0.1
+
 func make_move():
 	if auto_add_moves and Main.moves_left == 0:
-		change_total(-10, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
+		change_total(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
 		set_total()
 	else:
 		Main.moves_left -=1
@@ -205,9 +213,9 @@ func _on_user_interface_button_pressed(button):
 		else:
 			get_node("/root/main/Info/MoveInfo/AddMovesButton/MoveAmountButton").text = "X" + str(Main.add_moves_amount)
 	elif button.name == "AddMovesButton":
-		if Main.coins > 10 * Main.add_moves_amount:
+		if Main.coins > Main.add_move_cost() * Main.add_moves_amount:
 			Main.moves_left += 1 * Main.add_moves_amount
-			change_total(-10 * Main.add_moves_amount, \
+			change_total(-Main.add_move_cost() * Main.add_moves_amount, \
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
 		set_moves()
 		set_total()

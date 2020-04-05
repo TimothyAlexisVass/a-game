@@ -62,8 +62,6 @@ func _on_CheckAchievements_timeout():
 			achievement_object.get_child(0).value = achievement["function"].call_func(achievement, check.PROGRESS)
 
 func progress_events(achievement, _result):
-	print(Main.coins)
-	print(achievement.level)
 	if Main.coins >= 0.3 and achievement.level == 0:
 		Main.achievements_button.visible = Main.coins >= 0.3
 		achievement.level += 1

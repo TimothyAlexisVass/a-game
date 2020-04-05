@@ -17,18 +17,18 @@ func _ready():
 
 func set_value():
 	set_color()
-	if Main.base == 0:
-		value = 1
+	if Main.tile_base == 0:
+		value = order
 		get_node("Value").text = ""
 	else:
 		if Main.increment == Main.increment_type.ADD:
-			value = Main.base * (order+1)
+			value = Main.tile_base * (order+1)
 		elif Main.increment == Main.increment_type.DOUBLE:
-			value = Main.base * pow(2, order)
+			value = Main.tile_base * pow(2, order)
 		elif Main.increment == Main.increment_type.MULTIPLY:
-			value = pow(Main.base, order + 1)
+			value = pow(Main.tile_base, order + 1)
 		else:
-			value = pow(Main.base, order * Main.base)
+			value = pow(Main.tile_base, order * Main.tile_base)
 		# Set font size
 		var number_length = 1 + floor(log(value)/log(10))
 		var string = "res://assets/fonts/length" + str(number_length) + ".tres"
