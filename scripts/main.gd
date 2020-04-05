@@ -25,7 +25,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 1.0
+var coins = 10.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -40,6 +40,7 @@ onready var upgrades_button = get_node("/root/main/UpgradesButton")
 onready var achievements_panel = get_node("/root/main/Achievements")
 onready var achievements_button = get_node("/root/main/AchievementsButton")
 onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
+onready var income_timer_bar = get_node("/root/main/Info/CoinsInfo/IncomeTimerBar")
 onready var move_info = get_node("/root/main/Info/MoveInfo")
 
 var profit_indicator = preload("res://scenes/profit_indicator.tscn")
@@ -62,17 +63,19 @@ func _ready():
 		Main.achievements_button.visible = false
 		Main.upgrades_button.disabled = true
 	
-	Main.moves_left = 10
+	Main.moves_left = 100
 	set_moves()
 	set_total()
 	
 	Main.move_timer = 10
-	Main.income_timer = 10
+	Main.income_timer = 12
 	get_node("/root/main/MoveTimer").set_wait_time(Main.move_timer)
 	get_node("/root/main/IncomeTimer").set_wait_time(Main.income_timer)
 	
 func _process(_delta):
 	move_timer_bar.value = 100 * (Main.move_timer - get_node("/root/main/MoveTimer").time_left) / Main.move_timer
+	if Main.base_income > 0:
+		income_timer_bar.value = 100 * (Main.income_timer - get_node("/root/main/IncomeTimer").time_left) / Main.income_timer
 
 func set_board_variables():
 	Main.tile_scale = 4.0 / Main.board_size
