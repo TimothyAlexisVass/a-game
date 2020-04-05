@@ -12,11 +12,19 @@ var open = [
 	{
 		"name": "board_size",
 		"level": 0,
-		"requirement": [10, 15000, 2000000, 3000000000],
+		"requirement": [5, 500, 2000000, 3000000000],
 		"reward": [3, 4, 5, 6],
-		"image": load("res://assets/upgrade_images/tile.svg"),
+		"image": load("res://assets/upgrade_images/board_size.svg"),
 		"description": ["Increase board size (3x3)", "Increase board size (4x4)", "Increase board size (5x5)", "Increase board size (6x6)"]
 	},
+		{
+		"name": "tile_base",
+		"level": 0,
+		"requirement": [20, 1500, 2000000, 3000000000],
+		"reward": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		"image": load("res://assets/upgrade_images/tile_base.svg"),
+		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Double base value for tiles", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
+	}
 ]
 
 var completed = []
@@ -53,6 +61,17 @@ func perform_upgrade(upgrade):
 		upgrade.level += 1
 		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
 		Main.resize_tile_board()
+
+		if Main.coins >= upgrade.requirement[upgrade.level]:
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
+		else:
+			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
+	elif upgrade.name == "tile_base":
+		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
+		Main.tile_base += 1
+		upgrade.level += 1
+		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
+		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
 
 		if Main.coins >= upgrade.requirement[upgrade.level]:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false

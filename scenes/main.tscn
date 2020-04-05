@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://assets/upgrades.svg" type="Texture" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/upgrade_stylebox.tres" type="StyleBox" id=5]
 [ext_resource path="res://assets/komika.slim.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://scripts/tile_board.gd" type="Script" id=7]
+[ext_resource path="res://assets/fonts/length7.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scripts/scroll_container.gd" type="Script" id=9]
 [ext_resource path="res://assets/recycle.svg" type="Texture" id=10]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
@@ -294,7 +295,7 @@ margin_bottom = 6.0
 step = 0.01
 texture_progress = ExtResource( 18 )
 tint_under = Color( 0.6, 0.6, 0.6, 1 )
-tint_progress = Color( 1, 1, 1, 0.0470588 )
+tint_progress = Color( 1, 1, 1, 0.109804 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -609,7 +610,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -248.0
-margin_top = -170.0
+margin_top = -199.0
 margin_right = 248.0
 margin_bottom = -15.0
 custom_constants/margin_right = 8
@@ -624,7 +625,7 @@ __meta__ = {
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 488.0
-margin_bottom = 146.0
+margin_bottom = 176.0
 rect_min_size = Vector2( 480, 100 )
 custom_styles/panel = ExtResource( 5 )
 
@@ -643,7 +644,7 @@ __meta__ = {
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 472.0
-margin_bottom = 130.0
+margin_bottom = 160.0
 rect_min_size = Vector2( 184, 84 )
 custom_styles/panel = SubResource( 19 )
 __meta__ = {
@@ -662,7 +663,27 @@ margin_bottom = -12.0
 custom_styles/fg = SubResource( 20 )
 custom_styles/bg = SubResource( 21 )
 custom_fonts/font = SubResource( 22 )
-value = 11.61
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="Achievements/Description/Background/MarginContainer/Panel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -214.0
+margin_top = 5.0
+margin_right = 214.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.847059 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "TITLE"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -682,16 +703,18 @@ __meta__ = {
 }
 
 [node name="DescriptionLabel" type="Label" parent="Achievements/Description/Background/MarginContainer/Panel/MarginContainer"]
+anchor_top = 0.079646
+anchor_bottom = 0.079646
 margin_left = 8.0
-margin_top = 8.0
+margin_top = 46.0
 margin_right = 436.0
-margin_bottom = 74.0
+margin_bottom = 66.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 23 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.847059 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
-text = "Du har ett värde som människa i livet och du är värd det bästa. Sanning, kärlek, vishet, rättvisa, lycka, hälsa och välmående."
+text = "Description"
 valign = 1
 autowrap = true
 [connection signal="timeout" from="Upgrades/CheckUpgrades" to="Upgrades" method="_on_CheckUpgrades_timeout"]
