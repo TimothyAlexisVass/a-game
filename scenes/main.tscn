@@ -703,8 +703,6 @@ __meta__ = {
 }
 
 [node name="DescriptionLabel" type="Label" parent="Achievements/Description/Background/MarginContainer/Panel/MarginContainer"]
-anchor_top = 0.079646
-anchor_bottom = 0.079646
 margin_left = 8.0
 margin_top = 46.0
 margin_right = 436.0

@@ -30,7 +30,7 @@ var open = [
 		"reward": [1, 1.5, 2, 1.5, 1 + 1/3, 1.25, 1.2],
 		"function": coins_achievements_function,
 		"image": load("res://assets/achievement_images/coin.svg"),
-		"description": ["Enables upgrades and income.", "Income  +50%", "Doubles income.", "Income  +50%", "Income +33%", "Income +25%", "Income +20%"]
+		"description": ["Enables upgrades and income.", "Base income +50%", "Doubles base income.", "Base income +50%", "Base income +33%", "Base income +25%", "Base income +20%"]
 	},
 	{
 		"name": "total_coins_ever",
@@ -40,7 +40,7 @@ var open = [
 		"reward": [2, 2, 2, 2, 2, 2],
 		"function": total_coins_ever_achievements_function,
 		"image": load("res://assets/achievement_images/coin.svg"),
-		"description": ["Doubles income", "Doubles income", "Doubles income", "Doubles income", "Doubles income", "Doubles income"]
+		"description": ["Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier"]
 	}
 ]
 
@@ -98,7 +98,7 @@ func coins_achievements(achievement, result):
 	if result == check.PROGRESS:
 		return 100 * Main.coins / achievement.requirement[achievement.level]
 	if Main.coins >= achievement.requirement[achievement.level]:
-		Main.income_multiplier *= achievement.reward[achievement.level]
+		Main.base_income *= achievement.reward[achievement.level]
 		Main.set_income()
 		achievement.level += 1
 
