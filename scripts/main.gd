@@ -25,7 +25,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 10.0
+var coins = 1.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0

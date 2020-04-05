@@ -19,7 +19,7 @@ rect_clip_content = true
 texture_under = ExtResource( 1 )
 texture_progress = ExtResource( 1 )
 fill_mode = 4
-tint_under = Color( 0, 0, 0, 1 )
+tint_under = Color( 0.423529, 0.490196, 0.556863, 1 )
 tint_progress = Color( 0.498039, 0.976471, 0.364706, 1 )
 
 [node name="TextureButton" type="TextureButton" parent="TextureProgress"]
