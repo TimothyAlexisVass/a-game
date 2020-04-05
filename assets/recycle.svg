@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="90"
-   height="100"
-   viewBox="0 0 23.8125 26.458332"
+   width="110"
+   height="120"
+   viewBox="0 0 29.104166 31.749998"
    version="1.1"
    id="svg1275"
-   inkscape:version="0.92.4 (f8dce91, 2019-08-02)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="recycle.svg">
   <defs
      id="defs1269">
@@ -92,14 +92,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="36.497152"
+     inkscape:cx="-3.6564114"
      inkscape:cy="20.037146"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1533"
+     inkscape:window-width="1600"
      inkscape:window-height="845"
-     inkscape:window-x="67"
+     inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      units="px" />
@@ -119,10 +119,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-270.54167)">
+     transform="translate(0,-265.25001)">
     <g
        id="g2873"
-       transform="matrix(0.14823521,0,0,0.13546476,-5.3897393,264.89064)">
+       transform="matrix(0.14823521,0,0,0.13546476,-2.6624369,262.4608)">
       <path
          style="fill:url(#linearGradient1915);fill-opacity:1;stroke:none;stroke-width:0.08393058;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
          d="M 112.70999,75.057022 C 112.74779,75.852271 82.384203,62.33052 82.384203,62.33052 L 66.267188,76.660179 116.90558,112.33627 c 20.83206,-6.76944 0,0 20.83206,-6.76944 8.24471,7.17864 15.9186,18.72311 19.63856,38.67093 3.15862,30.62474 -15.32117,56.45107 -41.8867,58.81728 -25.822932,-0.96134 -49.112472,-20.28649 -52.830674,-50.70785 -1.991587,-16.29467 0.683042,-59.771965 0.683042,-59.771965 0,0 0,0 -14.715455,10.055175 -11.716646,18.20873 -14.12594,36.89516 -10.47919,58.37198 3.638743,19.76499 14.13248,36.30318 28.952331,48.22313 14.819851,11.91995 33.644686,22.02498 52.476246,23.653 36.43502,3.14985 70.94359,-55.36712 63.04664,-96.57669 -6.03137,-31.47423 -37.70223,-65.067292 -69.91245,-61.244798 z"

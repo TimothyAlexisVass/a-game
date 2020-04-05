@@ -298,13 +298,13 @@ func initialize_board():
 	Main.set_board_variables()
 	Main.generate_tile_backgrounds()
 	
+	get_node("../RecycleButton").visible = false
+	
 	#Wait 1 second before adding tiles
 	yield(get_tree().create_timer(1), "timeout")
 	
 	Main.move_enabled = true
 	full_board = false
-	
-	get_node("../RecycleButton").visible = false
 	
 	Main.all_tiles = []
 	#Make Main.all_tiles into 2D_array

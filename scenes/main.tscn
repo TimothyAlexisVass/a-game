@@ -360,12 +360,11 @@ script = ExtResource( 7 )
 [node name="RecycleButton" type="TextureButton" parent="BoardBackground" groups=[
 "User Interface Buttons",
 ]]
-visible = false
 material = SubResource( 13 )
-margin_left = 455.764
-margin_top = -10.0638
-margin_right = 545.764
-margin_bottom = 89.9362
+margin_left = 440.0
+margin_top = -20.0
+margin_right = 550.0
+margin_bottom = 100.0
 texture_normal = ExtResource( 10 )
 __meta__ = {
 "_edit_group_": true,
