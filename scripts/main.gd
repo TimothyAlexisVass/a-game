@@ -25,7 +25,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves
 
-var coins = 30000.0
+var coins = 0.99
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -40,13 +40,13 @@ onready var upgrades_button = get_node("/root/main/UpgradesButton")
 onready var achievements_panel = get_node("/root/main/Achievements")
 onready var achievements_button = get_node("/root/main/AchievementsButton")
 onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
-onready var moveinfo = get_node("/root/main/Info/MoveInfo")
+onready var move_info = get_node("/root/main/Info/MoveInfo")
 var profit_indicator = preload("res://scenes/profit_indicator.tscn")
 var show_profit
 
 func _ready():
-	for button in get_tree().get_nodes_in_group("User Interface Buttons"):
-		button.connect("pressed", Main, "_on_UI_button_pressed", [button])
+	for button in get_tree().get_nodes_in_group("user_interface_button"):
+		button.connect("pressed", Main, "_on_user_interface_button_pressed", [button])
 		button.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	for timer in get_tree().get_nodes_in_group("Timers"):
 		timer.connect("timeout", Main, "_on_Timer_timeout", [timer])
@@ -54,12 +54,12 @@ func _ready():
 	set_board_variables()
 	
 	if Main.board_size == 2:
-		Main.moveinfo.visible = false
-		Main.achievements_button.visible = false
-		Main.upgrades_button.disabled = true
+		Main.move_info.visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
+		Main.achievements_button.visible = false
+		Main.upgrades_button.disabled = true
 	
 	Main.full_board_multiplier = Main.base * 3 + 1
 	Main.moves_left = 100
@@ -175,7 +175,7 @@ func set_moves():
 	move_timer_bar.modulate = indicator_color
 	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Main.moves_left)
 
-func _on_UI_button_pressed(button):
+func _on_user_interface_button_pressed(button):
 	if button.name == "AchievementsButton":
 		Main.achievements_panel.visible = true
 		Main.upgrades_button.visible = false

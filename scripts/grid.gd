@@ -99,7 +99,7 @@ func calculate_board_income():
 	Main.board_income = 0
 	for column in range(Main.board_size):
 		for row in range(Main.board_size):
-			if Main.all_tiles[column][row] != null and Main.base > 0:
+			if Main.all_tiles[column][row] != null and Main.base_income > 0:
 				Main.board_income += Main.all_tiles[column][row].value / 100.0
 	Main.set_income()
 
@@ -321,12 +321,15 @@ func initialize_board():
 
 func recycle():
 	Main.base_income = Main.total_income
+	Main.move_enabled = false
 	
 	for column in Main.all_tiles:
 		for tile in column:
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
-				if full_board:
+				if Main.base == 0:
+					Main.change_total(0.01 * Main.full_board_multiplier, tile.position)
+				elif full_board:
 					Main.change_total(tile.value * Main.full_board_multiplier, tile.position)
 				else:
 					Main.change_total(tile.value, tile.position)
