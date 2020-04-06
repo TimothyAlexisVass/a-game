@@ -18,14 +18,14 @@ var all_tiles = []
 var tile_background = preload("res://scenes/tile_background.tscn")
 var all_tile_backgrounds = null
 
-var income_timer
-var move_timer
-var moves_left
+var income_timer = 12
+var move_timer = 10
+var moves_left = 100
 var move_enabled = false
 var add_moves_amount = 1
-var auto_add_moves
+var auto_add_moves = false
 
-var coins = 99.7
+var coins = 8888888888888888888888888888.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -63,12 +63,9 @@ func _ready():
 		Main.achievements_button.visible = false
 		Main.upgrades_button.disabled = true
 	
-	Main.moves_left = 100
 	set_moves()
 	set_total()
 	
-	Main.move_timer = 10
-	Main.income_timer = 12
 	get_node("/root/main/MoveTimer").set_wait_time(Main.move_timer)
 	get_node("/root/main/IncomeTimer").set_wait_time(Main.income_timer)
 	

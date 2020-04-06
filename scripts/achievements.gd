@@ -11,34 +11,48 @@ onready var description_title_label = get_node("Description/Background/MarginCon
 onready var description_progress_bar = get_node("Description/Background/MarginContainer/Panel/ProgressBar")
 onready var description_label = get_node("Description/Background/MarginContainer/Panel/MarginContainer/DescriptionLabel")
 
-var progress_events_function = funcref(self, "progress_events")
-var coins_achievements_function = funcref(self, "coins_achievements")
-var total_coins_ever_achievements_function = funcref(self, "total_coins_ever_achievements")
-var energy_achievements_function = funcref(self, "energy_achievements")
-
 var open = [
 	{
+		"name": "progress_events",
 		"level": 0,
-		"title": [null],
-		"function": progress_events_function
 	},
 	{
 		"name": "coins",
 		"level": 0,
-		"title": ["One whole coin!", "One hundred coins", "One thousand coins.", "One million coins.", "1234567890...", "One hundred eleven billion one hundred eleven million one hundred and eleven", "Trillion!"],
-		"requirement": [1, 100, 1000, 1000000, 1234567890, 11111111111, pow(10,12)],
+		"title": [	"One whole coin!",
+					"One hundred coins",
+					"One thousand coins.",
+					"One million coins.",
+					"1234567890...",
+					"One hundred eleven billion one hundred eleven million one hundred and eleven",
+					"Trillion!"],
+		"requirement": [1,
+						100,
+						1000,
+						1000000,
+						1234567890,
+						11111111111,
+						pow(10,12)],
 		"reward": [1, 1.5, 2, 1.5, 1 + 1/3, 1.25, 1.2],
-		"function": coins_achievements_function,
 		"image": load("res://assets/achievement_images/coin.svg"),
-		"description": ["Enables upgrades and income.", "Base income +50%", "Doubles base income.", "Base income +50%", "Base income +33%", "Base income +25%", "Base income +20%"]
+		"description": ["Enables upgrades and income.", "Base income +50%", "Doubles base income.", "Base income +50%", "Base income +1/3", "Base income +25%", "Base income +20%"]
 	},
 	{
 		"name": "total_coins_ever",
 		"level": 0,
-		"title": ["1K Total coins ever", "1M Total coins ever", "1T Total coins ever", "1Qa Total coins ever", "1Qi Total coins ever", "1Sx Total coins ever"],
-		"requirement": [pow(10,3), pow(10,6), pow(10,9), pow(10,12), pow(10,15), pow(10,18)],
+		"title": ["1K Total coins ever",
+				  "1M Total coins ever",
+				  "1T Total coins ever",
+				  "1Qa Total coins ever",
+				  "1Qi Total coins ever",
+				  "1Sx Total coins ever"],
+		"requirement": [pow(10,3),
+						pow(10,6),
+						pow(10,9),
+						pow(10,12),
+						pow(10,15),
+						pow(10,18)],
 		"reward": [2, 2, 2, 2, 2, 2],
-		"function": total_coins_ever_achievements_function,
 		"image": load("res://assets/achievement_images/coin.svg"),
 		"description": ["Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier"]
 	}
@@ -49,7 +63,7 @@ var completed = []
 func _ready():
 	description.visible = false
 	for achievement in open:
-		if achievement.title[0] != null:
+		if achievement.name != "progress_events":
 			achievement_object = achievement_template.instance()
 			achievement_object.get_node("TextureProgress/TextureButton").texture_normal = achievement["image"]
 			achievement_object.get_node("TextureProgress/TextureButton").connect("mouse_entered", self, "_show_achievement_description", [achievement])
@@ -63,7 +77,7 @@ func _ready():
 func _show_achievement_description(achievement):
 	description_title_label.text = achievement.title[achievement.level]
 	description_label.text = achievement.description[achievement.level]
-	description_progress_bar.value = achievement_objects_list[achievement.name].get_node("TextureProgress").value
+	description_progress_bar.value = achievement_object.get_node("TextureProgress").value
 	description.visible = true
 
 func _hide_achievement_description():
@@ -71,44 +85,57 @@ func _hide_achievement_description():
 
 func _on_CheckAchievements_timeout():
 	for achievement in open:
-		if achievement.level == achievement["title"].size() + 1:
+		if achievement.name == "progress_events":
+			progress_events(achievement)
+		else:
+			check_if_achieved(achievement)
+			achievement_object = achievement_objects_list[achievement.name]
+			achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
+			achievement_object.get_node("TextureProgress").value = check_progress(achievement)
+
+func progress_events(achievement):
+	match(achievement.level):
+		0:
+			if Main.coins >= 0.3:
+				Main.achievements_button.visible = Main.coins >= 0.3
+				achievement.level += 1
+		1:
+			if Main.coins >= 1:
+				Main.upgrades_button.disabled = Main.coins < 1
+				Main.move_info.visible = true
+				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
+				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true
+				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = true
+				Main.base_income = 0.09
+				Main.set_income()
+				achievement.level += 1
+		# Move to array "completed" when all levels are completed
+		_:
 			completed.append(achievement)
 			open.erase(achievement)
-		achievement["function"].call_func(achievement, check.ACHIEVED)
-		if achievement.title[0] != null:
-			achievement_object = achievement_objects_list[achievement.name]
-			achievement_object.get_child(1).text = str(achievement.level) + "/" + str(achievement["title"].size())
-			achievement_object.get_child(0).value = achievement["function"].call_func(achievement, check.PROGRESS)
 
-func progress_events(achievement, _result):
-	if Main.coins >= 0.3 and achievement.level == 0:
-		Main.achievements_button.visible = Main.coins >= 0.3
-		achievement.level += 1
-	if Main.coins >= 1 and achievement.level == 1:
-		Main.upgrades_button.disabled = Main.coins < 1
-		Main.move_info.visible = true
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = true
-		Main.base_income = 0.09
-		Main.set_income()
-		achievement.level += 1
+func check_progress(achievement):
+	if achievement.level == achievement["title"].size():
+		return 100
+	match(achievement.name):
+		"coins":
+			return 100 * Main.coins / achievement.requirement[achievement.level]
+		"total_coins_ever":
+			return 100 * Main.total_coins_ever / achievement.requirement[achievement.level]
 
-func coins_achievements(achievement, result):
-	if result == check.PROGRESS:
-		return 100 * Main.coins / achievement.requirement[achievement.level]
-	if Main.coins >= achievement.requirement[achievement.level]:
-		Main.base_income *= achievement.reward[achievement.level]
-		Main.set_income()
-		achievement.level += 1
+func check_if_achieved(achievement):
+	match(achievement.name):
+		"coins":
+			if Main.coins >= achievement.requirement[achievement.level]:
+				Main.base_income *= achievement.reward[achievement.level]
+		"total_coins-ever":
+			if Main.total_coins_ever >= achievement.requirement[achievement.level]:
+				Main.income_multiplier *= achievement.reward[achievement.level]
 
-		print("Main.income_multiplier")
-		print(Main.income_multiplier)
+	Main.set_income()
+	achievement.level += 1
 
-func total_coins_ever_achievements(achievement, result):
-	if result == check.PROGRESS:
-		return 100 * Main.total_coins_ever / achievement.requirement[achievement.level]
-	if Main.total_coins_ever >= achievement.requirement[achievement.level]:
-		Main.income_multiplier *= achievement.reward[achievement.level]
-		Main.set_income()
-		achievement.level += 1
+	# Move to array "completed" when all levels are completed
+	if achievement.level == achievement["title"].size():
+		completed.append(achievement)
+		open.erase(achievement)

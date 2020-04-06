@@ -58,22 +58,18 @@ func perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Main.board_size += 1
-		upgrade.level += 1
-		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
 		Main.resize_tile_board()
 
-		if Main.coins >= upgrade.requirement[upgrade.level]:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
-		else:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
 	elif upgrade.name == "tile_base":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Main.tile_base += 1
-		upgrade.level += 1
-		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
-		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
+	
+	# Happens for all upgrades:
+	upgrade.level += 1
+	upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
+	upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
 
-		if Main.coins >= upgrade.requirement[upgrade.level]:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
-		else:
-			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
+	if Main.coins >= upgrade.requirement[upgrade.level]:
+		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
+	else:
+		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
