@@ -44,13 +44,13 @@ func set_color():
 
 	match order:
 		0:
-			border_color = "3ca370"
-			shadow_color = "8fde5d"
-			background_color = "c6f65d"
+			border_color = "0f773e"
+			shadow_color = "3bd300"
+			background_color = "8fff2f"
 		1:
 			border_color = "1d585a"
 			shadow_color = "3ca370"
-			background_color = "8fde5d"
+			background_color = "3bd300"
 		2:
 			border_color = "1b3e3f"
 			shadow_color = "3d6e70"
