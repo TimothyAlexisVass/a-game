@@ -53,7 +53,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	# When tiles are combined,
 	# the previous ones are cleared.
 	ctile.queue_free()
-	ctile2.move(Main.board_to_pixel(Vector2(column, row)))
+	ctile2.move(Main.set_tile_position(Vector2(column, row)))
 	ctile2.clear_tile()
 	
 	# and a new tile is created and added to Main.all_tiles[column][row]
@@ -65,7 +65,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	movement = true
 	
 func move_tile(new_column, new_row, column, row, mtile):
-	mtile.move(Main.board_to_pixel(Vector2(new_column, new_row)))
+	mtile.move(Main.set_tile_position(Vector2(new_column, new_row)))
 	Main.all_tiles[new_column][new_row] = mtile
 	Main.all_tiles[column][row] = null
 	movement = true
@@ -273,7 +273,7 @@ func add_tile(order, column, row):
 		Main.all_tiles[column][row].queue_free()
 	# Instance a new tile, set it's position, order,
 	tile = Main.tile_template.instance()
-	tile.position = Main.board_to_pixel(Vector2(column, row))
+	tile.position = Main.set_tile_position(Vector2(column, row))
 	tile.order = order
 	# add it to the board
 	add_child(tile)

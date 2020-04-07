@@ -18,6 +18,11 @@ var all_tiles = []
 var tile_background = preload("res://scenes/tile_background.tscn")
 var all_tile_backgrounds = null
 
+var notification = preload("res://scenes/notification.tscn")
+var display_notification_object
+var profit_indicator = preload("res://scenes/profit_indicator.tscn")
+var display_profit_object
+
 var income_timer = 12
 var move_timer = 10
 var moves_left = 100
@@ -33,18 +38,16 @@ var total_income = 0.0
 var income_multiplier = 1
 var full_board_multiplier = 1
 
-onready var tween = get_node("/root/main/Tween")
-onready var tile_board = get_node("/root/main/BoardBackground/TileBoard")
-onready var upgrades_panel = get_node("/root/main/Upgrades")
-onready var upgrades_button = get_node("/root/main/UpgradesButton")
-onready var achievements_panel = get_node("/root/main/Achievements")
 onready var achievements_button = get_node("/root/main/AchievementsButton")
-onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
+onready var achievements_panel = get_node("/root/main/Achievements")
 onready var income_timer_bar = get_node("/root/main/Info/CoinsInfo/IncomeTimerBar")
 onready var move_info = get_node("/root/main/Info/MoveInfo")
-
-var profit_indicator = preload("res://scenes/profit_indicator.tscn")
-var show_profit
+onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
+onready var notification_list = get_node("/root/main/Info/NotificationsInfo/ScrollContainer/MarginContainer/VBoxContainer")
+onready var tile_board = get_node("/root/main/BoardBackground/TileBoard")
+onready var tween = get_node("/root/main/Tween")
+onready var upgrades_button = get_node("/root/main/UpgradesButton")
+onready var upgrades_panel = get_node("/root/main/Upgrades")
 
 func _ready():
 	for button in get_tree().get_nodes_in_group("user_interface_button"):
@@ -87,12 +90,12 @@ func generate_tile_backgrounds():
 		Main.all_tile_backgrounds = []
 		for column in Main.board_size:
 			for row in Main.board_size:
-				var tile_bg = tile_background.instance()
-				tile_bg.get_node("Panel").rect_scale = Vector2(Main.tile_scale, Main.tile_scale)
-				tile_bg.get_node("Panel").rect_position = Vector2(-Main.tile_offset/2, -Main.tile_offset/2)
-				get_node("/root/main/BoardBackground/TileBackgrounds").add_child(tile_bg)
-				tile_bg.position = Main.board_to_pixel(Vector2(column, row))
-				Main.all_tile_backgrounds.append(tile_bg)
+				var tile_background_object = tile_background.instance()
+				tile_background_object.get_node("Panel").rect_scale = Vector2(Main.tile_scale, Main.tile_scale)
+				tile_background_object.get_node("Panel").rect_position = Vector2(-Main.tile_offset/2, -Main.tile_offset/2)
+				get_node("/root/main/BoardBackground/TileBackgrounds").add_child(tile_background_object)
+				tile_background_object.position = Main.set_tile_position(Vector2(column, row))
+				Main.all_tile_backgrounds.append(tile_background_object)
 
 func resize_tile_board():
 	for tile_background in Main.all_tile_backgrounds:
@@ -109,17 +112,22 @@ func resize_tile_board():
 			if Main.all_tiles[column][row] != null:
 				tile_board.add_tile(Main.all_tiles[column][row].order, column, row)
 
-func board_to_pixel(board_position):
+func set_tile_position(board_position):
 	return (Vector2(board_position.x * Main.tile_offset + Main.tile_position,
 					board_position.y * Main.tile_offset + Main.tile_position))
+
+func display_notification(notification_text):
+	display_notification_object = notification.instance()
+	display_notification_object.text = notification_text
+	notification_list.add_child(display_notification_object)
 
 func change_total(amount, position):
 	Main.coins += amount
 	if amount > 0:
 		Main.total_coins_ever += amount
 	
-	show_profit = profit_indicator.instance()
-	show_profit.position = position
+	display_profit_object = profit_indicator.instance()
+	display_profit_object.position = position
 	if amount < 1 and amount > -1:	
 		amount = str("%.2f" % (amount))
 	elif amount < 10 and amount > -10:
@@ -127,9 +135,9 @@ func change_total(amount, position):
 	else:
 		amount = str(int(amount))
 	
-	show_profit.value = amount
-	show_profit.z_index = 999
-	add_child(show_profit)
+	display_profit_object.value = amount
+	display_profit_object.z_index = 999
+	add_child(display_profit_object)
 	set_total()
 
 func set_total():

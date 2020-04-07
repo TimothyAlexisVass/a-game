@@ -130,7 +130,7 @@ func check_if_achieved(achievement):
 			if Main.coins >= achievement.requirement[achievement.level]:
 				Main.base_income *= achievement.reward[achievement.level]
 				achieved = true
-		"total_coins-ever":
+		"total_coins_ever":
 			if Main.total_coins_ever >= achievement.requirement[achievement.level]:
 				Main.income_multiplier *= achievement.reward[achievement.level]
 				achieved = true

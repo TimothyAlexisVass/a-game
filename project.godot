@@ -26,12 +26,12 @@ Main="*res://scripts/main.gd"
 [display]
 
 window/size/width=576
-window/size/height=843
+window/size/height=1024
 window/size/test_width=576
-window/size/test_height=843
+window/size/test_height=1024
 window/handheld/orientation="portrait"
 window/stretch/mode="2d"
-window/stretch/aspect="keep_height"
+window/stretch/aspect="keep"
 window/handheld/emulate_touchscreen=true
 
 [input]
