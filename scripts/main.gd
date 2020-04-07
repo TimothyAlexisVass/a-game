@@ -25,7 +25,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves = false
 
-var coins = 8888888888888888888888888888.0
+var coins = 1.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -187,19 +187,19 @@ func _on_user_interface_button_pressed(button):
 		Main.upgrades_button.visible = false
 		Main.achievements_button.visible = false
 		Main.move_enabled = false
-		tween.interpolate_property(Main.achievements_panel, "rect_position", Vector2(16, 850), Vector2(16, 16), .6, tween.TRANS_EXPO, tween.EASE_OUT)
+		tween.interpolate_property(Main.achievements_panel, "rect_position", Vector2(16, 1080), Vector2(16, 16), .6, tween.TRANS_EXPO, tween.EASE_OUT)
 		tween.start()
 	elif button.name == "UpgradesButton":
 		Main.upgrades_panel.visible = true
 		Main.upgrades_button.visible = false
 		Main.achievements_button.visible = false
 		Main.move_enabled = false
-		tween.interpolate_property(Main.upgrades_panel, "rect_position", Vector2(16, 870), Vector2(16, 16), .6, tween.TRANS_EXPO, tween.EASE_OUT)
+		tween.interpolate_property(Main.upgrades_panel, "rect_position", Vector2(16, 1080), Vector2(16, 16), .6, tween.TRANS_EXPO, tween.EASE_OUT)
 		tween.start()
 	elif button.name == "CloseButton":
 		Main.upgrades_button.visible = true
 		Main.achievements_button.visible = true
-		tween.interpolate_property(button.get_parent(), "rect_position", Vector2(16, 16), Vector2(16, 870), .6, tween.TRANS_EXPO, tween.EASE_OUT)
+		tween.interpolate_property(button.get_parent(), "rect_position", Vector2(16, 16), Vector2(16, 1080), .6, tween.TRANS_EXPO, tween.EASE_OUT)
 		tween.start()
 		yield(get_tree().create_timer(.6), "timeout")
 		Main.move_enabled = true

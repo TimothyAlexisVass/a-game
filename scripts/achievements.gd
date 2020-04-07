@@ -5,6 +5,7 @@ enum check{ACHIEVED, PROGRESS}
 var achievement_template = preload("res://scenes/achievement.tscn")
 var achievement_objects_list = {}
 var achievement_object
+var achieved = false
 
 onready var description = get_node("Description")
 onready var description_title_label = get_node("Description/Background/MarginContainer/Panel/TitleLabel")
@@ -128,14 +129,17 @@ func check_if_achieved(achievement):
 		"coins":
 			if Main.coins >= achievement.requirement[achievement.level]:
 				Main.base_income *= achievement.reward[achievement.level]
+				achieved = true
 		"total_coins-ever":
 			if Main.total_coins_ever >= achievement.requirement[achievement.level]:
 				Main.income_multiplier *= achievement.reward[achievement.level]
-
-	Main.set_income()
-	achievement.level += 1
-
-	# Move to array "completed" when all levels are completed
-	if achievement.level == achievement["title"].size():
-		completed.append(achievement)
-		open.erase(achievement)
+				achieved = true
+	if achieved:
+		Main.set_income()
+		achievement.level += 1
+	
+		# Move to array "completed" when all levels are completed
+		if achievement.level == achievement["title"].size():
+			completed.append(achievement)
+			open.erase(achievement)
+		achieved = false

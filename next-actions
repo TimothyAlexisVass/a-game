@@ -1,15 +1,15 @@
-Notify at achievement
-
 Add energy for full board => Used for Buildings
 
 Add Saving
+
+Add Notifications
 
 Clarify the income system => Think about how it should be.
 
 Add chance to gain premium resource on combine
 
 Add Achievement:
-    Filling tiles => full_board_reward = > energy
+    Filling tiles => full_board_reward => energy_multiplier
        Levels => (board_size>=4, base>1) 10, 50, 100, 175, 250, 500, 1000, 2500, 5000, 10000
     1024 (board_size>=4, base=1)
     2048 (board_size>=4, base=2)
