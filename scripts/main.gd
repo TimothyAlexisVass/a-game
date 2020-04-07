@@ -30,7 +30,7 @@ var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves = false
 
-var coins = 1.0
+var coins = 0.0
 var total_coins_ever = coins
 var base_income = 0.0
 var board_income = 0.0
@@ -71,7 +71,7 @@ func _ready():
 	
 	get_node("/root/main/MoveTimer").set_wait_time(Main.move_timer)
 	get_node("/root/main/IncomeTimer").set_wait_time(Main.income_timer)
-	
+
 func _process(_delta):
 	move_timer_bar.value = 100 * (Main.move_timer - get_node("/root/main/MoveTimer").time_left) / Main.move_timer
 	if Main.base_income > 0:
@@ -119,7 +119,19 @@ func set_tile_position(board_position):
 func display_notification(notification_text):
 	display_notification_object = notification.instance()
 	display_notification_object.text = notification_text
+	display_notification_object.percent_visible = 0
+	display_notification_object.modulate = Color("00ff00")
+
+	# Allow 10 notifications in the list
+	if notification_list.get_child_count() > 10:
+		notification_list.get_child(10).queue_free()
+
+	# Add notification and put it first in list
 	notification_list.add_child(display_notification_object)
+	notification_list.move_child(display_notification_object, 0)
+	tween.interpolate_property(display_notification_object, "modulate", Color("00ff00"), Color("ffffff"), 7, tween.TRANS_LINEAR, tween.EASE_OUT)
+	tween.interpolate_property(display_notification_object, "percent_visible", 0.0, 1.0, .7, tween.TRANS_LINEAR, tween.EASE_OUT)
+	tween.start()
 
 func change_total(amount, position):
 	Main.coins += amount

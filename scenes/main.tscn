@@ -5,12 +5,13 @@
 [ext_resource path="res://assets/junebug.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/coin.svg" type="Texture" id=4]
 [ext_resource path="res://assets/upgrade_stylebox.tres" type="StyleBox" id=5]
-[ext_resource path="res://assets/komika.slim.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/fonts/komika_info.tres" type="DynamicFont" id=6]
 [ext_resource path="res://scripts/tile_board.gd" type="Script" id=7]
 [ext_resource path="res://assets/fonts/length7.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scripts/scroll_container.gd" type="Script" id=9]
 [ext_resource path="res://assets/recycle.svg" type="Texture" id=10]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
+[ext_resource path="res://scenes/achievement.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
 [ext_resource path="res://scripts/achievements.gd" type="Script" id=15]
 [ext_resource path="res://assets/achievements.svg" type="Texture" id=16]
@@ -175,9 +176,6 @@ use_filter = true
 extra_spacing_top = 3
 extra_spacing_bottom = 3
 font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=24]
-font_data = ExtResource( 6 )
 
 [node name="main" type="Node2D"]
 
@@ -439,6 +437,7 @@ margin_top = 16.0
 margin_right = 512.0
 margin_bottom = 79.0
 custom_constants/separation = 8
+alignment = 1
 
 [node name="Border" type="Panel" parent="Info/NotificationsInfo"]
 anchor_right = 1.0
@@ -623,8 +622,8 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="Achievements/ScrollContainer"]
-margin_right = 64.0
-margin_bottom = 64.0
+margin_right = 172.0
+margin_bottom = 197.0
 custom_constants/margin_right = 32
 custom_constants/margin_top = 32
 custom_constants/margin_left = 32
@@ -636,11 +635,14 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="Achievements/ScrollContainer/MarginContainer"]
 margin_left = 32.0
 margin_top = 32.0
-margin_right = 32.0
-margin_bottom = 32.0
+margin_right = 140.0
+margin_bottom = 165.0
 custom_constants/vseparation = 16
 custom_constants/hseparation = 16
-columns = 4
+columns = 3
+
+[node name="VBoxContainer" parent="Achievements/ScrollContainer/MarginContainer/GridContainer" instance=ExtResource( 12 )]
+margin_right = 108.0
 
 [node name="Border" type="Panel" parent="Achievements"]
 anchor_right = 1.0
@@ -769,15 +771,16 @@ __meta__ = {
 
 [node name="DescriptionLabel" type="Label" parent="Achievements/Description/Background/MarginContainer/Panel/MarginContainer"]
 margin_left = 8.0
-margin_top = 46.0
+margin_top = 44.0
 margin_right = 436.0
-margin_bottom = 66.0
+margin_bottom = 69.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 24 )
+custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.847059 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 text = "Description"
+align = 1
 valign = 1
 autowrap = true
 [connection signal="timeout" from="Upgrades/CheckUpgrades" to="Upgrades" method="_on_CheckUpgrades_timeout"]

@@ -5,6 +5,7 @@ enum check{ACHIEVED, PROGRESS}
 var achievement_template = preload("res://scenes/achievement.tscn")
 var achievement_objects_list = {}
 var achievement_object
+var achievement_described = null
 var achieved = false
 
 onready var description = get_node("Description")
@@ -76,15 +77,18 @@ func _ready():
 			achievement_objects_list[achievement.name] = achievement_object
 
 func _show_achievement_description(achievement):
+	achievement_described = achievement
 	description_title_label.text = achievement.title[achievement.level]
 	description_label.text = achievement.description[achievement.level]
-	description_progress_bar.value = achievement_object.get_node("TextureProgress").value
+	description_progress_bar.value = check_progress(achievement_described)
 	description.visible = true
 
 func _hide_achievement_description():
 	description.visible = false
 
 func _on_CheckAchievements_timeout():
+	if achievement_described != null:
+		description_progress_bar.value = check_progress(achievement_described)
 	for achievement in open:
 		if achievement.name == "progress_events":
 			progress_events(achievement)
@@ -100,6 +104,7 @@ func progress_events(achievement):
 			if Main.coins >= 0.3:
 				Main.achievements_button.visible = Main.coins >= 0.3
 				achievement.level += 1
+				Main.display_notification("Achievements enabled")
 		1:
 			if Main.coins >= 1:
 				Main.upgrades_button.disabled = Main.coins < 1
@@ -135,6 +140,7 @@ func check_if_achieved(achievement):
 				Main.income_multiplier *= achievement.reward[achievement.level]
 				achieved = true
 	if achieved:
+		Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")
 		Main.set_income()
 		achievement.level += 1
 	
