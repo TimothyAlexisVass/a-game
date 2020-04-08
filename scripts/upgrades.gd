@@ -20,7 +20,7 @@ var open = [
 		{
 		"name": "tile_base",
 		"level": 0,
-		"requirement": [20, 1500, 2000000, 3000000000],
+		"requirement": [10, 1500, 2000000, 3000000000],
 		"reward": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		"image": load("res://assets/upgrade_images/tile_base.svg"),
 		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Double base value for tiles", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
@@ -57,12 +57,12 @@ func _on_UpgradeBuyButton_pressed(upgrade):
 func perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
-		Main.board_size += 1
+		Main.board_size = upgrade.reward[upgrade.level]
 		Main.resize_tile_board()
 
 	elif upgrade.name == "tile_base":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
-		Main.tile_base += 1
+		Main.tile_base = upgrade.reward[upgrade.level]
 	
 	# Happens for all upgrades:
 	upgrade.level += 1

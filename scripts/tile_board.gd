@@ -57,7 +57,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	ctile2.clear_tile()
 	
 	# and a new tile is created and added to Main.all_tiles[column][row]
-	add_tile(ctile.order + 1, column, row)
+	add_tile(ctile.tile_order + 1, column, row)
 	
 	# coins are gained according to the value of the new tile
 	combine_value = Main.all_tiles[column][row].value / 100.0
@@ -114,8 +114,8 @@ func combine_up():
 				for check_row in range(row + 1, Main.board_size):
 					tile2 = Main.all_tiles[column][check_row]
 					if tile2 != null:
-						#Combine if they have the same order
-						if tile.order == tile2.order:
+						#Combine if they have the same tile_order
+						if tile.tile_order == tile2.tile_order:
 							Main.all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_up()
@@ -132,8 +132,8 @@ func combine_down():
 				for check_row in range(row-1, -1, -1):
 					tile2 = Main.all_tiles[column][check_row]
 					if tile2 != null:
-						#Combine if they have the same order
-						if tile.order == tile2.order:
+						#Combine if they have the same tile_order
+						if tile.tile_order == tile2.tile_order:
 							Main.all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_down()
@@ -150,8 +150,8 @@ func combine_left():
 				for check_column in range(column + 1, Main.board_size):
 					tile2 = Main.all_tiles[check_column][row]
 					if tile2 != null:
-						#Combine if they have the same order
-						if tile.order == tile2.order:
+						#Combine if they have the same tile_order
+						if tile.tile_order == tile2.tile_order:
 							Main.all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_left()
@@ -168,8 +168,8 @@ func combine_right():
 				for check_column in range(column-1, -1, -1):
 					tile2 = Main.all_tiles[check_column][row]
 					if tile2 != null:
-						#Combine if they have the same order
-						if tile.order == tile2.order:
+						#Combine if they have the same tile_order
+						if tile.tile_order == tile2.tile_order:
 							Main.all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_right()
@@ -247,34 +247,34 @@ func open_position_exists():
 	return false
 
 func combination_possible():
-	# Check the four directions if there is a tile with the same order
+	# Check the four directions if there is a tile with the same tile_order
 	for column in Main.board_size:
 		for row in Main.board_size:
 			if Main.all_tiles[column][row] != null:
-				var order = Main.all_tiles[column][row].order
+				var tile_order = Main.all_tiles[column][row].tile_order
 				if row > 0:
-					if Main.all_tiles[column][row - 1].order == order:
+					if Main.all_tiles[column][row - 1].tile_order == tile_order:
 						return true
 				if row < Main.board_size - 1:
-					if Main.all_tiles[column][row + 1].order == order:
+					if Main.all_tiles[column][row + 1].tile_order == tile_order:
 						return true
 				if column > 0:
-					if Main.all_tiles[column - 1][row].order == order:
+					if Main.all_tiles[column - 1][row].tile_order == tile_order:
 						return true
 				if column < Main.board_size - 1:
-					if Main.all_tiles[column + 1][row].order == order:
+					if Main.all_tiles[column + 1][row].tile_order == tile_order:
 						return true
 	return false
 
-func add_tile(order, column, row):
+func add_tile(tile_order, column, row):
 	# If there is already a tile in this position, clear it.
 	# This happens when Main.board_size is upgraded
 	if Main.all_tiles[column][row] != null:
 		Main.all_tiles[column][row].queue_free()
-	# Instance a new tile, set it's position, order,
+	# Instance a new tile, set it's position, tile_order,
 	tile = Main.tile_template.instance()
 	tile.position = Main.set_tile_position(Vector2(column, row))
-	tile.order = order
+	tile.tile_order = tile_order
 	# add it to the board
 	add_child(tile)
 	# and add it to the array
@@ -287,11 +287,11 @@ func add_tile_in_empty_position():
 		var column = floor(rand_range(0, Main.board_size))
 		var row = floor(rand_range(0, Main.board_size))
 		if(Main.all_tiles[column][row] == null):
-			# There is a 10% chance that the tile has a higher order
+			# There is a 10% chance that the tile has a higher tile_order
 			if rand_range(0, 1) < 0.9:
-				add_tile(Main.order, column, row)
+				add_tile(Main.tile_order, column, row)
 			else:
-				add_tile(Main.order + 1, column, row)
+				add_tile(Main.tile_order + 1, column, row)
 			break
 
 func initialize_board():

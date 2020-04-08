@@ -1,6 +1,29 @@
 extends Node2D
 
 enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
+
+var data = {
+	"increment": increment_type.ADD,
+	"board_size": 2,
+	"starting_tiles": 1,
+	"tile_order": 0,
+	"tile_base": 0,
+	"all_tiles": [],
+	"income_timer": 12,
+	"move_timer": 10,
+	"moves_left": 500,
+	"move_enabled": false,
+	"add_moves_amount": 1,
+	"auto_add_moves": false,
+	"coins": 0.0,
+	"total_coins_ever": coins,
+	"base_income": 0.0,
+	"board_income": 0.0,
+	"total_income": 0.0,
+	"income_multiplier": 1,
+	"full_board_multiplier": 1,
+}
+
 var increment = increment_type.ADD
 
 var board_size = 2
@@ -9,7 +32,7 @@ var tile_position
 var tile_offset
 	
 var starting_tiles = 1
-var order = 0
+var tile_order = 0
 var tile_base = 0
 
 # Tile Variables
@@ -25,7 +48,7 @@ var display_profit_object
 
 var income_timer = 12
 var move_timer = 10
-var moves_left = 100
+var moves_left = 500
 var move_enabled = false
 var add_moves_amount = 1
 var auto_add_moves = false
@@ -110,7 +133,7 @@ func resize_tile_board():
 			if column == Main.board_size - 1 or row == Main.board_size - 1:
 				Main.all_tiles[column].append(null)
 			if Main.all_tiles[column][row] != null:
-				tile_board.add_tile(Main.all_tiles[column][row].order, column, row)
+				tile_board.add_tile(Main.all_tiles[column][row].tile_order, column, row)
 
 func set_tile_position(board_position):
 	return (Vector2(board_position.x * Main.tile_offset + Main.tile_position,
