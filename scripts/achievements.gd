@@ -101,13 +101,13 @@ func _on_MainTimer_timeout():
 func _progress_events(achievement):
 	match(achievement.level):
 		0:
+			Main.achievements_button.visible = Global.data.coins >= 0.3
 			if Global.data.coins >= 0.3:
-				Main.achievements_button.visible = Global.data.coins >= 0.3
 				achievement.level += 1
 				Main.display_notification("Achievements enabled")
 		1:
+			Main.upgrades_button.disabled = Global.data.coins < 1
 			if Global.data.coins >= 1:
-				Main.upgrades_button.disabled = Global.data.coins < 1
 				Main.move_info.visible = true
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true

@@ -47,6 +47,8 @@ func _enter_tree():
 
 func _ready():
 	Main.recycle_button.visible = false
+	Main.achievements_button.visible = false
+	Main.upgrades_button.disabled = true
 	if http_request_save.connect("request_completed", self, "_on_save_request_completed") == 0:
 		print("HTTPRequestSave connected")
 	if http_request_load.connect("request_completed", self, "_on_load_request_completed") == 0:
@@ -293,7 +295,6 @@ func _on_save_request_completed(_result, response_code, _header, _body):
 func _on_load_request_completed(_result, response_code, _header, body):
 	if body.get_string_from_utf8() == "Unable to open file.":
 		print("Server was unable to open file.")
-		return
 	elif response_code == 200:
 		print("Data successfully retrieved")
 	load_string = body.get_string_from_utf8()
@@ -303,7 +304,6 @@ func _on_load_request_completed(_result, response_code, _header, body):
 
 	if typeof(data) == TYPE_DICTIONARY:
 		Global.data = data
-#		Global.data.coins = 99
 		print("Board size: " + str(Global.data.board_size))
 		Main.set_income()
 		Main.set_total()
@@ -319,9 +319,8 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
-		Main.achievements_button.visible = false
-		Main.upgrades_button.disabled = true
-	
+
+	print("got here")
 	set_moves()
 	set_total()
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://assets/upgrades.svg" type="Texture" id=1]
 [ext_resource path="res://assets/gradient.tres" type="Gradient" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scripts/scroll_container.gd" type="Script" id=9]
 [ext_resource path="res://assets/recycle.svg" type="Texture" id=10]
 [ext_resource path="res://assets/main_theme.theme" type="Theme" id=11]
+[ext_resource path="res://icon.png" type="Texture" id=12]
 [ext_resource path="res://scripts/upgrades.gd" type="Script" id=13]
 [ext_resource path="res://scripts/achievements.gd" type="Script" id=15]
 [ext_resource path="res://assets/achievements.svg" type="Texture" id=16]
@@ -121,6 +122,8 @@ corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
 [sub_resource type="ImageTexture" id=16]
+
+[sub_resource type="ImageTexture" id=24]
 
 [sub_resource type="ShaderMaterial" id=17]
 shader = ExtResource( 17 )
@@ -512,6 +515,7 @@ margin_right = 748.138
 margin_bottom = 1220.76
 rect_scale = Vector2( 0.35, 0.35 )
 texture_normal = ExtResource( 16 )
+texture_disabled = SubResource( 24 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -775,6 +779,45 @@ text = "Description"
 align = 1
 valign = 1
 autowrap = true
+
+[node name="Splash" type="Panel" parent="."]
+margin_right = 576.0
+margin_bottom = 1024.0
+custom_styles/panel = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Border" type="Panel" parent="Splash"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -2.0
+margin_top = -2.0
+margin_right = 1.0
+margin_bottom = 1.00006
+mouse_filter = 2
+custom_styles/panel = SubResource( 19 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" type="Button" parent="Splash" groups=[
+"user_interface_button",
+]]
+margin_left = 521.0
+margin_top = 4.0
+margin_right = 571.0
+margin_bottom = 54.0
+theme = ExtResource( 11 )
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Splash"]
+position = Vector2( 288, 512 )
+texture = ExtResource( 12 )
 
 [node name="HTTPRequestSave" type="HTTPRequest" parent="."]
 
