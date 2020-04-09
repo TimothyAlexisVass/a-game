@@ -93,10 +93,7 @@ func update_board(direction):
 
 func check_if_recycle_should_be_enabled():
 	Main.recycle_button.visible = Global.data.moves_left == 0
-	print("got here too")
-	print(str(open_position_exists()))
 	if !open_position_exists() and !combination_possible():
-		print("got here too")
 		Main.recycle_button.visible = true
 		full_board = true
 
@@ -298,33 +295,34 @@ func add_tile_in_empty_position():
 func initialize_board():
 	Main.set_board_variables()
 	Main.generate_tile_backgrounds()
-	#Wait 1 second before adding tiles
-	yield(get_tree().create_timer(1), "timeout")
-	
+
 	full_board = false
-	
+
 	if Global.data.all_tiles == null:
-		Global.data.all_tiles = []
-		#Make Global.data.all_tiles into 2D_array
-		for column in Global.data.board_size:
-			Global.data.all_tiles.append([])
-			for row in Global.data.board_size:
-				Global.data.all_tiles[column].append(null)
+		#Wait 1 second before adding tiles
+		yield(get_tree().create_timer(.5), "timeout")
+		generate_empty_all_tiles_array()
 		for i in Global.data.starting_tiles:
-			add_tile_in_empty_position()
 			yield(get_tree().create_timer(.3), "timeout")
+			add_tile_in_empty_position()
 	else:
+		generate_empty_all_tiles_array()
 		for column in Global.data.board_size:
 			for row in Global.data.board_size:
 				if Global.data.tile_levels[column][row] != null:
 					add_tile(int(Global.data.tile_levels[column][row]), column, row)
-					yield(get_tree().create_timer(.3), "timeout")
 	calculate_board_income()
-	yield(get_tree().create_timer(.4), "timeout")
+	yield(get_tree().create_timer(.6), "timeout")
 	Main.move_enabled = true
-	print("got here")
 	check_if_recycle_should_be_enabled()
 
+func generate_empty_all_tiles_array():
+	Global.data.all_tiles = []
+	#Make Global.data.all_tiles into 2D_array
+	for column in Global.data.board_size:
+		Global.data.all_tiles.append([])
+		for row in Global.data.board_size:
+			Global.data.all_tiles[column].append(null)
 func recycle():
 	Main.recycle_button.visible = false
 	Global.data.base_income = Global.data.total_income
