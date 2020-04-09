@@ -170,20 +170,6 @@ func set_income():
 		display_income = str(int(display_income))
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + display_income + "/"
 
-func add_move_cost():
-	if Global.data.coins < 1:
-		return 0.1
-	else:
-		return Global.data.coins * 0.1
-
-func make_move():
-	if auto_add_moves and Global.data.moves_left == 0:
-		change_total(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
-		set_total()
-	else:
-		Global.data.moves_left -=1
-		set_moves()
-
 func set_moves():
 	var indicator_color
 	if Global.data.moves_left < 50:
@@ -195,6 +181,27 @@ func set_moves():
 		
 	move_timer_bar.modulate = indicator_color
 	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Global.data.moves_left)
+
+func set_achievements_and_upgrades_levels():
+	for achievement in achievements_panel.open_achievements:
+		achievement.level = Global.data.achievements_levels[achievement.name]
+	for upgrade in upgrades_panel.open_upgrades:
+		upgrade.level = Global.data.upgrades_levels[upgrade.name]
+		upgrades_panel._update_upgrade_object(upgrade)
+
+func add_move_cost():
+	if Global.data.coins < 1:
+		return 0.1
+	else:
+		return Global.data.coins * 0.1
+
+func make_move():
+	if Main.auto_add_moves and Global.data.moves_left == 0:
+		change_total(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
+		set_total()
+	else:
+		Global.data.moves_left -=1
+		set_moves()
 
 func _on_user_interface_button_pressed(button):
 	if button.name == "AchievementsButton":
@@ -245,17 +252,25 @@ func _on_Timer_timeout(timer):
 	elif timer.name == "MainTimer":
 		Main.achievements_panel._on_MainTimer_timeout()
 		Main.upgrades_panel._on_MainTimer_timeout()
+	elif timer.name == "SaveTimer":
+		save_game()
 
 func save_game():
 	global_data_byte_array = PoolByteArray()
 	Global.data.tile_levels = []
 	for column in Global.data.board_size:
-			Global.data.tile_levels.append([])
-			for row in Global.data.board_size:
-				if Global.data.all_tiles[column][row] != null:
-					Global.data.tile_levels[column].append(Global.data.all_tiles[column][row].tile_order)
-				else:
-					Global.data.tile_levels[column].append(null)
+		Global.data.tile_levels.append([])
+		for row in Global.data.board_size:
+			if Global.data.all_tiles[column][row] != null:
+				Global.data.tile_levels[column].append(Global.data.all_tiles[column][row].tile_order)
+			else:
+				Global.data.tile_levels[column].append(null)
+	
+	for achievement in achievements_panel.open_achievements:
+		Global.data.achievements_levels[achievement.name] = achievement.level
+	
+	for upgrade in upgrades_panel.open_upgrades:
+		Global.data.upgrades_levels[upgrade.name] = upgrade.level
 
 	for i in to_json(Global.data):
 		global_data_byte_array.append(int(rand_range(33,127)))
@@ -297,30 +312,32 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		print("Server was unable to open file.")
 	elif response_code == 200:
 		print("Data successfully retrieved")
-	load_string = body.get_string_from_utf8()
-	for i in range(4,load_string.length(),5):
-		global_data_byte_array.append(ord(load_string[i])+8)
-	var data = parse_json(global_data_byte_array.get_string_from_ascii())
-
-	if typeof(data) == TYPE_DICTIONARY:
-		Global.data = data
-		print("Board size: " + str(Global.data.board_size))
-		Main.set_income()
-		Main.set_total()
-		Main.set_moves()
-	else:
-		printerr("Corrupted data!")
+		load_string = body.get_string_from_utf8()
+		for i in range(4,load_string.length(),5):
+			global_data_byte_array.append(ord(load_string[i])+8)
+		var data = parse_json(global_data_byte_array.get_string_from_ascii())
 	
+		if typeof(data) == TYPE_DICTIONARY:
+			Global.data = data
+			Main.set_achievements_and_upgrades_levels()
+			Main.set_income()
+			Main.set_total()
+			Main.set_moves()
+		else:
+			printerr("!")
+		
 	set_board_variables()
 	tile_board.initialize_board()
-
-	if Global.data.board_size == 2:
+	
+	print(Global.data.upgrades_levels)
+	print(upgrades_panel.open_upgrades[0].level)
+	
+	if Global.data.board_size == 2 and Global.data.coins < 1:
 		Main.move_info.visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
 
-	print("got here")
 	set_moves()
 	set_total()
 	

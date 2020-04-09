@@ -66,6 +66,10 @@ func _perform_upgrade(upgrade):
 	
 	# Happens for all upgrades:
 	upgrade.level += 1
+	_update_upgrade_object(upgrade)
+
+func _update_upgrade_object(upgrade):
+	upgrade_object = upgrade_objects_list[upgrade.name]
 	upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
 	upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
 

@@ -70,7 +70,7 @@ func move_tile(new_column, new_row, column, row, mtile):
 	movement = true
 
 func update_board(direction):
-	if Global.data.moves_left > 0 or Global.data.auto_add_moves and Global.data.coins >= Global.data.add_move_cost():
+	if Global.data.moves_left > 0 or Main.auto_add_moves and Global.data.coins >= Main.add_move_cost():
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()

@@ -123,14 +123,14 @@ corner_radius_bottom_left = 100
 
 [sub_resource type="ImageTexture" id=16]
 
-[sub_resource type="ImageTexture" id=24]
+[sub_resource type="ImageTexture" id=17]
 
-[sub_resource type="ShaderMaterial" id=17]
+[sub_resource type="ShaderMaterial" id=18]
 shader = ExtResource( 17 )
 shader_param/radius = 0.0
 shader_param/amount = 0.155
 
-[sub_resource type="StyleBoxFlat" id=18]
+[sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0.984314, 0.952941, 0.839216, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -144,7 +144,7 @@ corner_radius_bottom_left = 40
 shadow_color = Color( 0.0862745, 0.0980392, 0.462745, 0.262745 )
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id=19]
+[sub_resource type="StyleBoxFlat" id=20]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_left = 8
 border_width_top = 8
@@ -156,7 +156,7 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="StyleBoxFlat" id=20]
+[sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 0.415686, 0.486275, 0.607843, 1 )
 border_color = Color( 0, 0, 0, 1 )
 corner_radius_top_left = 36
@@ -164,14 +164,14 @@ corner_radius_top_right = 36
 corner_radius_bottom_right = 36
 corner_radius_bottom_left = 36
 
-[sub_resource type="StyleBoxFlat" id=21]
+[sub_resource type="StyleBoxFlat" id=22]
 bg_color = Color( 0.498039, 0.976471, 0.364706, 1 )
 
-[sub_resource type="StyleBoxFlat" id=22]
+[sub_resource type="StyleBoxFlat" id=23]
 bg_color = Color( 0.423529, 0.490196, 0.556863, 1 )
 shadow_size = 2
 
-[sub_resource type="DynamicFont" id=23]
+[sub_resource type="DynamicFont" id=24]
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
@@ -199,6 +199,11 @@ autostart = true
 "Timers",
 ]]
 wait_time = 10.0
+
+[node name="SaveTimer" type="Timer" parent="." groups=[
+"Timers",
+]]
+wait_time = 30.0
 
 [node name="Gradient" type="Control" parent="."]
 margin_right = 576.0
@@ -515,14 +520,14 @@ margin_right = 748.138
 margin_bottom = 1220.76
 rect_scale = Vector2( 0.35, 0.35 )
 texture_normal = ExtResource( 16 )
-texture_disabled = SubResource( 24 )
+texture_disabled = SubResource( 17 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Glow" type="Sprite" parent="AchievementsButton"]
-material = SubResource( 17 )
+material = SubResource( 18 )
 texture = ExtResource( 16 )
 centered = false
 __meta__ = {
@@ -534,7 +539,7 @@ margin_left = 16.0
 margin_top = 1080.0
 margin_right = 560.0
 margin_bottom = 1734.0
-custom_styles/panel = SubResource( 18 )
+custom_styles/panel = SubResource( 19 )
 script = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -578,7 +583,7 @@ margin_top = -2.0
 margin_right = 1.0
 margin_bottom = 1.00006
 mouse_filter = 2
-custom_styles/panel = SubResource( 19 )
+custom_styles/panel = SubResource( 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -601,7 +606,7 @@ margin_left = 16.0
 margin_top = 1080.0
 margin_right = 560.0
 margin_bottom = 1734.0
-custom_styles/panel = SubResource( 18 )
+custom_styles/panel = SubResource( 19 )
 script = ExtResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -648,7 +653,7 @@ margin_top = -2.0
 margin_right = 1.0
 margin_bottom = 1.00006
 mouse_filter = 2
-custom_styles/panel = SubResource( 19 )
+custom_styles/panel = SubResource( 20 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
@@ -709,7 +714,7 @@ margin_top = 8.0
 margin_right = 472.0
 margin_bottom = 160.0
 rect_min_size = Vector2( 184, 84 )
-custom_styles/panel = SubResource( 20 )
+custom_styles/panel = SubResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -723,9 +728,9 @@ margin_left = -214.0
 margin_top = -40.0
 margin_right = 214.0
 margin_bottom = -12.0
-custom_styles/fg = SubResource( 21 )
-custom_styles/bg = SubResource( 22 )
-custom_fonts/font = SubResource( 23 )
+custom_styles/fg = SubResource( 22 )
+custom_styles/bg = SubResource( 23 )
+custom_fonts/font = SubResource( 24 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -783,7 +788,7 @@ autowrap = true
 [node name="Splash" type="Panel" parent="."]
 margin_right = 576.0
 margin_bottom = 1024.0
-custom_styles/panel = SubResource( 18 )
+custom_styles/panel = SubResource( 19 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -796,7 +801,7 @@ margin_top = -2.0
 margin_right = 1.0
 margin_bottom = 1.00006
 mouse_filter = 2
-custom_styles/panel = SubResource( 19 )
+custom_styles/panel = SubResource( 20 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false

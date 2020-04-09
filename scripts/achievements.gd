@@ -118,6 +118,11 @@ func _progress_events(achievement):
 				achievement.level += 1
 		# Move to array "completed" when all levels are completed
 		_:
+			Global.data.base_income = 0.09
+			Main.set_income()
+			Main.get_node("/root/main/IncomeTimer").start()
+			Main.achievements_button.visible = true
+			Main.upgrades_button.disabled = false
 			completed_achievements.append(achievement)
 			open_achievements.erase(achievement)
 
