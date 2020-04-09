@@ -1,6 +1,6 @@
 extends Node2D
 
-var tile_order = Global.data.tile_order
+var tile_order: int
 var value = 0
 onready var tween = get_node("Tween")
 

@@ -2,6 +2,11 @@ extends Node2D
 
 enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
 
+var save_string
+var load_string
+var global_data_byte_array
+var exit_game
+
 var tile_scale
 var tile_position
 var tile_offset
@@ -27,38 +32,42 @@ onready var income_timer_bar = get_node("/root/main/Info/CoinsInfo/IncomeTimerBa
 onready var move_info = get_node("/root/main/Info/MoveInfo")
 onready var move_timer_bar = get_node("/root/main/Info/MoveInfo/MoveTimerBar")
 onready var notification_list = get_node("/root/main/Info/NotificationsInfo/ScrollContainer/MarginContainer/VBoxContainer")
+onready var recycle_button = get_node("/root/main/RecycleButton")
 onready var tile_board = get_node("/root/main/BoardBackground/TileBoard")
 onready var tween = get_node("/root/main/Tween")
 onready var upgrades_button = get_node("/root/main/UpgradesButton")
 onready var upgrades_panel = get_node("/root/main/Upgrades")
+onready var http_request_save = get_node("/root/main/HTTPRequestSave")
+onready var http_request_load = get_node("/root/main/HTTPRequestLoad")
+
+func _enter_tree():
+	# This is to enable saving at exiting the game
+	get_tree().set_auto_accept_quit(false)
+	Global.data.all_tiles = null
 
 func _ready():
+	Main.recycle_button.visible = false
+	if http_request_save.connect("request_completed", self, "_on_save_request_completed") == 0:
+		print("HTTPRequestSave connected")
+	if http_request_load.connect("request_completed", self, "_on_load_request_completed") == 0:
+		print("HTTPRequestLoad connected")
+
 	for button in get_tree().get_nodes_in_group("user_interface_button"):
 		button.connect("pressed", Main, "_on_user_interface_button_pressed", [button])
 		button.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	for timer in get_tree().get_nodes_in_group("Timers"):
 		timer.connect("timeout", Main, "_on_Timer_timeout", [timer])
-	
-	set_board_variables()
-	
-	if Global.data.board_size == 2:
-		Main.move_info.visible = false
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
-		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
-		Main.achievements_button.visible = false
-		Main.upgrades_button.disabled = true
-	
-	set_moves()
-	set_total()
-	
-	get_node("/root/main/MoveTimer").set_wait_time(Global.data.move_timer)
-	get_node("/root/main/IncomeTimer").set_wait_time(Global.data.income_timer)
+
+	load_game()
 
 func _process(_delta):
 	move_timer_bar.value = 100 * (Global.data.move_timer - get_node("/root/main/MoveTimer").time_left) / Global.data.move_timer
-	if Global.data.base_income > 0:
-		income_timer_bar.value = 100 * (Global.data.income_timer - get_node("/root/main/IncomeTimer").time_left) / Global.data.income_timer
+	income_timer_bar.value = 100 * (Global.data.income_timer - get_node("/root/main/IncomeTimer").time_left) / Global.data.income_timer
+
+func _notification(item):
+	if (item == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
+		exit_game = true
+		save_game()
 
 func set_board_variables():
 	Main.tile_scale = 4.0 / Global.data.board_size
@@ -93,6 +102,7 @@ func resize_tile_board():
 			if column == Global.data.board_size - 1 or row == Global.data.board_size - 1:
 				Global.data.all_tiles[column].append(null)
 			if Global.data.all_tiles[column][row] != null:
+				Global.data.all_tiles[column][row].queue_free()
 				tile_board.add_tile(Global.data.all_tiles[column][row].tile_order, column, row)
 
 func set_tile_position(board_position):
@@ -233,3 +243,87 @@ func _on_Timer_timeout(timer):
 	elif timer.name == "MainTimer":
 		Main.achievements_panel._on_MainTimer_timeout()
 		Main.upgrades_panel._on_MainTimer_timeout()
+
+func save_game():
+	global_data_byte_array = PoolByteArray()
+	Global.data.tile_levels = []
+	for column in Global.data.board_size:
+			Global.data.tile_levels.append([])
+			for row in Global.data.board_size:
+				if Global.data.all_tiles[column][row] != null:
+					Global.data.tile_levels[column].append(Global.data.all_tiles[column][row].tile_order)
+				else:
+					Global.data.tile_levels[column].append(null)
+
+	for i in to_json(Global.data):
+		global_data_byte_array.append(int(rand_range(33,127)))
+		global_data_byte_array.append(int(rand_range(33,127)))
+		global_data_byte_array.append(int(rand_range(33,127)))
+		if rand_range(0,7) > 5:
+			global_data_byte_array.append(ord("\n"))
+		else:
+			global_data_byte_array.append(int(rand_range(33,127)))
+		global_data_byte_array.append(ord(i)-8)
+
+	if http_request_save.request(	
+						"http://www.freealization.com/save/save.php", # URL
+						["Content-Type: application/json"], # Header
+						false, # Use SSL
+						HTTPClient.METHOD_POST, # Request method
+						global_data_byte_array.get_string_from_ascii() # Body
+					) == 0:
+		print("Data sent...")
+
+func load_game():
+	global_data_byte_array = PoolByteArray()
+	if http_request_load.request(	
+						"http://www.freealization.com/save/load.php", # URL
+						["Content-Type: application/json"], # Header
+						false, # Use SSL
+						HTTPClient.METHOD_GET # Request method
+					) == 0:
+		print("Data requested...")
+
+func _on_save_request_completed(_result, response_code, _header, _body):
+	if response_code == 200:
+		print("Data saved successfully")
+	if exit_game:
+		get_tree().quit()
+
+func _on_load_request_completed(_result, response_code, _header, body):
+	if body.get_string_from_utf8() == "Unable to open file.":
+		print("Server was unable to open file.")
+		return
+	elif response_code == 200:
+		print("Data successfully retrieved")
+	load_string = body.get_string_from_utf8()
+	for i in range(4,load_string.length(),5):
+		global_data_byte_array.append(ord(load_string[i])+8)
+	var data = parse_json(global_data_byte_array.get_string_from_ascii())
+
+	if typeof(data) == TYPE_DICTIONARY:
+		Global.data = data
+#		Global.data.coins = 99
+		print("Board size: " + str(Global.data.board_size))
+		Main.set_income()
+		Main.set_total()
+		Main.set_moves()
+	else:
+		printerr("Corrupted data!")
+	
+	set_board_variables()
+	tile_board.initialize_board()
+
+	if Global.data.board_size == 2:
+		Main.move_info.visible = false
+		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
+		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
+		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
+		Main.achievements_button.visible = false
+		Main.upgrades_button.disabled = true
+	
+	set_moves()
+	set_total()
+	
+	get_node("/root/main/MoveTimer").set_wait_time(Global.data.move_timer)
+	get_node("/root/main/IncomeTimer").set_wait_time(Global.data.income_timer)

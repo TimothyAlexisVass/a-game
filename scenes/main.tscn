@@ -196,7 +196,6 @@ autostart = true
 "Timers",
 ]]
 wait_time = 10.0
-autostart = true
 
 [node name="Gradient" type="Control" parent="."]
 margin_right = 576.0
@@ -468,21 +467,21 @@ position = Vector2( -17, -16 )
 position = Vector2( -16, -16 )
 script = ExtResource( 7 )
 
-[node name="RecycleButton" type="TextureButton" parent="BoardBackground" groups=[
+[node name="RecycleButton" type="TextureButton" parent="." groups=[
 "user_interface_button",
 ]]
 material = SubResource( 14 )
-margin_left = 440.0
-margin_top = -20.0
-margin_right = 550.0
-margin_bottom = 100.0
+margin_left = 456.0
+margin_top = -4.0
+margin_right = 581.0
+margin_bottom = 121.0
 texture_normal = ExtResource( 10 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="BoardBackground/RecycleButton"]
+[node name="Panel" type="Panel" parent="RecycleButton"]
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -776,3 +775,7 @@ text = "Description"
 align = 1
 valign = 1
 autowrap = true
+
+[node name="HTTPRequestSave" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequestLoad" type="HTTPRequest" parent="."]

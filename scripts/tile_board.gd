@@ -13,7 +13,6 @@ var full_board
 
 func _ready():
 	randomize()
-	initialize_board()
 
 func _input(event):
 	if Main.move_enabled == true:
@@ -90,10 +89,16 @@ func update_board(direction):
 				add_tile_in_empty_position()
 				calculate_board_income()
 				movement = false
-				get_node("../RecycleButton").visible = Global.data.moves_left == 0
-				if !open_position_exists() and !combination_possible():
-					get_node("../RecycleButton").visible = true
-					full_board = true
+				check_if_recycle_should_be_enabled()
+
+func check_if_recycle_should_be_enabled():
+	Main.recycle_button.visible = Global.data.moves_left == 0
+	print("got here too")
+	print(str(open_position_exists()))
+	if !open_position_exists() and !combination_possible():
+		print("got here too")
+		Main.recycle_button.visible = true
+		full_board = true
 
 func calculate_board_income():
 	Global.data.board_income = 0
@@ -267,10 +272,6 @@ func combination_possible():
 	return false
 
 func add_tile(tile_order, column, row):
-	# If there is already a tile in this position, clear it.
-	# This happens when Global.data.board_size is upgraded
-	if Global.data.all_tiles[column][row] != null:
-		Global.data.all_tiles[column][row].queue_free()
 	# Instance a new tile, set it's position, tile_order,
 	tile = Main.tile_template.instance()
 	tile.position = Main.set_tile_position(Vector2(column, row))
@@ -297,30 +298,35 @@ func add_tile_in_empty_position():
 func initialize_board():
 	Main.set_board_variables()
 	Main.generate_tile_backgrounds()
-	
-	get_node("../RecycleButton").visible = false
-	
 	#Wait 1 second before adding tiles
 	yield(get_tree().create_timer(1), "timeout")
 	
 	full_board = false
 	
-	Global.data.all_tiles = []
-	#Make Global.data.all_tiles into 2D_array
-	for column in Global.data.board_size:
-		Global.data.all_tiles.append([])
-		for row in Global.data.board_size:
-			Global.data.all_tiles[column].append(null)
-	
-	for i in Global.data.starting_tiles:
-		add_tile_in_empty_position()
-		yield(get_tree().create_timer(.3), "timeout")
+	if Global.data.all_tiles == null:
+		Global.data.all_tiles = []
+		#Make Global.data.all_tiles into 2D_array
+		for column in Global.data.board_size:
+			Global.data.all_tiles.append([])
+			for row in Global.data.board_size:
+				Global.data.all_tiles[column].append(null)
+		for i in Global.data.starting_tiles:
+			add_tile_in_empty_position()
+			yield(get_tree().create_timer(.3), "timeout")
+	else:
+		for column in Global.data.board_size:
+			for row in Global.data.board_size:
+				if Global.data.tile_levels[column][row] != null:
+					add_tile(int(Global.data.tile_levels[column][row]), column, row)
+					yield(get_tree().create_timer(.3), "timeout")
 	calculate_board_income()
 	yield(get_tree().create_timer(.4), "timeout")
 	Main.move_enabled = true
+	print("got here")
+	check_if_recycle_should_be_enabled()
 
 func recycle():
-	get_node("../RecycleButton").visible = false
+	Main.recycle_button.visible = false
 	Global.data.base_income = Global.data.total_income
 	Main.move_enabled = false
 	
@@ -338,5 +344,5 @@ func recycle():
 				tile.z_index = 999
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				Global.data.all_tiles[column][row] = null
-	
+	Global.data.all_tiles = null
 	initialize_board()

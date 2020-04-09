@@ -114,6 +114,7 @@ func _progress_events(achievement):
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = true
 				Global.data.base_income = 0.09
 				Main.set_income()
+				Main.get_node("/root/main/IncomeTimer").start()
 				achievement.level += 1
 		# Move to array "completed" when all levels are completed
 		_:
