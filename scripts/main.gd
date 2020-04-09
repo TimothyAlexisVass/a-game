@@ -16,12 +16,16 @@ var data = {
 	"add_moves_amount": 1,
 	"auto_add_moves": false,
 	"coins": 0.0,
-	"total_coins_ever": coins,
+	"total_coins_ever": 0.0,
 	"base_income": 0.0,
 	"board_income": 0.0,
 	"total_income": 0.0,
 	"income_multiplier": 1,
 	"full_board_multiplier": 1,
+	"open_upgrades": [],
+	"completed_upgrades": [],
+	"open_achievements": [],
+	"completed_achievements": []
 }
 
 var increment = increment_type.ADD
@@ -81,7 +85,7 @@ func _ready():
 	
 	set_board_variables()
 	
-	if Main.board_size == 2:
+	if Main.data.board_size == 2:
 		Main.move_info.visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
@@ -271,5 +275,5 @@ func _on_Timer_timeout(timer):
 		Main.moves_left += 1
 		set_moves()
 	elif timer.name == "MainTimer":
-		# Refresh everything
-		pass
+		Main.achievements_panel._on_MainTimer_timeout()
+		Main.upgrades_panel._on_MainTimer_timeout()

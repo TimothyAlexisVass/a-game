@@ -8,7 +8,7 @@ var upgrade_object
 
 var board_size_function = funcref(self, "board_size")
 
-var open = [
+var open_upgrades = [
 	{
 		"name": "board_size",
 		"level": 0,
@@ -17,7 +17,7 @@ var open = [
 		"image": load("res://assets/upgrade_images/board_size.svg"),
 		"description": ["Increase board size (3x3)", "Increase board size (4x4)", "Increase board size (5x5)", "Increase board size (6x6)"]
 	},
-		{
+	{
 		"name": "tile_base",
 		"level": 0,
 		"requirement": [10, 1500, 2000000, 3000000000],
@@ -27,10 +27,10 @@ var open = [
 	}
 ]
 
-var completed = []
+var completed_upgrades = []
 
 func _ready():
-	for upgrade in open:
+	for upgrade in open_upgrades:
 		upgrade_object = upgrade_template.instance()
 		upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/ImageBackground/UpgradeImage").texture = upgrade["image"]
 		upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])
@@ -39,8 +39,8 @@ func _ready():
 		get_node("ScrollContainer/MarginContainer/VBoxContainer").add_child(upgrade_object)
 		upgrade_objects_list[upgrade.name] = upgrade_object
 
-func _on_CheckUpgrades_timeout():
-	for upgrade in open:
+func _on_MainTimer_timeout():
+	for upgrade in open_upgrades:
 		upgrade_object = upgrade_objects_list[upgrade.name]
 		if Main.coins >= upgrade.requirement[upgrade.level]:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
@@ -50,11 +50,11 @@ func _on_CheckUpgrades_timeout():
 func _on_UpgradeBuyButton_pressed(upgrade):
 	upgrade_object = upgrade_objects_list[upgrade.name]
 	if Main.coins >= upgrade.requirement[upgrade.level]:
-		perform_upgrade(upgrade)
+		_perform_upgrade(upgrade)
 	else:
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
 
-func perform_upgrade(upgrade):
+func _perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Main.board_size = upgrade.reward[upgrade.level]

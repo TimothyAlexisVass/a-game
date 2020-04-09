@@ -183,6 +183,7 @@ font_data = ExtResource( 3 )
 [node name="MainTimer" type="Timer" parent="." groups=[
 "Timers",
 ]]
+wait_time = 0.1
 autostart = true
 
 [node name="MoveTimer" type="Timer" parent="." groups=[
@@ -536,9 +537,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CheckUpgrades" type="Timer" parent="Upgrades"]
-autostart = true
-
 [node name="ScrollContainer" type="ScrollContainer" parent="Upgrades"]
 margin_right = 540.0
 margin_bottom = 811.0
@@ -605,9 +603,6 @@ script = ExtResource( 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CheckAchievements" type="Timer" parent="Achievements"]
-autostart = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Achievements"]
 anchor_right = 1.0
@@ -781,5 +776,3 @@ text = "Description"
 align = 1
 valign = 1
 autowrap = true
-[connection signal="timeout" from="Upgrades/CheckUpgrades" to="Upgrades" method="_on_CheckUpgrades_timeout"]
-[connection signal="timeout" from="Achievements/CheckAchievements" to="Achievements" method="_on_CheckAchievements_timeout"]

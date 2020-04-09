@@ -303,7 +303,6 @@ func initialize_board():
 	#Wait 1 second before adding tiles
 	yield(get_tree().create_timer(1), "timeout")
 	
-	Main.move_enabled = true
 	full_board = false
 	
 	Main.all_tiles = []
@@ -316,10 +315,12 @@ func initialize_board():
 	for i in Main.starting_tiles:
 		add_tile_in_empty_position()
 		yield(get_tree().create_timer(.3), "timeout")
-	
 	calculate_board_income()
+	yield(get_tree().create_timer(.4), "timeout")
+	Main.move_enabled = true
 
 func recycle():
+	get_node("../RecycleButton").visible = false
 	Main.base_income = Main.total_income
 	Main.move_enabled = false
 	

@@ -13,7 +13,7 @@ onready var description_title_label = get_node("Description/Background/MarginCon
 onready var description_progress_bar = get_node("Description/Background/MarginContainer/Panel/ProgressBar")
 onready var description_label = get_node("Description/Background/MarginContainer/Panel/MarginContainer/DescriptionLabel")
 
-var open = [
+var open_achievements = [
 	{
 		"name": "progress_events",
 		"level": 0,
@@ -60,11 +60,11 @@ var open = [
 	}
 ]
 
-var completed = []
+var completed_achievements = []
 
 func _ready():
 	description.visible = false
-	for achievement in open:
+	for achievement in open_achievements:
 		if achievement.name != "progress_events":
 			achievement_object = achievement_template.instance()
 			achievement_object.get_node("TextureProgress/TextureButton").texture_normal = achievement["image"]
@@ -86,19 +86,19 @@ func _show_achievement_description(achievement):
 func _hide_achievement_description():
 	description.visible = false
 
-func _on_CheckAchievements_timeout():
+func _on_MainTimer_timeout():
 	if achievement_described != null:
 		description_progress_bar.value = check_progress(achievement_described)
-	for achievement in open:
+	for achievement in open_achievements:
 		if achievement.name == "progress_events":
-			progress_events(achievement)
+			_progress_events(achievement)
 		else:
-			check_if_achieved(achievement)
+			_check_if_achieved(achievement)
 			achievement_object = achievement_objects_list[achievement.name]
 			achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
 			achievement_object.get_node("TextureProgress").value = check_progress(achievement)
 
-func progress_events(achievement):
+func _progress_events(achievement):
 	match(achievement.level):
 		0:
 			if Main.coins >= 0.3:
@@ -117,8 +117,8 @@ func progress_events(achievement):
 				achievement.level += 1
 		# Move to array "completed" when all levels are completed
 		_:
-			completed.append(achievement)
-			open.erase(achievement)
+			completed_achievements.append(achievement)
+			open_achievements.erase(achievement)
 
 func check_progress(achievement):
 	if achievement.level == achievement["title"].size():
@@ -129,7 +129,7 @@ func check_progress(achievement):
 		"total_coins_ever":
 			return 100 * Main.total_coins_ever / achievement.requirement[achievement.level]
 
-func check_if_achieved(achievement):
+func _check_if_achieved(achievement):
 	match(achievement.name):
 		"coins":
 			if Main.coins >= achievement.requirement[achievement.level]:
@@ -146,6 +146,6 @@ func check_if_achieved(achievement):
 	
 		# Move to array "completed" when all levels are completed
 		if achievement.level == achievement["title"].size():
-			completed.append(achievement)
-			open.erase(achievement)
+			completed_achievements.append(achievement)
+			open_achievements.erase(achievement)
 		achieved = false
