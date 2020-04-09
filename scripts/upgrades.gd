@@ -15,7 +15,7 @@ var open_upgrades = [
 		"requirement": [5, 500, 2000000, 3000000000],
 		"reward": [3, 4, 5, 6],
 		"image": load("res://assets/upgrade_images/board_size.svg"),
-		"description": ["Increase board size (3x3)", "Increase board size (4x4)", "Increase board size (5x5)", "Increase board size (6x6)"]
+		"description": ["Increase board size (3x3)", "Increase board size (4x4)", "Increase board size (5x5)", "Increase board size (6x6)"],
 	},
 	{
 		"name": "tile_base",
@@ -42,14 +42,14 @@ func _ready():
 func _on_MainTimer_timeout():
 	for upgrade in open_upgrades:
 		upgrade_object = upgrade_objects_list[upgrade.name]
-		if Main.coins >= upgrade.requirement[upgrade.level]:
+		if Global.data.coins >= upgrade.requirement[upgrade.level]:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
 
 func _on_UpgradeBuyButton_pressed(upgrade):
 	upgrade_object = upgrade_objects_list[upgrade.name]
-	if Main.coins >= upgrade.requirement[upgrade.level]:
+	if Global.data.coins >= upgrade.requirement[upgrade.level]:
 		_perform_upgrade(upgrade)
 	else:
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
@@ -57,19 +57,19 @@ func _on_UpgradeBuyButton_pressed(upgrade):
 func _perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
-		Main.board_size = upgrade.reward[upgrade.level]
+		Global.data.board_size = upgrade.reward[upgrade.level]
 		Main.resize_tile_board()
 
 	elif upgrade.name == "tile_base":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
-		Main.tile_base = upgrade.reward[upgrade.level]
+		Global.data.tile_base = upgrade.reward[upgrade.level]
 	
 	# Happens for all upgrades:
 	upgrade.level += 1
 	upgrade_object.get_node("Background/MarginContainer/Panel/HBoxContainer/PriceLabel").text = str(upgrade.requirement[upgrade.level])	
 	upgrade_object.get_node("Background/MarginContainer/Panel/MarginContainer2/HBoxContainer/DescriptionLabel").text = str(upgrade.description[upgrade.level])
 
-	if Main.coins >= upgrade.requirement[upgrade.level]:
+	if Global.data.coins >= upgrade.requirement[upgrade.level]:
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 	else:
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true

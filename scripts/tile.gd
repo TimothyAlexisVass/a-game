@@ -1,6 +1,6 @@
 extends Node2D
 
-var tile_order = Main.tile_order
+var tile_order = Global.data.tile_order
 var value = 0
 onready var tween = get_node("Tween")
 
@@ -17,18 +17,18 @@ func _ready():
 
 func set_value():
 	set_color()
-	if Main.tile_base == 0:
+	if Global.data.tile_base == 0:
 		value = tile_order + 1
 		get_node("Value").text = ""
 	else:
-		if Main.increment == Main.increment_type.ADD:
-			value = Main.tile_base * (tile_order+1)
-		elif Main.increment == Main.increment_type.DOUBLE:
-			value = Main.tile_base * pow(2, tile_order)
-		elif Main.increment == Main.increment_type.MULTIPLY:
-			value = pow(Main.tile_base, tile_order + 1)
+		if Global.data.increment == Main.increment_type.ADD:
+			value = Global.data.tile_base * (tile_order+1)
+		elif Global.data.increment == Main.increment_type.DOUBLE:
+			value = Global.data.tile_base * pow(2, tile_order)
+		elif Global.data.increment == Main.increment_type.MULTIPLY:
+			value = pow(Global.data.tile_base, tile_order + 1)
 		else:
-			value = pow(Main.tile_base, tile_order * Main.tile_base)
+			value = pow(Global.data.tile_base, tile_order * Global.data.tile_base)
 		# Set font size
 		var number_length = 1 + floor(log(value)/log(10))
 		var string = "res://assets/fonts/length" + str(number_length) + ".tres"

@@ -101,18 +101,18 @@ func _on_MainTimer_timeout():
 func _progress_events(achievement):
 	match(achievement.level):
 		0:
-			if Main.coins >= 0.3:
-				Main.achievements_button.visible = Main.coins >= 0.3
+			if Global.data.coins >= 0.3:
+				Main.achievements_button.visible = Global.data.coins >= 0.3
 				achievement.level += 1
 				Main.display_notification("Achievements enabled")
 		1:
-			if Main.coins >= 1:
-				Main.upgrades_button.disabled = Main.coins < 1
+			if Global.data.coins >= 1:
+				Main.upgrades_button.disabled = Global.data.coins < 1
 				Main.move_info.visible = true
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true
 				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = true
-				Main.base_income = 0.09
+				Global.data.base_income = 0.09
 				Main.set_income()
 				achievement.level += 1
 		# Move to array "completed" when all levels are completed
@@ -125,27 +125,29 @@ func check_progress(achievement):
 		return 100
 	match(achievement.name):
 		"coins":
-			return 100 * Main.coins / achievement.requirement[achievement.level]
+			return 100 * Global.data.coins / achievement.requirement[achievement.level]
 		"total_coins_ever":
-			return 100 * Main.total_coins_ever / achievement.requirement[achievement.level]
+			return 100 * Global.data.total_coins_ever / achievement.requirement[achievement.level]
 
 func _check_if_achieved(achievement):
-	match(achievement.name):
-		"coins":
-			if Main.coins >= achievement.requirement[achievement.level]:
-				Main.base_income *= achievement.reward[achievement.level]
-				achieved = true
-		"total_coins_ever":
-			if Main.total_coins_ever >= achievement.requirement[achievement.level]:
-				Main.income_multiplier *= achievement.reward[achievement.level]
-				achieved = true
-	if achieved:
-		Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")
-		Main.set_income()
-		achievement.level += 1
+	# Move to array "completed" if all levels are completed
+	if achievement.level == achievement["title"].size():
+		completed_achievements.append(achievement)
+		open_achievements.erase(achievement)
+
+	else:
+		match(achievement.name):
+			"coins":
+				if Global.data.coins >= achievement.requirement[achievement.level]:
+					Global.data.base_income *= achievement.reward[achievement.level]
+					achieved = true
+			"total_coins_ever":
+				if Global.data.total_coins_ever >= achievement.requirement[achievement.level]:
+					Global.data.income_multiplier *= achievement.reward[achievement.level]
+					achieved = true
+		if achieved:
+			Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")
+			Main.set_income()
+			achievement.level += 1
 	
-		# Move to array "completed" when all levels are completed
-		if achievement.level == achievement["title"].size():
-			completed_achievements.append(achievement)
-			open_achievements.erase(achievement)
-		achieved = false
+			achieved = false

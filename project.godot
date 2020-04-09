@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Main="*res://scripts/main.gd"
+Global="*res://scripts/global.gd"
 
 [display]
 
