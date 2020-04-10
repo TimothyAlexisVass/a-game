@@ -2,6 +2,8 @@ Fix glitchy graphics in Upgrades menu.
 
 Fix notifications scrolling when scrolling Upgrades menu.
 
+Add image for increment upgrade.
+
 Order assets
 
 Change .stylebox files to -stylebox.tres
