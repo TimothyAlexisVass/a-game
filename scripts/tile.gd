@@ -1,5 +1,8 @@
 extends Node2D
 
+var prime = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167]
+var fibonnacci = [2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514299, 832040]
+
 var tile_order: int
 var value = 0
 onready var tween = get_node("Tween")
@@ -21,11 +24,17 @@ func set_value():
 		value = tile_order + 1
 		get_node("Value").text = ""
 	else:
-		if Global.data.increment == Main.increment_type.ADD:
+		if Global.data.increment == Global.increment_type.ADD:
 			value = Global.data.tile_base * (tile_order+1)
-		elif Global.data.increment == Main.increment_type.DOUBLE:
+		elif Global.data.increment == Global.increment_type.PRIME:
+			print("it is prime")
+			value = Global.data.tile_base * prime[tile_order]
+		elif Global.data.increment == Global.increment_type.FIBONNACCI:
+			print("it is")
+			value = Global.data.tile_base * fibonnacci[tile_order]
+		elif Global.data.increment == Global.increment_type.DOUBLE:
 			value = Global.data.tile_base * pow(2, tile_order)
-		elif Global.data.increment == Main.increment_type.MULTIPLY:
+		elif Global.data.increment == Global.increment_type.MULTIPLY:
 			value = pow(Global.data.tile_base, tile_order + 1)
 		else:
 			value = pow(Global.data.tile_base, tile_order * Global.data.tile_base)

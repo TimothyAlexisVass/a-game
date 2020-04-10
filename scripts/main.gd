@@ -1,7 +1,5 @@
 extends Node2D
 
-enum increment_type {ADD, PRIME, FIBONNACI, DOUBLE, MULTIPLY, ULTIMATE}
-
 var save_string
 var load_string
 var global_data_byte_array

@@ -1,17 +1,19 @@
 extends Node
 
+enum increment_type {ADD, PRIME, FIBONNACCI, DOUBLE, MULTIPLY, ULTIMATE}
+
 var data = {
-	"increment": Main.increment_type.ADD,
+	"increment": increment_type.ADD,
 	"board_size": 2,
 	"starting_tiles": 1,
 	"tile_order": 0,
-	"tile_base": 0,
+	"tile_base": 1,
 	"all_tiles": [],
 	"tile_levels": [],
 	"income_timer": 12,
 	"move_timer": 10,
 	"moves_left": 500,
-	"coins": 0.0,
+	"coins": 9990.0,
 	"total_coins": 0.0,
 	"total_recycles": 0,
 	"base_income": 0.0,

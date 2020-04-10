@@ -1,7 +1,5 @@
 extends Panel
 
-enum check{UPGRADE, AFFORDABLE}
-
 var upgrade_template = preload("res://scenes/upgrade.tscn")
 var upgrade_objects_list = {}
 var upgrade_object
@@ -24,6 +22,14 @@ var open_upgrades = [
 		"reward": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		"image": load("res://assets/upgrade_images/tile_base.svg"),
 		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Double base value for tiles", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
+	},
+	{
+		"name": "increment",
+		"level": 0,
+		"requirement": [50, 200, 500, 1000, ],
+		"reward": [Global.increment_type.PRIME, Global.increment_type.FIBONNACCI, Global.increment_type.DOUBLE, Global.increment_type.MULTIPLY, Global.increment_type.ULTIMATE],
+		"image": load("res://assets/upgrade_images/increment.svg"),
+		"description": ["Combined tiles increment as prime numbers.", "Combined tiles follow the Fibonnacci sequence", "Combined tile values are doubled", "Value is multiplied", "Value increases exponentially."]
 	}
 ]
 
@@ -63,7 +69,11 @@ func _perform_upgrade(upgrade):
 	elif upgrade.name == "tile_base":
 		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.tile_base = upgrade.reward[upgrade.level]
-	
+
+	elif upgrade.name == "increment":
+		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
+		Global.data.increment = upgrade.reward[upgrade.level]
+
 	# Happens for all upgrades:
 	upgrade.level += 1
 	_update_upgrade_object(upgrade)
