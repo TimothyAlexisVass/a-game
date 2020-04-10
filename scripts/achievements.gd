@@ -36,7 +36,7 @@ var open_achievements = [
 						11111111111,
 						pow(10, 12)],
 		"reward": [1, 1.5, 2, 1.5, 1 + 1/3, 1.25, 1.2],
-		"image": load("res://assets/achievement_images/coin.svg"),
+		"image": load("res://assets/achievement_images/coins.svg"),
 		"description": ["Enables upgrades and income.", "Base income +50%", "Doubles base income.", "Base income +50%", "Base income +1/3", "Base income +25%", "Base income +20%"]
 	},
 	{
@@ -55,26 +55,26 @@ var open_achievements = [
 						pow(10, 15),
 						pow(10, 18)],
 		"reward": [2, 2, 2, 2, 2, 2],
-		"image": load("res://assets/achievement_images/coin.svg"),
+		"image": load("res://assets/achievement_images/total_coins.svg"),
 		"description": ["Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier"]
 	},
 	{
 		"name": "total_recycles",
 		"level": 0,
-		"title": ["100 Recycles",
-				  "1000 Recycles",
-				  "10000 Recycles",
+		"title": ["25 Recycles",
+				  "500 Recycles",
+				  "7500 Recycles",
 				  "100000 Recycles",
 				  "1 Million Recycles",
 				  "1 Billion Recycles"],
-		"requirement": [pow(10, 2),
-						pow(10, 3),
-						pow(10, 4),
+		"requirement": [25,
+						500,
+						7500,
 						pow(10, 5),
 						pow(10, 6),
 						pow(10, 9)],
 		"reward": [1.5, 1.5, 2, 2, 2, 10],
-		"image": load("res://assets/achievement_images/coin.svg"),
+		"image": load("res://assets/achievement_images/total_recycles.svg"),
 		"description": ["50% bonus when recycling a full board", "Increase full board bonus by 50%", "Doubles full board bonus", "Doubles full board bonus", "Doubles full board bonus", "1000% full board bonus"]
 	}
 ]

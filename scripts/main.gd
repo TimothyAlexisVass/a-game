@@ -268,8 +268,12 @@ func save_game():
 	
 	for achievement in achievements_panel.open_achievements:
 		Global.data.achievements_levels[achievement.name] = achievement.level
-	
+	for achievement in achievements_panel.completed_achievements:
+		Global.data.achievements_levels[achievement.name] = achievement.level
+
 	for upgrade in upgrades_panel.open_upgrades:
+		Global.data.upgrades_levels[upgrade.name] = upgrade.level
+	for upgrade in upgrades_panel.completed_upgrades:
 		Global.data.upgrades_levels[upgrade.name] = upgrade.level
 
 	for i in to_json(Global.data):
@@ -319,6 +323,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 	
 		if typeof(data) == TYPE_DICTIONARY:
 			Global.data = data
+			print(Global.data)
 			Main.set_achievements_and_upgrades_levels()
 			Main.set_income()
 			Main.set_total()
@@ -328,8 +333,6 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		
 	set_board_variables()
 	tile_board.initialize_board()
-	
-	print(Global.data)
 	
 	if Global.data.board_size == 2 and Global.data.coins < 1:
 		Main.move_info.visible = false

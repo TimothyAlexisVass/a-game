@@ -1,20 +1,17 @@
-Fix achievement_levels array when saving/loading.
+Order assets
 
-Add image for total_recycles achievement.
+Change .stylebox files to -stylebox.tres
 
 Add energy for full board => Used for Buildings
 
 Add chance to gain premium resource on combine
 
 Add Achievement:
-    Filling tiles => full_board_reward => energy_multiplier
-       Levels => (board_size>=4, base>1) 10, 50, 100, 175, 250, 500, 1000, 2500, 5000, 10000
     1024 (board_size>=4, base=1)
     2048 (board_size>=4, base=2)
 
 Add Upgrade:
     Tile Increment => Addition -> Primes -> Fibonnaci -> Double -> Multiply
-    Base value => 1, 2, 3, 4, 5, 6, 7, 8, 9
     Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
     Income frequency => 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
