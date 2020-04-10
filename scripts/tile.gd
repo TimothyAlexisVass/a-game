@@ -17,6 +17,9 @@ func _ready():
 	# Grow the tile when added to the board
 	tween.interpolate_property(self, "scale", Vector2(.1, .1), Vector2(Main.tile_scale, Main.tile_scale), .6, tween.TRANS_CUBIC, tween.EASE_OUT)
 	tween.start()
+	# Global.data.top_tile_order for tile_order achievement
+	if tile_order > Global.data.top_tile_order:
+		Global.data.top_tile_order = tile_order
 
 func set_value():
 	set_color()

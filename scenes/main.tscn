@@ -546,8 +546,8 @@ __meta__ = {
 }
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Upgrades"]
-margin_right = 540.0
-margin_bottom = 811.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 11 )
@@ -615,7 +615,6 @@ __meta__ = {
 [node name="ScrollContainer" type="ScrollContainer" parent="Achievements"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = 6.10352e-05
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 11 )

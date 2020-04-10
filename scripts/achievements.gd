@@ -76,6 +76,24 @@ var open_achievements = [
 		"reward": [1.5, 1.5, 2, 2, 2, 10],
 		"image": load("res://assets/achievement_images/total_recycles.svg"),
 		"description": ["50% bonus when recycling a full board", "Increase full board bonus by 50%", "Doubles full board bonus", "Doubles full board bonus", "Doubles full board bonus", "1000% full board bonus"]
+	},
+	{
+		"name": "top_tile_order",
+		"level": 0,
+		"title": [	"4th order",
+					"5th order",
+					"6th order",
+					"7th order",
+					"8th order",
+					"9th order",
+					"10th order",
+					"11th order",
+					"12th order",
+					"13th order",],
+		"requirement": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+		"reward": [2, 3, 4, 5, 6, 8, 10, 12, 14, 16],
+		"image": load("res://assets/achievement_images/top_tile_order.svg"),
+		"description": ["2 tiles after recycle", "3 tiles after recycle", "4 tiles after recycle", "5 tiles after recycle", "6 tiles after recycle", "8 tiles after recycle", "10 tiles after recycle", "12 tiles after recycle", "14 tiles after recycle", "16 tiles after recycle"]
 	}
 ]
 
@@ -155,6 +173,8 @@ func check_progress(achievement):
 			return 100 * Global.data.total_coins / achievement.requirement[achievement.level]
 		"total_recycles":
 			return 100 * Global.data.total_recycles / achievement.requirement[achievement.level]
+		"top_tile_order":
+			return 100 * Global.data.top_tile_order / achievement.requirement[achievement.level]
 
 func _check_if_achieved(achievement):
 	# Move to array "completed" if all levels are completed
@@ -175,6 +195,10 @@ func _check_if_achieved(achievement):
 			"total_recycles":
 				if Global.data.total_recycles >= achievement.requirement[achievement.level]:
 					Global.data.full_board_multiplier *= achievement.reward[achievement.level]
+					achieved = true
+			"top_tile_order":
+				if Global.data.top_tile_order >= achievement.requirement[achievement.level]:
+					Global.data.starting_tiles = achievement.reward[achievement.level]
 					achieved = true
 		if achieved:
 			Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")

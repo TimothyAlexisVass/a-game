@@ -133,10 +133,10 @@ func change_total(amount, position):
 	
 	display_profit_object = profit_indicator.instance()
 	display_profit_object.position = position
-	if amount < 1 and amount > -1:	
+	if amount - int(amount) == 0:
+		amount = str(int(amount))
+	elif amount < 10 and amount > -10:	
 		amount = str("%.2f" % (amount))
-	elif amount < 10 and amount > -10:
-		amount = str("%.1f" % (amount))
 	else:
 		amount = str(int(amount))
 	

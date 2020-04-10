@@ -303,7 +303,7 @@ func initialize_board():
 		yield(get_tree().create_timer(.5), "timeout")
 		generate_empty_all_tiles_array()
 		for i in Global.data.starting_tiles:
-			yield(get_tree().create_timer(.3), "timeout")
+			yield(get_tree().create_timer(.1), "timeout")
 			add_tile_in_empty_position()
 	else:
 		generate_empty_all_tiles_array()
@@ -327,6 +327,7 @@ func recycle():
 	Main.recycle_button.visible = false
 	Global.data.base_income = Global.data.total_income
 	Main.move_enabled = false
+	Global.data.top_tile_order = 0
 	
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
