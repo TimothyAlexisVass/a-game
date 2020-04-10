@@ -34,13 +34,13 @@ var open_achievements = [
 						1000000,
 						1234567890,
 						11111111111,
-						pow(10,12)],
+						pow(10, 12)],
 		"reward": [1, 1.5, 2, 1.5, 1 + 1/3, 1.25, 1.2],
 		"image": load("res://assets/achievement_images/coin.svg"),
 		"description": ["Enables upgrades and income.", "Base income +50%", "Doubles base income.", "Base income +50%", "Base income +1/3", "Base income +25%", "Base income +20%"]
 	},
 	{
-		"name": "total_coins_ever",
+		"name": "total_coins",
 		"level": 0,
 		"title": ["1K Total coins ever",
 				  "1M Total coins ever",
@@ -48,15 +48,34 @@ var open_achievements = [
 				  "1Qa Total coins ever",
 				  "1Qi Total coins ever",
 				  "1Sx Total coins ever"],
-		"requirement": [pow(10,3),
-						pow(10,6),
-						pow(10,9),
-						pow(10,12),
-						pow(10,15),
-						pow(10,18)],
+		"requirement": [pow(10, 3),
+						pow(10, 6),
+						pow(10, 9),
+						pow(10, 12),
+						pow(10, 15),
+						pow(10, 18)],
 		"reward": [2, 2, 2, 2, 2, 2],
 		"image": load("res://assets/achievement_images/coin.svg"),
 		"description": ["Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier", "Doubles income multiplier"]
+	},
+	{
+		"name": "total_recycles",
+		"level": 0,
+		"title": ["100 Recycles",
+				  "1000 Recycles",
+				  "10000 Recycles",
+				  "100000 Recycles",
+				  "1 Million Recycles",
+				  "1 Billion Recycles"],
+		"requirement": [pow(10, 2),
+						pow(10, 3),
+						pow(10, 4),
+						pow(10, 5),
+						pow(10, 6),
+						pow(10, 9)],
+		"reward": [1.5, 1.5, 2, 2, 2, 10],
+		"image": load("res://assets/achievement_images/coin.svg"),
+		"description": ["50% bonus when recycling a full board", "Increase full board bonus by 50%", "Doubles full board bonus", "Doubles full board bonus", "Doubles full board bonus", "1000% full board bonus"]
 	}
 ]
 
@@ -132,8 +151,10 @@ func check_progress(achievement):
 	match(achievement.name):
 		"coins":
 			return 100 * Global.data.coins / achievement.requirement[achievement.level]
-		"total_coins_ever":
-			return 100 * Global.data.total_coins_ever / achievement.requirement[achievement.level]
+		"total_coins":
+			return 100 * Global.data.total_coins / achievement.requirement[achievement.level]
+		"total_recycles":
+			return 100 * Global.data.total_recycles / achievement.requirement[achievement.level]
 
 func _check_if_achieved(achievement):
 	# Move to array "completed" if all levels are completed
@@ -147,9 +168,13 @@ func _check_if_achieved(achievement):
 				if Global.data.coins >= achievement.requirement[achievement.level]:
 					Global.data.base_income *= achievement.reward[achievement.level]
 					achieved = true
-			"total_coins_ever":
-				if Global.data.total_coins_ever >= achievement.requirement[achievement.level]:
+			"total_coins":
+				if Global.data.total_coins >= achievement.requirement[achievement.level]:
 					Global.data.income_multiplier *= achievement.reward[achievement.level]
+					achieved = true
+			"total_recycles":
+				if Global.data.total_recycles >= achievement.requirement[achievement.level]:
+					Global.data.full_board_multiplier *= achievement.reward[achievement.level]
 					achieved = true
 		if achieved:
 			Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")

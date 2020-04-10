@@ -786,6 +786,7 @@ valign = 1
 autowrap = true
 
 [node name="Splash" type="Panel" parent="."]
+visible = false
 margin_right = 576.0
 margin_bottom = 1024.0
 custom_styles/panel = SubResource( 19 )

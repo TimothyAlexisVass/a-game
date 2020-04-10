@@ -343,4 +343,5 @@ func recycle():
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				Global.data.all_tiles[column][row] = null
 	Global.data.all_tiles = null
+	Global.data.total_recycles += 1
 	initialize_board()

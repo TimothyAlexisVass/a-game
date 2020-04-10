@@ -1,4 +1,6 @@
-Fix all_board_tiles array when saving/loading.
+Fix achievement_levels array when saving/loading.
+
+Add image for total_recycles achievement.
 
 Add energy for full board => Used for Buildings
 

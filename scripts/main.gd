@@ -131,7 +131,7 @@ func display_notification(notification_text):
 func change_total(amount, position):
 	Global.data.coins += amount
 	if amount > 0:
-		Global.data.total_coins_ever += amount
+		Global.data.total_coins += amount
 	
 	display_profit_object = profit_indicator.instance()
 	display_profit_object.position = position
@@ -329,8 +329,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 	set_board_variables()
 	tile_board.initialize_board()
 	
-	print(Global.data.upgrades_levels)
-	print(upgrades_panel.open_upgrades[0].level)
+	print(Global.data)
 	
 	if Global.data.board_size == 2 and Global.data.coins < 1:
 		Main.move_info.visible = false
