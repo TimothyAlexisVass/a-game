@@ -269,6 +269,8 @@ func combination_possible():
 	return false
 
 func add_tile(tile_order, column, row):
+	if Main.all_tiles[column][row] != null:
+		Main.all_tiles[column][row].queue_free()
 	# Instance a new tile, set it's position, tile_order,
 	tile = Main.tile_template.instance()
 	tile.position = Main.set_tile_position(Vector2(column, row))
@@ -323,12 +325,13 @@ func generate_empty_all_tiles_array():
 		Main.all_tiles.append([])
 		for row in Global.data.board_size:
 			Main.all_tiles[column].append(null)
+
 func recycle():
 	Main.recycle_button.visible = false
 	Global.data.base_income += Global.data.board_income
 	Main.move_enabled = false
 	Global.data.top_tile_order = 0
-	
+
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
 			tile = Main.all_tiles[column][row]

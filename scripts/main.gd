@@ -215,6 +215,7 @@ func _on_user_interface_button_pressed(button):
 		Main.move_enabled = false
 		tween.interpolate_property(Main.upgrades_panel, "rect_position", Vector2(16, 1080), Vector2(16, 16), .6, tween.TRANS_EXPO, tween.EASE_OUT)
 		tween.start()
+		Main.upgrades_panel.sort_upgrades()
 	elif button.name == "CloseButton":
 		Main.upgrades_button.visible = true
 		Main.achievements_button.visible = true

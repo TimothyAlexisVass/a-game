@@ -26,7 +26,7 @@ var open_upgrades = [
 	{
 		"name": "increment",
 		"level": 0,
-		"requirement": [50, 200, 5000, 100000, pow(10,12), pow(10,24)],
+		"requirement": [200, 700, 5000, pow(10,12), pow(10,24)],
 		"reward": [Global.increment_type.PRIME, Global.increment_type.FIBONNACCI, Global.increment_type.DOUBLE, Global.increment_type.MULTIPLY, Global.increment_type.ULTIMATE],
 		"image": load("res://assets/upgrade_images/increment.svg"),
 		"description": ["Combined tiles increment as prime numbers.", "Combined tiles follow the Fibonnacci sequence", "Combined tile values are doubled", "Value is multiplied", "Value increases exponentially."]
@@ -77,13 +77,11 @@ func _perform_upgrade(upgrade):
 	elif upgrade.name == "tile_base":
 		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.tile_base = upgrade.reward[upgrade.level]
-		for tile in Main.all_tiles:
-			tile.set_value()
 
 	elif upgrade.name == "increment":
 		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.increment = upgrade.reward[upgrade.level]
-	
+
 	elif upgrade.name == "move_timer":
 		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.move_timer = upgrade.reward[upgrade.level]
@@ -91,7 +89,14 @@ func _perform_upgrade(upgrade):
 
 	# Happens for all upgrades:
 	upgrade.level += 1
-	_update_upgrade_object(upgrade)
+	if upgrade.level == upgrade.requirement.size():
+		completed_upgrades.append(upgrade)
+		open_upgrades.erase(upgrade)
+		upgrade_objects_list[upgrade.name].queue_free()
+	else:
+		_update_upgrade_object(upgrade)
+
+	sort_upgrades()
 
 func _update_upgrade_object(upgrade):
 	upgrade_object = upgrade_objects_list[upgrade.name]
@@ -102,3 +107,15 @@ func _update_upgrade_object(upgrade):
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 	else:
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
+
+func sort_upgrades():
+	var sort_array = []
+	for upgrade in open_upgrades:
+		sort_array.append(upgrade.requirement[upgrade.level])
+	sort_array.sort()
+	
+	for index in sort_array.size():
+		for upgrade in open_upgrades:
+			upgrade_object = upgrade_objects_list[upgrade.name]
+			if upgrade.requirement[upgrade.level] == sort_array[index]:
+				get_node("ScrollContainer/MarginContainer/VBoxContainer").move_child(upgrade_object, index)
