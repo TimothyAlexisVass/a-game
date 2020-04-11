@@ -136,7 +136,7 @@ func _on_MainTimer_timeout():
 			achievement_object.get_node("TextureProgress").value = check_progress(achievement)
 
 func _progress_events(achievement):
-	match(achievement.level):
+	match(int(achievement.level)):
 		0:
 			Main.achievements_button.visible = Global.data.coins >= 0.3
 			if Global.data.coins >= 0.3:
@@ -201,7 +201,7 @@ func _check_if_achieved(achievement):
 					Global.data.starting_tiles = achievement.reward[achievement.level]
 					achieved = true
 		if achieved:
-			Main.display_notification(achievement.title[achievement.level] + " (" + achievement.description[achievement.level] + ")")
+			Main.display_notification(achievement.title[achievement.level] + "\n(" + achievement.description[achievement.level] + ")")
 			Main.set_income()
 			achievement.level += 1
 	

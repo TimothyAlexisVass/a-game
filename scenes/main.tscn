@@ -642,7 +642,7 @@ margin_right = 32.0
 margin_bottom = 32.0
 custom_constants/vseparation = 16
 custom_constants/hseparation = 16
-columns = 3
+columns = 4
 
 [node name="Border" type="Panel" parent="Achievements"]
 anchor_right = 1.0

@@ -9,7 +9,7 @@ var data = {
 	"tile_order": 0,
 	"top_tile_order": 0,
 	"tile_base": 0,
-	"all_tiles": [],
+	"tiles_combined": 0,
 	"tile_levels": [],
 	"income_timer": 12,
 	"move_timer": 10,
@@ -23,5 +23,5 @@ var data = {
 	"income_multiplier": 1,
 	"full_board_multiplier": 1,
 	"upgrades_levels": {},
-	"achievements_levels": {},
+	"achievements_levels": {}
 }

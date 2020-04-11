@@ -1,9 +1,5 @@
 Fix notifications scrolling when scrolling Upgrades menu.
 
-Fix loading.
-
-Add image for increment upgrade and top_tile_order achievement.
-
 Order assets
 
 Change .stylebox files to -stylebox.tres

@@ -55,18 +55,18 @@ func combine_tiles(ctile, ctile2, column, row):
 	ctile2.move(Main.set_tile_position(Vector2(column, row)))
 	ctile2.clear_tile()
 	
-	# and a new tile is created and added to Global.data.all_tiles[column][row]
+	# and a new tile is created and added to Main.all_tiles[column][row]
 	add_tile(ctile.tile_order + 1, column, row)
 	
 	# coins are gained according to the value of the new tile
-	combine_value = Global.data.all_tiles[column][row].value / 100.0
+	combine_value = Main.all_tiles[column][row].value / 100.0
 	Main.change_total(combine_value, ctile.position)
 	movement = true
 	
 func move_tile(new_column, new_row, column, row, mtile):
 	mtile.move(Main.set_tile_position(Vector2(new_column, new_row)))
-	Global.data.all_tiles[new_column][new_row] = mtile
-	Global.data.all_tiles[column][row] = null
+	Main.all_tiles[new_column][new_row] = mtile
+	Main.all_tiles[column][row] = null
 	movement = true
 
 func update_board(direction):
@@ -101,8 +101,8 @@ func calculate_board_income():
 	Global.data.board_income = 0
 	for column in range(Global.data.board_size):
 		for row in range(Global.data.board_size):
-			if Global.data.all_tiles[column][row] != null and Global.data.base_income > 0:
-				Global.data.board_income += Global.data.all_tiles[column][row].value / 100.0
+			if Main.all_tiles[column][row] != null and Global.data.base_income > 0:
+				Global.data.board_income += Main.all_tiles[column][row].value / 100.0
 	Main.set_income()
 
 func combine_up():
@@ -110,15 +110,15 @@ func combine_up():
 		#First try to combine tiles
 		#Each row from top before the last one
 		for row in range(0, Global.data. board_size - 1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile below
 				for check_row in range(row + 1, Global.data.board_size):
-					tile2 = Global.data.all_tiles[column][check_row]
+					tile2 = Main.all_tiles[column][check_row]
 					if tile2 != null:
 						#Combine if they have the same tile_order
 						if tile.tile_order == tile2.tile_order:
-							Global.data.all_tiles[column][check_row] = null
+							Main.all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_up()
 						break
@@ -128,15 +128,15 @@ func combine_down():
 		#First try to combine tiles
 		#Each row from bottom before the last one
 		for row in range(Global.data.board_size-1, 0, -1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile above
 				for check_row in range(row-1, -1, -1):
-					tile2 = Global.data.all_tiles[column][check_row]
+					tile2 = Main.all_tiles[column][check_row]
 					if tile2 != null:
 						#Combine if they have the same tile_order
 						if tile.tile_order == tile2.tile_order:
-							Global.data.all_tiles[column][check_row] = null
+							Main.all_tiles[column][check_row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_down()
 						break
@@ -146,15 +146,15 @@ func combine_left():
 		#First try to combine tiles
 		#Each column from left before the last one
 		for column in range(Global.data.board_size - 1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile to the right
 				for check_column in range(column + 1, Global.data.board_size):
-					tile2 = Global.data.all_tiles[check_column][row]
+					tile2 = Main.all_tiles[check_column][row]
 					if tile2 != null:
 						#Combine if they have the same tile_order
 						if tile.tile_order == tile2.tile_order:
-							Global.data.all_tiles[check_column][row] = null
+							Main.all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_left()
 						break
@@ -164,15 +164,15 @@ func combine_right():
 		#First try to combine tiles
 		#Each column from right before the last one
 		for column in range(Global.data.board_size-1, 0, -1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				#Try to find another tile to the left
 				for check_column in range(column-1, -1, -1):
-					tile2 = Global.data.all_tiles[check_column][row]
+					tile2 = Main.all_tiles[check_column][row]
 					if tile2 != null:
 						#Combine if they have the same tile_order
 						if tile.tile_order == tile2.tile_order:
-							Global.data.all_tiles[check_column][row] = null
+							Main.all_tiles[check_column][row] = null
 							combine_tiles(tile, tile2, column, row)
 							move_right()
 						break
@@ -181,15 +181,15 @@ func move_left():
 	for row in Global.data.board_size:
 		#Each column from second left to right
 		for column in range(1, Global.data.board_size):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
-				if Global.data.all_tiles[column-1][row] != null:
+				if Main.all_tiles[column-1][row] != null:
 					continue
 				#Check each position to the left of this tile
 				for check_column in range(column-1, -1, -1):
-					if Global.data.all_tiles[check_column][row] == null and check_column == 0:
+					if Main.all_tiles[check_column][row] == null and check_column == 0:
 						move_tile(check_column, row, column, row, tile)
-					elif Global.data.all_tiles[check_column][row] != null:
+					elif Main.all_tiles[check_column][row] != null:
 						move_tile(check_column + 1, row, column, row, tile)
 						break
 
@@ -197,15 +197,15 @@ func move_right():
 	for row in Global.data.board_size:
 		#Each column from second right to left
 		for column in range(Global.data.board_size - 2, -1, -1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
-				if Global.data.all_tiles[column + 1][row] != null:
+				if Main.all_tiles[column + 1][row] != null:
 					continue
 				#Check each position to the right of this tile
 				for check_column in range(column + 1, Global.data.board_size):
-					if Global.data.all_tiles[check_column][row] == null and check_column == Global.data.board_size-1:
+					if Main.all_tiles[check_column][row] == null and check_column == Global.data.board_size-1:
 						move_tile(check_column, row, column, row, tile)
-					elif Global.data.all_tiles[check_column][row] != null:
+					elif Main.all_tiles[check_column][row] != null:
 						move_tile(check_column - 1, row, column, row, tile)
 						break
 
@@ -213,15 +213,15 @@ func move_up():
 	for column in range(Global.data.board_size):
 		#Each column from second top to bottom
 		for row in range(1, Global.data.board_size):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
-				if Global.data.all_tiles[column][row-1] != null:
+				if Main.all_tiles[column][row-1] != null:
 					continue
 				#Check each position above this tile
 				for check_row in range(row-1, -1, -1):
-					if Global.data.all_tiles[column][check_row] == null and check_row == 0:
+					if Main.all_tiles[column][check_row] == null and check_row == 0:
 						move_tile(column, check_row, column, row, tile)
-					elif Global.data.all_tiles[column][check_row] != null:
+					elif Main.all_tiles[column][check_row] != null:
 						move_tile(column, check_row + 1, column, row, tile)
 						break
 
@@ -229,21 +229,21 @@ func move_down():
 	for column in range(Global.data.board_size):
 		#Each column from second bottom to top
 		for row in range(Global.data.board_size - 2, -1, -1):
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
-				if Global.data.all_tiles[column][row + 1] != null:
+				if Main.all_tiles[column][row + 1] != null:
 					continue
 				#Check each position below this tile
 				for check_row in range(row + 1, Global.data.board_size):
-					if Global.data.all_tiles[column][check_row] == null and check_row == Global.data.board_size-1:
+					if Main.all_tiles[column][check_row] == null and check_row == Global.data.board_size-1:
 						move_tile(column, check_row, column, row, tile)
-					elif Global.data.all_tiles[column][check_row] != null:
+					elif Main.all_tiles[column][check_row] != null:
 						move_tile(column, check_row - 1, column, row, tile)
 						break
 
 func open_position_exists():
 	for column in Global.data.board_size:
-		for tile in Global.data.all_tiles[column]:
+		for tile in Main.all_tiles[column]:
 			if tile == null:
 				return true
 	return false
@@ -252,19 +252,19 @@ func combination_possible():
 	# Check the four directions if there is a tile with the same tile_order
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
-			if Global.data.all_tiles[column][row] != null:
-				var tile_order = Global.data.all_tiles[column][row].tile_order
+			if Main.all_tiles[column][row] != null:
+				var tile_order = Main.all_tiles[column][row].tile_order
 				if row > 0:
-					if Global.data.all_tiles[column][row - 1].tile_order == tile_order:
+					if Main.all_tiles[column][row - 1].tile_order == tile_order:
 						return true
 				if row < Global.data.board_size - 1:
-					if Global.data.all_tiles[column][row + 1].tile_order == tile_order:
+					if Main.all_tiles[column][row + 1].tile_order == tile_order:
 						return true
 				if column > 0:
-					if Global.data.all_tiles[column - 1][row].tile_order == tile_order:
+					if Main.all_tiles[column - 1][row].tile_order == tile_order:
 						return true
 				if column < Global.data.board_size - 1:
-					if Global.data.all_tiles[column + 1][row].tile_order == tile_order:
+					if Main.all_tiles[column + 1][row].tile_order == tile_order:
 						return true
 	return false
 
@@ -276,7 +276,7 @@ func add_tile(tile_order, column, row):
 	# add it to the board
 	add_child(tile)
 	# and add it to the array
-	Global.data.all_tiles[column][row] = tile
+	Main.all_tiles[column][row] = tile
 
 func add_tile_in_empty_position():
 	# Make a new tile in an open position
@@ -284,7 +284,7 @@ func add_tile_in_empty_position():
 	while 1:
 		var column = floor(rand_range(0, Global.data.board_size))
 		var row = floor(rand_range(0, Global.data.board_size))
-		if(Global.data.all_tiles[column][row] == null):
+		if(Main.all_tiles[column][row] == null):
 			# There is a 10% chance that the tile has a higher tile_order
 			if rand_range(0, 1) < 0.9:
 				add_tile(Global.data.tile_order, column, row)
@@ -298,7 +298,7 @@ func initialize_board():
 
 	full_board = false
 
-	if Global.data.all_tiles == null:
+	if Main.all_tiles == null:
 		#Wait 1 second before adding tiles
 		yield(get_tree().create_timer(.5), "timeout")
 		generate_empty_all_tiles_array()
@@ -317,12 +317,12 @@ func initialize_board():
 	check_if_recycle_should_be_enabled()
 
 func generate_empty_all_tiles_array():
-	Global.data.all_tiles = []
-	#Make Global.data.all_tiles into 2D_array
+	Main.all_tiles = []
+	#Make Main.all_tiles into 2D_array
 	for column in Global.data.board_size:
-		Global.data.all_tiles.append([])
+		Main.all_tiles.append([])
 		for row in Global.data.board_size:
-			Global.data.all_tiles[column].append(null)
+			Main.all_tiles[column].append(null)
 func recycle():
 	Main.recycle_button.visible = false
 	Global.data.base_income = Global.data.total_income
@@ -331,7 +331,7 @@ func recycle():
 	
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
-			tile = Global.data.all_tiles[column][row]
+			tile = Main.all_tiles[column][row]
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
 				if Global.data.tile_base == 0:
@@ -342,7 +342,7 @@ func recycle():
 					Main.change_total(tile.value, tile.position)
 				tile.z_index = 999
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
-				Global.data.all_tiles[column][row] = null
-	Global.data.all_tiles = null
+				Main.all_tiles[column][row] = null
+	Main.all_tiles = null
 	Global.data.total_recycles += 1
 	initialize_board()

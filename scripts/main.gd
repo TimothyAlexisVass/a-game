@@ -15,7 +15,7 @@ var auto_add_moves = false
 
 # Tile Variables
 var tile_template = preload("res://scenes/tile.tscn")
-var all_tiles = []
+var all_tiles = null
 var tile_background = preload("res://scenes/tile_background.tscn")
 var all_tile_backgrounds = null
 
@@ -41,7 +41,6 @@ onready var http_request_load = get_node("/root/main/HTTPRequestLoad")
 func _enter_tree():
 	# This is to enable saving at exiting the game
 	get_tree().set_auto_accept_quit(false)
-	Global.data.all_tiles = null
 
 func _ready():
 	Main.recycle_button.visible = false
@@ -96,14 +95,14 @@ func resize_tile_board():
 	Main.set_board_variables()
 	Main.generate_tile_backgrounds()
 	
-	Global.data.all_tiles.append([])
+	Main.all_tiles.append([])
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
 			if column == Global.data.board_size - 1 or row == Global.data.board_size - 1:
-				Global.data.all_tiles[column].append(null)
-			if Global.data.all_tiles[column][row] != null:
-				Global.data.all_tiles[column][row].queue_free()
-				tile_board.add_tile(Global.data.all_tiles[column][row].tile_order, column, row)
+				Main.all_tiles[column].append(null)
+			if Main.all_tiles[column][row] != null:
+				Main.all_tiles[column][row].queue_free()
+				tile_board.add_tile(Main.all_tiles[column][row].tile_order, column, row)
 
 func set_tile_position(board_position):
 	return (Vector2(board_position.x * Main.tile_offset + Main.tile_position,
@@ -259,8 +258,8 @@ func save_game():
 	for column in Global.data.board_size:
 		Global.data.tile_levels.append([])
 		for row in Global.data.board_size:
-			if Global.data.all_tiles[column][row] != null:
-				Global.data.tile_levels[column].append(Global.data.all_tiles[column][row].tile_order)
+			if Main.all_tiles[column][row] != null:
+				Global.data.tile_levels[column].append(Main.all_tiles[column][row].tile_order)
 			else:
 				Global.data.tile_levels[column].append(null)
 	
@@ -318,16 +317,16 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		for i in range(4,load_string.length(),5):
 			global_data_byte_array.append(ord(load_string[i])+8)
 		var data = parse_json(global_data_byte_array.get_string_from_ascii())
-	
+
 		if typeof(data) == TYPE_DICTIONARY:
 			Global.data = data
-			print(Global.data)
+			Main.all_tiles = []
 			Main.set_achievements_and_upgrades_levels()
 			Main.set_income()
 			Main.set_total()
 			Main.set_moves()
 		else:
-			printerr("!")
+			printerr("Need valid data")
 		
 	set_board_variables()
 	tile_board.initialize_board()
