@@ -18,10 +18,10 @@ var open_upgrades = [
 	{
 		"name": "tile_base",
 		"level": 0,
-		"requirement": [10, 1500, 2000000, 3000000000],
-		"reward": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+		"requirement": [6, 60, 1500, 2000000, 3000000000],
+		"reward": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		"image": load("res://assets/upgrade_images/tile_base.svg"),
-		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Double base value for tiles", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
+		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Increase base value to 1", "Increase base value to 2", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
 	},
 	{
 		"name": "increment",

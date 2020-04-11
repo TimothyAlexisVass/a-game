@@ -334,7 +334,7 @@ func recycle():
 			tile = Main.all_tiles[column][row]
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
-				if Global.data.tile_base == 0:
+				if Main.upgrades_panel.open_upgrades[1].level == 0:
 					Main.change_total(tile.value / 100.0, tile.position)
 				elif full_board:
 					Main.change_total(tile.value * Global.data.full_board_multiplier, tile.position)
