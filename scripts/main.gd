@@ -125,7 +125,7 @@ func display_notification(notification_text):
 	tween.interpolate_property(display_notification_object, "percent_visible", 0.0, 1.0, .7, tween.TRANS_LINEAR, tween.EASE_OUT)
 	tween.start()
 
-func change_total(amount, position):
+func change_coins(amount, position):
 	Global.data.coins += amount
 	if amount > 0:
 		Global.data.total_coins += amount
@@ -142,30 +142,30 @@ func change_total(amount, position):
 	display_profit_object.value = amount
 	display_profit_object.z_index = 999
 	add_child(display_profit_object)
-	set_total()
+	set_coins()
 
-func set_total():
+func set_coins():
 	var display_total
-	if Global.data.total_income < 1:	
+	if Global.data.coins < 1:	
 		display_total = str("%.2f" % (Global.data.coins))
-	elif Global.data.total_income < 10:
+	elif Global.data.coins < 10:
 		display_total = str("%.1f" % (Global.data.coins))
 	else:
 		display_total = str(int(Global.data.coins))
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(display_total)
 
 func set_income():
-	var display_income
+	var income_per_second
 	Global.data.total_income = (Global.data.base_income + Global.data.board_income) * Global.data.income_multiplier
-	display_income = Global.data.total_income / Global.data.income_timer
+	income_per_second = Global.data.total_income / Global.data.income_timer
 	
 	if Global.data.total_income < 1:	
-		display_income = str("%.2f" % (display_income))
+		income_per_second = str("%.2f" % (income_per_second))
 	elif Global.data.total_income < 10:	
-		display_income = str("%.1f" % (display_income))
+		income_per_second = str("%.1f" % (income_per_second))
 	else:
-		display_income = str(int(display_income))
-	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + display_income + "/"
+		income_per_second = str(int(income_per_second))
+	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + income_per_second + "/"
 
 func set_moves():
 	var indicator_color
@@ -194,8 +194,8 @@ func add_move_cost():
 
 func make_move():
 	if Main.auto_add_moves and Global.data.moves_left == 0:
-		change_total(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
-		set_total()
+		change_coins(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
+		set_coins()
 	else:
 		Global.data.moves_left -=1
 		set_moves()
@@ -232,17 +232,17 @@ func _on_user_interface_button_pressed(button):
 	elif button.name == "AddMovesButton":
 		if Global.data.coins > Main.add_move_cost() * Main.add_moves_amount:
 			Global.data.moves_left += 1 * Main.add_moves_amount
-			Main.change_total(-Main.add_move_cost() * Main.add_moves_amount, \
+			Main.change_coins(-Main.add_move_cost() * Main.add_moves_amount, \
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
 		set_moves()
-		set_total()
+		set_coins()
 	elif button.name == "RecycleButton":
 		tile_board.recycle()
 
 func _on_Timer_timeout(timer):
 	if timer.name == "IncomeTimer":
 		if Global.data.total_income > 0:
-			change_total(Global.data.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
+			change_coins(Global.data.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
 	elif timer.name == "MoveTimer":
 		Global.data.moves_left += 1
 		set_moves()
@@ -323,7 +323,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 			Main.all_tiles = []
 			Main.set_achievements_and_upgrades_levels()
 			Main.set_income()
-			Main.set_total()
+			Main.set_coins()
 			Main.set_moves()
 		else:
 			printerr("Need valid data")
@@ -338,7 +338,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
 
 	set_moves()
-	set_total()
+	set_coins()
 	
 	get_node("/root/main/MoveTimer").set_wait_time(Global.data.move_timer)
 	get_node("/root/main/IncomeTimer").set_wait_time(Global.data.income_timer)

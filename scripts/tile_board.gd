@@ -60,7 +60,7 @@ func combine_tiles(ctile, ctile2, column, row):
 	Global.data.combinations_done += 1
 	# coins are gained according to the value of the new tile
 	combine_value = Global.data.combination_multiplier * Main.all_tiles[column][row].value
-	Main.change_total(combine_value, ctile.position)
+	Main.change_coins(combine_value, ctile.position)
 	movement = true
 	
 func move_tile(new_column, new_row, column, row, mtile):
@@ -325,7 +325,7 @@ func generate_empty_all_tiles_array():
 			Main.all_tiles[column].append(null)
 func recycle():
 	Main.recycle_button.visible = false
-	Global.data.base_income = Global.data.total_income
+	Global.data.base_income += Global.data.board_income
 	Main.move_enabled = false
 	Global.data.top_tile_order = 0
 	
@@ -335,11 +335,11 @@ func recycle():
 			if tile != null:
 				yield(get_tree().create_timer(.05), "timeout")
 				if Main.upgrades_panel.open_upgrades[1].level == 0:
-					Main.change_total(tile.value / 100.0, tile.position)
+					Main.change_coins(tile.value / 100.0, tile.position)
 				elif full_board:
-					Main.change_total(tile.value * Global.data.full_board_multiplier, tile.position)
+					Main.change_coins(tile.value * Global.data.full_board_multiplier, tile.position)
 				else:
-					Main.change_total(tile.value, tile.position)
+					Main.change_coins(tile.value, tile.position)
 				tile.z_index = 999
 				tile.collect_tile(get_node("/root/main/Info/CoinsInfo/CoinSprite").global_position + Vector2(50,0))
 				Main.all_tiles[column][row] = null

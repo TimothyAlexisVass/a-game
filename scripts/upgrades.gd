@@ -18,7 +18,7 @@ var open_upgrades = [
 	{
 		"name": "tile_base",
 		"level": 0,
-		"requirement": [6, 60, 1500, 2000000, 3000000000],
+		"requirement": [6, 60, 150000, 2000000, 3000000000],
 		"reward": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
 		"image": load("res://assets/upgrade_images/tile_base.svg"),
 		"description": ["Add numbers to the tiles\n(Greatly increased recycle profit)", "Increase base value to 1", "Increase base value to 2", "Increase base value to 3", "Increase base value to 4", "Increase base value to 5", "Increase base value to 6", "Increase base value to 7", "Increase base value to 8", "Increase base value to 9", "Increase base value to 10"]
@@ -26,7 +26,7 @@ var open_upgrades = [
 	{
 		"name": "increment",
 		"level": 0,
-		"requirement": [50, 200, 500, 1000, ],
+		"requirement": [50, 200, 5000, 100000, ],
 		"reward": [Global.increment_type.PRIME, Global.increment_type.FIBONNACCI, Global.increment_type.DOUBLE, Global.increment_type.MULTIPLY, Global.increment_type.ULTIMATE],
 		"image": load("res://assets/upgrade_images/increment.svg"),
 		"description": ["Combined tiles increment as prime numbers.", "Combined tiles follow the Fibonnacci sequence", "Combined tile values are doubled", "Value is multiplied", "Value increases exponentially."]
@@ -62,16 +62,18 @@ func _on_UpgradeBuyButton_pressed(upgrade):
 
 func _perform_upgrade(upgrade):
 	if upgrade.name == "board_size":
-		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
+		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.board_size = upgrade.reward[upgrade.level]
 		Main.resize_tile_board()
 
 	elif upgrade.name == "tile_base":
-		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
+		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.tile_base = upgrade.reward[upgrade.level]
+		for tile in Main.all_tiles:
+			tile.set_value()
 
 	elif upgrade.name == "increment":
-		Main.change_total(-upgrade.requirement[upgrade.level], get_global_mouse_position())
+		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.increment = upgrade.reward[upgrade.level]
 
 	# Happens for all upgrades:
