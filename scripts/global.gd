@@ -14,7 +14,7 @@ var data = {
 	"income_timer": 12,
 	"move_timer": 10,
 	"moves_left": 500,
-	"coins": 59990.0,
+	"coins": 0.0,
 	"total_coins": 0.0,
 	"total_recycles": 0,
 	"base_income": 0.0,
