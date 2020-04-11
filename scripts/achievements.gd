@@ -89,11 +89,30 @@ var open_achievements = [
 					"10th order",
 					"11th order",
 					"12th order",
-					"13th order",],
+					"13th order"],
 		"requirement": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 		"reward": [2, 3, 4, 5, 6, 8, 10, 12, 14, 16],
 		"image": load("res://assets/achievement_images/top_tile_order.svg"),
 		"description": ["2 tiles after recycle", "3 tiles after recycle", "4 tiles after recycle", "5 tiles after recycle", "6 tiles after recycle", "8 tiles after recycle", "10 tiles after recycle", "12 tiles after recycle", "14 tiles after recycle", "16 tiles after recycle"]
+	},
+	{
+		"name": "combinations_done",
+		"level": 0,
+		"title": [	"100 combinations done",
+					"1000 combinations done",
+					"10000 combinations done",
+					"100000 combinations done",
+					"A million combinations done",
+					"10 million combinations done"],
+		"requirement": [pow(10, 2),
+						pow(10, 3),
+						pow(10, 4),
+						pow(10, 5),
+						pow(10, 6),
+						pow(10, 7)],
+		"reward": [0.02, 0.05, 0.10, 0.25, 0.5, 1],
+		"image": load("res://assets/achievement_images/combinations_done.svg"),
+		"description": ["Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles"]
 	}
 ]
 
@@ -175,6 +194,8 @@ func check_progress(achievement):
 			return 100 * Global.data.total_recycles / achievement.requirement[achievement.level]
 		"top_tile_order":
 			return 100 * Global.data.top_tile_order / achievement.requirement[achievement.level]
+		"combinations_done":
+			return 100 * Global.data.combinations_done / achievement.requirement[achievement.level]
 
 func _check_if_achieved(achievement):
 	# Move to array "completed" if all levels are completed
@@ -200,6 +221,11 @@ func _check_if_achieved(achievement):
 				if Global.data.top_tile_order >= achievement.requirement[achievement.level]:
 					Global.data.starting_tiles = achievement.reward[achievement.level]
 					achieved = true
+			"combinations_done":
+				if Global.data.combinations_done >= achievement.requirement[achievement.level]:
+					Global.data.combination_multiplier *= achievement.reward[achievement.level]
+					achieved = true
+
 		if achieved:
 			Main.display_notification(achievement.title[achievement.level] + "\n(" + achievement.description[achievement.level] + ")")
 			Main.set_income()

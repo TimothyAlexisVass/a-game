@@ -57,9 +57,9 @@ func combine_tiles(ctile, ctile2, column, row):
 	
 	# and a new tile is created and added to Main.all_tiles[column][row]
 	add_tile(ctile.tile_order + 1, column, row)
-	
+	Global.data.combinations_done += 1
 	# coins are gained according to the value of the new tile
-	combine_value = Main.all_tiles[column][row].value / 100.0
+	combine_value = Global.data.combination_multiplier * Main.all_tiles[column][row].value
 	Main.change_total(combine_value, ctile.position)
 	movement = true
 	
