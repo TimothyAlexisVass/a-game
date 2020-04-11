@@ -1,9 +1,5 @@
 Fix notifications scrolling when scrolling Upgrades menu.
 
-Order assets
-
-Change .stylebox files to -stylebox.tres
-
 Add energy for full board => Used for Buildings
 
 Add chance to gain premium resource on combine
