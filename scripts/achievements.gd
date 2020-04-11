@@ -223,7 +223,7 @@ func _check_if_achieved(achievement):
 					achieved = true
 			"combinations_done":
 				if Global.data.combinations_done >= achievement.requirement[achievement.level]:
-					Global.data.combination_multiplier *= achievement.reward[achievement.level]
+					Global.data.combination_multiplier = achievement.reward[achievement.level]
 					achieved = true
 
 		if achieved:
