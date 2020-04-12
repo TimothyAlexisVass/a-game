@@ -169,15 +169,15 @@ func set_income():
 
 func set_moves():
 	var indicator_color
-	if Global.data.moves_left < 50:
-		indicator_color = Color(1, Global.data.moves_left/50.0, 0)
-	elif Global.data.moves_left >= 50 and Global.data.moves_left < 100:
-		indicator_color = Color(1-(Global.data.moves_left-50)/50.0, 1, 0)
+	if Global.data.moves < 50:
+		indicator_color = Color(1, Global.data.moves/50.0, 0)
+	elif Global.data.moves >= 50 and Global.data.moves < 100:
+		indicator_color = Color(1-(Global.data.moves-50)/50.0, 1, 0)
 	else:
 		indicator_color = Color(0,1,0)
 		
 	move_timer_bar.modulate = indicator_color
-	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Global.data.moves_left)
+	get_node("/root/main/Info/MoveInfo/AddMovesButton").text = str(Global.data.moves)
 
 func set_achievements_and_upgrades_levels():
 	for achievement in achievements_panel.open_achievements:
@@ -193,11 +193,12 @@ func add_move_cost():
 		return Global.data.coins * 0.1
 
 func make_move():
-	if Main.auto_add_moves and Global.data.moves_left == 0:
+	if Main.auto_add_moves and Global.data.moves == 0:
 		change_coins(-Main.add_move_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
 		set_coins()
 	else:
-		Global.data.moves_left -=1
+		Global.data.moves -= 1
+		Global.data.total_moves += 1
 		set_moves()
 
 func _on_user_interface_button_pressed(button):
@@ -232,7 +233,7 @@ func _on_user_interface_button_pressed(button):
 			get_node("/root/main/Info/MoveInfo/AddMovesButton/MoveAmountButton").text = "X" + str(Main.add_moves_amount)
 	elif button.name == "AddMovesButton":
 		if Global.data.coins > Main.add_move_cost() * Main.add_moves_amount:
-			Global.data.moves_left += 1 * Main.add_moves_amount
+			Global.data.moves += 1 * Main.add_moves_amount
 			Main.change_coins(-Main.add_move_cost() * Main.add_moves_amount, \
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
 		set_moves()
@@ -245,7 +246,7 @@ func _on_Timer_timeout(timer):
 		if Global.data.total_income > 0:
 			change_coins(Global.data.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
 	elif timer.name == "MoveTimer":
-		Global.data.moves_left += 1
+		Global.data.moves += 1
 		set_moves()
 	elif timer.name == "MainTimer":
 		Main.achievements_panel._on_MainTimer_timeout()

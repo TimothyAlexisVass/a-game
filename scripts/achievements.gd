@@ -113,6 +113,25 @@ var open_achievements = [
 		"reward": [0.02, 0.05, 0.10, 0.25, 0.5, 1],
 		"image": load("res://assets/achievement_images/combinations_done.svg"),
 		"description": ["Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles", "Increased income from combining tiles"]
+	},
+	{
+		"name": "total_moves",
+		"level": 0,
+		"title": [	"100 total moves made",
+					"1000 total moves made",
+					"10000 total moves made",
+					"100000 total moves made",
+					"A million total moves made",
+					"10 million total moves made"],
+		"requirement": [pow(10, 2),
+						pow(10, 3),
+						pow(10, 4),
+						pow(10, 5),
+						pow(10, 6),
+						pow(10, 7)],
+		"reward": [1, 1, 2, 2, 2, 3],
+		"image": load("res://assets/achievement_images/total_moves.svg"),
+		"description": ["Gain income faster", "Gain income faster", "Gain income faster", "Gain income faster", "Gain income faster", "Gain income faster"]
 	}
 ]
 
@@ -196,6 +215,8 @@ func check_progress(achievement):
 			return 100 * Global.data.top_tile_order / achievement.requirement[achievement.level]
 		"combinations_done":
 			return 100 * Global.data.combinations_done / achievement.requirement[achievement.level]
+		"total_moves":
+			return 100 * Global.data.total_moves / achievement.requirement[achievement.level]
 
 func _check_if_achieved(achievement):
 	# Move to array "completed" if all levels are completed
@@ -224,6 +245,10 @@ func _check_if_achieved(achievement):
 			"combinations_done":
 				if Global.data.combinations_done >= achievement.requirement[achievement.level]:
 					Global.data.combination_multiplier = achievement.reward[achievement.level]
+					achieved = true
+			"total_moves":
+				if Global.data.total_moves >= achievement.requirement[achievement.level]:
+					Global.data.income_timer -= achievement.reward[achievement.level]
 					achieved = true
 
 		if achieved:

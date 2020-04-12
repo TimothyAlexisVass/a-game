@@ -70,7 +70,7 @@ func move_tile(new_column, new_row, column, row, mtile):
 	movement = true
 
 func update_board(direction):
-	if Global.data.moves_left > 0 or Main.auto_add_moves and Global.data.coins >= Main.add_move_cost():
+	if Global.data.moves > 0 or Main.auto_add_moves and Global.data.coins >= Main.add_move_cost():
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()
@@ -92,7 +92,7 @@ func update_board(direction):
 				check_if_recycle_should_be_enabled()
 
 func check_if_recycle_should_be_enabled():
-	Main.recycle_button.visible = Global.data.moves_left == 0
+	Main.recycle_button.visible = Global.data.moves == 0
 	if !open_position_exists() and !combination_possible():
 		Main.recycle_button.visible = true
 		full_board = true
