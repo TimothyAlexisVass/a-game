@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Main="*res://scripts/main.gd"
 Global="*res://scripts/global.gd"
+Progress="*res://scripts/progress.gd"
 
 [display]
 

@@ -15,10 +15,6 @@ onready var description_label = get_node("Description/Background/MarginContainer
 
 var open_achievements = [
 	{
-		"name": "progress_events",
-		"level": 0,
-	},
-	{
 		"name": "coins",
 		"level": 0,
 		"title": [	"One whole coin!",
@@ -140,16 +136,15 @@ var completed_achievements = []
 func _ready():
 	description.visible = false
 	for achievement in open_achievements:
-		if achievement.name != "progress_events":
-			achievement_object = achievement_template.instance()
-			achievement_object.get_node("TextureProgress/TextureButton").texture_normal = achievement["image"]
-			achievement_object.get_node("TextureProgress/TextureButton").connect("mouse_entered", self, "_show_achievement_description", [achievement])
-			achievement_object.get_node("TextureProgress/TextureButton").connect("mouse_exited", self, "_hide_achievement_description")
-			achievement_object.get_node("TextureProgress/TextureButton").connect("button_down", self, "_show_achievement_description", [achievement])
-			achievement_object.get_node("TextureProgress/TextureButton").connect("button_up", self, "_hide_achievement_description")
-			achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
-			get_node("ScrollContainer/MarginContainer/GridContainer/").add_child(achievement_object)
-			achievement_objects_list[achievement.name] = achievement_object
+		achievement_object = achievement_template.instance()
+		achievement_object.get_node("TextureProgress/TextureButton").texture_normal = achievement["image"]
+		achievement_object.get_node("TextureProgress/TextureButton").connect("mouse_entered", self, "_show_achievement_description", [achievement])
+		achievement_object.get_node("TextureProgress/TextureButton").connect("mouse_exited", self, "_hide_achievement_description")
+		achievement_object.get_node("TextureProgress/TextureButton").connect("button_down", self, "_show_achievement_description", [achievement])
+		achievement_object.get_node("TextureProgress/TextureButton").connect("button_up", self, "_hide_achievement_description")
+		achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
+		get_node("ScrollContainer/MarginContainer/GridContainer/").add_child(achievement_object)
+		achievement_objects_list[achievement.name] = achievement_object
 
 func _show_achievement_description(achievement):
 	achievement_described = achievement
@@ -165,41 +160,10 @@ func _on_MainTimer_timeout():
 	if achievement_described != null:
 		description_progress_bar.value = check_progress(achievement_described)
 	for achievement in open_achievements:
-		if achievement.name == "progress_events":
-			_progress_events(achievement)
-		else:
-			_check_if_achieved(achievement)
-			achievement_object = achievement_objects_list[achievement.name]
-			achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
-			achievement_object.get_node("TextureProgress").value = check_progress(achievement)
-
-func _progress_events(achievement):
-	match(int(achievement.level)):
-		0:
-			Main.achievements_button.visible = Global.data.coins >= 0.3
-			if Global.data.coins >= 0.3:
-				achievement.level += 1
-				Main.display_notification("Achievements enabled")
-		1:
-			Main.upgrades_button.disabled = Global.data.coins < 1
-			if Global.data.coins >= 1:
-				Main.move_info.visible = true
-				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
-				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true
-				get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = true
-				Global.data.base_income = 0.09
-				Main.set_income()
-				Main.get_node("/root/main/IncomeTimer").start()
-				achievement.level += 1
-		# Move to array "completed" when all levels are completed
-		_:
-			Global.data.base_income = 0.09
-			Main.set_income()
-			Main.get_node("/root/main/IncomeTimer").start()
-			Main.achievements_button.visible = true
-			Main.upgrades_button.disabled = false
-			completed_achievements.append(achievement)
-			open_achievements.erase(achievement)
+		_check_if_achieved(achievement)
+		achievement_object = achievement_objects_list[achievement.name]
+		achievement_object.get_node("LevelLabel").text = str(achievement.level) + "/" + str(achievement["title"].size())
+		achievement_object.get_node("TextureProgress").value = check_progress(achievement)
 
 func check_progress(achievement):
 	if achievement.level == achievement["title"].size():

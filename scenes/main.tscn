@@ -192,13 +192,13 @@ autostart = true
 [node name="MoveTimer" type="Timer" parent="." groups=[
 "Timers",
 ]]
-wait_time = 4.0
+wait_time = 10.0
 autostart = true
 
 [node name="IncomeTimer" type="Timer" parent="." groups=[
 "Timers",
 ]]
-wait_time = 10.0
+wait_time = 12.0
 
 [node name="SaveTimer" type="Timer" parent="." groups=[
 "Timers",

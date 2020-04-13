@@ -1,4 +1,6 @@
-Fix notifications scrolling when scrolling Upgrades menu.
+Set progress_events as progress_events.gd
+
+Set visibility on upgrades in progress_events
 
 Add energy for full board => Used for Buildings
 

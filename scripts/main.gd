@@ -43,6 +43,8 @@ func _enter_tree():
 	get_tree().set_auto_accept_quit(false)
 
 func _ready():
+#	Global.data.name = JavaScript.eval("kongregate.services.getUsername()")
+#	display_notification("Hello " + name)
 	Main.recycle_button.visible = false
 	Main.achievements_button.visible = false
 	Main.upgrades_button.disabled = true
@@ -249,6 +251,7 @@ func _on_Timer_timeout(timer):
 		Global.data.moves += 1
 		set_moves()
 	elif timer.name == "MainTimer":
+		Progress._on_MainTimer_timeout()
 		Main.achievements_panel._on_MainTimer_timeout()
 		Main.upgrades_panel._on_MainTimer_timeout()
 	elif timer.name == "SaveTimer":

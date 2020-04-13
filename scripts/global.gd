@@ -3,6 +3,7 @@ extends Node
 enum increment_type {ADD, PRIME, FIBONNACCI, DOUBLE, MULTIPLY, ULTIMATE}
 
 var data = {
+	"name": "Human",
 	"increment": increment_type.ADD,
 	"board_size": 2,
 	"starting_tiles": 1,

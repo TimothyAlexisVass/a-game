@@ -4,8 +4,6 @@ var upgrade_template = preload("res://scenes/upgrade.tscn")
 var upgrade_objects_list = {}
 var upgrade_object
 
-var board_size_function = funcref(self, "board_size")
-
 var open_upgrades = [
 	{
 		"name": "board_size",
