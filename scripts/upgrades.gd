@@ -32,7 +32,7 @@ var open_upgrades = [
 	{
 		"name": "move_timer",
 		"level": 0,
-		"requirement": [8, 20, 500, 80000, 160000, pow(2, 18), pow(2, 20), pow(2, 21), pow(2, 22)],
+		"requirement": [8, 20, 500, 2000, 80000, 160000, pow(2, 18), pow(2, 20), pow(2, 21), pow(2, 22)],
 		"reward": [9, 8, 7, 6, 5, 4, 3, 2, 1, 0.5],
 		"image": load("res://assets/upgrade_images/move_timer.svg"),
 		"description": ["Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster."]
@@ -40,6 +40,10 @@ var open_upgrades = [
 ]
 
 var completed_upgrades = []
+
+var hidden_upgrades = [
+	"increment"
+]
 
 func _ready():
 	for upgrade in open_upgrades:
@@ -50,6 +54,8 @@ func _ready():
 		upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").connect("pressed", self, "_on_UpgradeBuyButton_pressed", [upgrade])
 		get_node("ScrollContainer/MarginContainer/VBoxContainer").add_child(upgrade_object)
 		upgrade_objects_list[upgrade.name] = upgrade_object
+	for upgrade in hidden_upgrades:
+		upgrade_objects_list[upgrade].visible = false
 
 func _on_MainTimer_timeout():
 	for upgrade in open_upgrades:
@@ -58,6 +64,17 @@ func _on_MainTimer_timeout():
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = false
 		else:
 			upgrade_object.get_node("Background/MarginContainer/Panel/UpgradeBuyButton").disabled = true
+	for upgrade in hidden_upgrades:
+		if reveal(upgrade):
+			upgrade_objects_list[upgrade].visible = true
+			hidden_upgrades.erase(upgrade)
+
+func reveal(upgrade):
+	match(upgrade):
+		"increment":
+			for upgrade in open_upgrades:
+				if upgrade.name == "tile_base" and upgrade.level > 0:
+					return true
 
 func _on_UpgradeBuyButton_pressed(upgrade):
 	upgrade_object = upgrade_objects_list[upgrade.name]

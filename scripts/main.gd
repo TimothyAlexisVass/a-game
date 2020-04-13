@@ -342,6 +342,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
 
+#	change_coins(9999, Vector2(0,0))
 	set_moves()
 	set_coins()
 	
