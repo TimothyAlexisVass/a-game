@@ -33,7 +33,7 @@ func _enable(event):
 		"Achievements enabled":
 			Main.achievements_button.visible = true
 		"Income and upgrades enabled":
-			Main.move_info.visible = true
+			Main.energy_info.visible = true
 			Main.upgrades_button.disabled = false
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = true
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = true

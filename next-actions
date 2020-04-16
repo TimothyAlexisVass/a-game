@@ -1,19 +1,19 @@
-Set progress_events as progress_events.gd
+Add tapping for coins
 
-Set visibility on upgrades in progress_events
+Switch Moves with Energy
 
 Add energy for full board => Used for Buildings
 
 Add chance to gain premium resource on combine
 
-Add Achievement:
+Add Challenge:
     1024 (board_size>=4, base=1)
     2048 (board_size>=4, base=2)
 
 Add Upgrade:
-    Tile Increment => Addition -> Primes -> Fibonnaci -> Double -> Multiply
     Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
     Income frequency => 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+    Energy price
 
 Add Buildings:
     Tiles as resources for buildings
