@@ -30,12 +30,12 @@ var open_upgrades = [
 		"description": ["Combined tiles increment as prime numbers.", "Combined tiles follow the Fibonnacci sequence", "Combined tile values are doubled", "Value is multiplied", "Value increases exponentially."]
 	},
 	{
-		"name": "move_timer",
+		"name": "energy_timer",
 		"level": 0,
 		"requirement": [8, 20, 500, 2000, 80000, 160000, pow(2, 18), pow(2, 20), pow(2, 21), pow(2, 22)],
 		"reward": [9, 8, 7, 6, 5, 4, 3, 2, 1, 0.5],
-		"image": load("res://assets/upgrade_images/move_timer.svg"),
-		"description": ["Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster.", "Gain moves faster."]
+		"image": load("res://assets/upgrade_images/energy_timer.svg"),
+		"description": ["Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster.", "Gain energy faster."]
 	}
 ]
 
@@ -97,10 +97,10 @@ func _perform_upgrade(upgrade):
 		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
 		Global.data.increment = upgrade.reward[upgrade.level]
 
-	elif upgrade.name == "move_timer":
+	elif upgrade.name == "energy_timer":
 		Main.change_coins(-upgrade.requirement[upgrade.level], get_global_mouse_position())
-		Global.data.move_timer = upgrade.reward[upgrade.level]
-		get_node("/root/main/MoveTimer").set_wait_time(Global.data.move_timer)
+		Global.data.energy_timer = upgrade.reward[upgrade.level]
+		get_node("/root/main/EnergyTimer").set_wait_time(Global.data.energy_timer)
 
 	# Happens for all upgrades:
 	upgrade.level += 1
