@@ -9,6 +9,7 @@ var tile_scale
 var tile_position
 var tile_offset
 
+var income_per_second
 var move_enabled = false
 var add_energy_amount = 1
 var auto_add_energy = false
@@ -161,7 +162,6 @@ func set_coins():
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").text = str(display_total)
 
 func set_income():
-	var income_per_second
 	Global.data.total_income = (Global.data.base_income + Global.data.board_income) * Global.data.income_multiplier
 	income_per_second = Global.data.total_income / Global.data.income_timer
 	
@@ -172,6 +172,10 @@ func set_income():
 	else:
 		income_per_second = str(int(income_per_second))
 	get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").text = "(+" + income_per_second + "/"
+
+func change_energy(value):
+	Global.data.energy += value
+	set_energy()
 
 func set_energy():
 	var indicator_color
@@ -199,13 +203,8 @@ func add_energy_cost():
 		return Global.data.coins * 0.1
 
 func make_move():
-	if Main.auto_add_energy and Global.data.energy == 0:
-		change_coins(-Main.add_energy_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
-		set_coins()
-	else:
-		Global.data.energy -= 1
-		Global.data.total_moves += 1
-		set_energy()
+	change_energy(-1)
+	Global.data.total_moves += 1
 
 func _on_user_interface_button_pressed(button):
 	if button.name == "AchievementsButton":
@@ -232,7 +231,7 @@ func _on_user_interface_button_pressed(button):
 		Main.move_enabled = true
 		button.get_parent().visible = false
 	elif button.name == "AddCoinsButton":
-		change_coins(Global.data.coins/10000, get_global_mouse_position())
+		change_coins(float(income_per_second)/100 + 0.001, get_global_mouse_position())
 	elif button.name == "EnergyAmountButton":
 		Main.auto_add_energy = !Main.auto_add_energy
 		if Main.auto_add_energy == true:
@@ -241,11 +240,9 @@ func _on_user_interface_button_pressed(button):
 			get_node("/root/main/Info/EnergyInfo/AddEnergyButton/EnergyAmountButton").text = "X" + str(Main.add_energy_amount)
 	elif button.name == "AddEnergyButton":
 		if Global.data.coins > Main.add_energy_cost() * Main.add_energy_amount:
-			Global.data.energy += 1 * Main.add_energy_amount
+			change_energy(1 * Main.add_energy_amount)
 			Main.change_coins(-Main.add_energy_cost() * Main.add_energy_amount, \
 			get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
-		set_energy()
-		set_coins()
 	elif button.name == "RecycleButton":
 		tile_board.recycle()
 
@@ -254,12 +251,14 @@ func _on_Timer_timeout(timer):
 		if Global.data.total_income > 0:
 			change_coins(Global.data.total_income, get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").get_global_position() + Vector2(85,0))
 	elif timer.name == "EnergyTimer":
-		Global.data.energy += 1
-		set_energy()
+		change_energy(1)
 	elif timer.name == "MainTimer":
 		Progress._on_MainTimer_timeout()
 		Main.achievements_panel._on_MainTimer_timeout()
 		Main.upgrades_panel._on_MainTimer_timeout()
+		if Main.auto_add_energy and Global.data.coins >= 0.1:
+			change_coins(-Main.add_energy_cost(), get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/TotalLabel").get_global_position() + Vector2(60,0))
+			change_energy(1)
 	elif timer.name == "SaveTimer":
 		save_game()
 
@@ -349,6 +348,7 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
 
 #	change_coins(9999, Vector2(0,0))
+#	change_energy(9999)
 	set_energy()
 	set_coins()
 	

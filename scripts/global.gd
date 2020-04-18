@@ -14,7 +14,7 @@ var data = {
 	"tile_levels": null,
 	"income_timer": 12,
 	"energy_timer": 10,
-	"energy": 500,
+	"energy": 200,
 	"total_moves": 0,
 	"coins": 0.0,
 	"total_coins": 0.0,

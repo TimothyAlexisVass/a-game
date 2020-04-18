@@ -22,10 +22,10 @@ func _on_MainTimer_timeout():
 func completed(event):
 	match(event):
 		"Achievements enabled":
-			if Global.data.coins >= 0.3:
+			if Global.data.total_coins >= 0.3:
 				return true
 		"Income and upgrades enabled":
-			if Global.data.coins >= 1:
+			if Global.data.total_coins >= 1:
 				return true
 
 func _enable(event):

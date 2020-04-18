@@ -70,7 +70,7 @@ func move_tile(new_column, new_row, column, row, mtile):
 	movement = true
 
 func update_board(direction):
-	if Global.data.energy > 0 or Main.auto_add_energy and Global.data.coins >= Main.add_move_cost():
+	if Global.data.energy > 0:
 		if open_position_exists() or combination_possible():
 			if direction == directions.UP:
 				combine_up()
@@ -341,6 +341,7 @@ func recycle():
 					Main.change_coins(tile.value / 100.0, tile.position)
 				elif full_board:
 					Main.change_coins(tile.value * Global.data.full_board_multiplier, tile.position)
+					Main.change_energy(int(tile.tile_order))
 				else:
 					Main.change_coins(tile.value, tile.position)
 				tile.z_index = 999
