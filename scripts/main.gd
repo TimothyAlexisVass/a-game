@@ -44,8 +44,8 @@ func _enter_tree():
 	get_tree().set_auto_accept_quit(false)
 
 func _ready():
-#	Global.data.name = JavaScript.eval("kongregate.services.getUsername()")
-#	display_notification("Hello " + name)
+	Global.data.name = JavaScript.eval("kongregate.services.getUsername()")
+	display_notification("Hello " + name)
 	Main.recycle_button.visible = false
 	Main.achievements_button.visible = false
 	Main.upgrades_button.disabled = true

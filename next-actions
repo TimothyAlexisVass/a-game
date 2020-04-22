@@ -1,3 +1,7 @@
+Integrate with Kongregate API
+
+total_income should save between games
+
 Add Challenges:
     Base 4 on 2x2 board
     4 3 2 1 on 2x2 board
@@ -12,6 +16,8 @@ Add Buildings:
     Tiles as resources for buildings
     Shop
     Energy plant
+
+Add offline gains
 
 Add close button to board
 
