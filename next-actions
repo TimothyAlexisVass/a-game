@@ -1,16 +1,14 @@
 Integrate with Kongregate API
 
-total_income should save between games
+Add Upgrade:
+    Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
+    Income frequency => 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
 Add Challenges:
     Base 4 on 2x2 board
     4 3 2 1 on 2x2 board
     1024 (board_size>=4, base=1)
     2048 (board_size>=4, base=2)
-
-Add Upgrade:
-    Income Multiplier => 2, 3, 4, 5, 6, 7, 8, 9
-    Income frequency => 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
 Add Buildings:
     Tiles as resources for buildings

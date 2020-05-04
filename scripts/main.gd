@@ -44,7 +44,7 @@ func _enter_tree():
 	get_tree().set_auto_accept_quit(false)
 
 func _ready():
-	Global.data.name = JavaScript.eval("kongregate.services.getUsername()")
+#	Global.data.name = JavaScript.eval("kongregate.services.getUsername()")
 	display_notification("Hello " + name)
 	Main.recycle_button.visible = false
 	Main.achievements_button.visible = false
@@ -97,7 +97,7 @@ func resize_tile_board():
 	Main.all_tile_backgrounds = null
 	Main.set_board_variables()
 	Main.generate_tile_backgrounds()
-	
+
 	Main.all_tiles.append([])
 	for column in Global.data.board_size:
 		for row in Global.data.board_size:
@@ -132,7 +132,7 @@ func change_coins(amount, position):
 	Global.data.coins += amount
 	if amount > 0:
 		Global.data.total_coins += amount
-	
+
 	display_profit_object = profit_indicator.instance()
 	display_profit_object.position = position
 	if amount - int(amount) == 0:
@@ -145,7 +145,7 @@ func change_coins(amount, position):
 		amount = str("%.2f" % (amount))
 	else:
 		amount = str(int(amount))
-	
+
 	display_profit_object.value = amount
 	display_profit_object.z_index = 999
 	add_child(display_profit_object)
@@ -164,7 +164,7 @@ func set_coins():
 func set_income():
 	Global.data.total_income = (Global.data.base_income + Global.data.board_income) * Global.data.income_multiplier
 	income_per_second = Global.data.total_income / Global.data.income_timer
-	
+
 	if Global.data.total_income < 1:	
 		income_per_second = str("%.2f" % (income_per_second))
 	elif Global.data.total_income < 10:	
@@ -272,7 +272,7 @@ func save_game():
 				Global.data.tile_levels[column].append(Main.all_tiles[column][row].tile_order)
 			else:
 				Global.data.tile_levels[column].append(null)
-	
+
 	for achievement in achievements_panel.open_achievements:
 		Global.data.achievements_levels[achievement.name] = achievement.level
 	for achievement in achievements_panel.completed_achievements:
@@ -326,31 +326,27 @@ func _on_load_request_completed(_result, response_code, _header, body):
 		load_string = body.get_string_from_utf8()
 		for i in range(4,load_string.length(),5):
 			global_data_byte_array.append(ord(load_string[i])+8)
-		var data = parse_json(global_data_byte_array.get_string_from_ascii())
+		var load_data = parse_json(global_data_byte_array.get_string_from_ascii())
 
-		if typeof(data) == TYPE_DICTIONARY:
-			Global.data = data
+		if typeof(load_data) == TYPE_DICTIONARY:
+			Global.data = load_data
 			Main.all_tiles = []
 			Main.set_achievements_and_upgrades_levels()
-			Main.set_income()
-			Main.set_coins()
-			Main.set_energy()
 		else:
 			printerr("Need valid data")
-		
+
 	set_board_variables()
 	tile_board.initialize_board()
-	
+
 	if Global.data.board_size == 2 and Global.data.coins < 1:
 		Main.energy_info.visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/IncomeLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/PerSecondLabel").visible = false
 		get_node("/root/main/Info/CoinsInfo/Margin/CoinsContainer/Parenthesis").visible = false
 
-#	change_coins(9999, Vector2(0,0))
-#	change_energy(9999)
-	set_energy()
-	set_coins()
-	
+	Main.set_income()
+	Main.set_coins()
+	Main.set_energy()
+
 	get_node("/root/main/EnergyTimer").set_wait_time(Global.data.energy_timer)
 	get_node("/root/main/IncomeTimer").set_wait_time(Global.data.income_timer)
